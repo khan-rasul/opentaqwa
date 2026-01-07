@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
-import {
-  View,
-  Text,
-  ImageBackground,
-  ActivityIndicator,
-  ScrollView,
-} from "react-native";
+import { View, Text, ImageBackground, ActivityIndicator } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import { Ionicons } from "@expo/vector-icons";
+import {
+  MapPin,
+  Sunrise,
+  Sun,
+  CloudSun,
+  Sunset,
+  Moon,
+} from "lucide-react-native";
 
 // Mock data - replace with actual hooks later
 const mockPrayerTimes = [
@@ -15,35 +16,35 @@ const mockPrayerTimes = [
     name: "Fajr",
     arabic: "الفجر",
     time: "5:30 AM",
-    icon: "sunny-outline",
+    icon: Sunrise,
     next: false,
   },
   {
     name: "Dhuhr",
     arabic: "الظهر",
     time: "12:45 PM",
-    icon: "partly-sunny-outline",
+    icon: Sun,
     next: false,
   },
   {
     name: "Asr",
     arabic: "العصر",
     time: "3:30 PM",
-    icon: "cloudy-outline",
+    icon: CloudSun,
     next: true,
   },
   {
     name: "Maghrib",
     arabic: "المغرب",
     time: "6:15 PM",
-    icon: "moon-outline",
+    icon: Sunset,
     next: false,
   },
   {
     name: "Isha",
     arabic: "العشاء",
     time: "7:45 PM",
-    icon: "moon",
+    icon: Moon,
     next: false,
   },
 ];
@@ -54,10 +55,9 @@ const BACKGROUND_IMAGE_URL =
 export default function PrayerTime() {
   const [countdown, setCountdown] = useState("02:15:30");
   const [loading, setLoading] = useState(false);
-  const location = { city: "New York", country: "USA" }; // Mock location
+  const location = { city: "New York", country: "USA" };
   const nextPrayer = mockPrayerTimes.find((prayer) => prayer.next);
 
-  // Mock countdown update
   useEffect(() => {
     const timer = setInterval(() => {
       // Update countdown logic here
@@ -69,36 +69,39 @@ export default function PrayerTime() {
     return (
       <View
         style={{
-          height: 320,
-          borderRadius: 12,
+          height: 360,
+          borderRadius: 20,
+          overflow: "hidden",
           shadowColor: "#000",
-          shadowOffset: { width: 0, height: 6 },
-          shadowOpacity: 0.45,
-          shadowRadius: 12,
-          elevation: 12,
+          shadowOffset: { width: 6, height: 10 },
+          shadowOpacity: 0.5,
+          shadowRadius: 18,
+          elevation: 18,
         }}
       >
-        <View
-          className="rounded-xl overflow-hidden bg-neutral-700"
-          style={{ flex: 1 }}
+        <LinearGradient
+          colors={["#264872", "#1a3454"]}
+          start={[0, 0]}
+          end={[1, 1]}
+          style={{
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+            padding: 20,
+          }}
         >
-          <LinearGradient
-            colors={["#475569", "#0f172a"]}
-            start={[0, 0]}
-            end={[1, 0]}
+          <ActivityIndicator size="large" color="#FFFFFF" />
+          <Text
             style={{
-              flex: 1,
-              justifyContent: "center",
-              alignItems: "center",
-              padding: 16,
+              color: "#FFFFFF",
+              fontSize: 16,
+              fontWeight: "600",
+              marginTop: 12,
             }}
           >
-            <ActivityIndicator size="large" color="#F5F3F0" />
-            <Text className="text-off-white text-base font-semibold mt-2">
-              Loading Adhan times
-            </Text>
-          </LinearGradient>
-        </View>
+            Loading Adhān times
+          </Text>
+        </LinearGradient>
       </View>
     );
   }
@@ -106,94 +109,105 @@ export default function PrayerTime() {
   return (
     <View
       style={{
-        height: 320,
-        borderRadius: 12,
+        height: 360,
+        borderRadius: 20,
+        backgroundColor: "black", // IMPORTANT for iOS
         shadowColor: "#000",
-        shadowOffset: { width: 0, height: 6 },
+        shadowOffset: { width: 6, height: 10 },
         shadowOpacity: 0.45,
-        shadowRadius: 12,
-        elevation: 12,
+        shadowRadius: 18,
+        elevation: 18,
       }}
     >
-      <View className="rounded-xl overflow-hidden" style={{ flex: 1 }}>
+      <View style={{ borderRadius: 20, overflow: "hidden", flex: 1 }}>
         <ImageBackground
           source={{ uri: BACKGROUND_IMAGE_URL }}
-          className="flex-1"
+          style={{ flex: 1 }}
           resizeMode="cover"
         >
           <LinearGradient
             colors={[
-              "rgba(30, 41, 59, 0.6)",
-              "rgba(15, 23, 42, 0.8)",
-              "rgba(0, 0, 0, 0.8)",
+              "rgba(38, 72, 114, 0.45)",
+              "rgba(26, 52, 84, 0.65)",
+              "rgba(15, 23, 42, 0.75)",
             ]}
             start={[0, 0]}
-            end={[1, 0]}
-            style={{ flex: 1, padding: 16 }}
+            end={[1, 1]}
+            style={{ flex: 1, padding: 20 }}
           >
-            {/* Content */}
-            <View className="flex-1 justify-between">
+            {/* Subtle top shine - matching card style */}
+            <View
+              style={{
+                position: "absolute",
+                top: 0,
+                left: 0,
+                right: 0,
+                height: "35%",
+                backgroundColor: "rgba(255, 255, 255, 0.04)",
+              }}
+            />
+
+            <View style={{ flex: 1, justifyContent: "space-between" }}>
               {/* Header */}
-              <View className="flex-row justify-between items-start">
-                <View className="flex-1">
+              <View>
+                <Text
+                  style={{
+                    color: "#FFFFFF",
+                    fontSize: 20,
+                    fontWeight: "700",
+                    marginBottom: 4,
+                    letterSpacing: 0.3,
+                  }}
+                >
+                  Adhān
+                </Text>
+                <View
+                  style={{ flexDirection: "row", alignItems: "center", gap: 4 }}
+                >
+                  <MapPin size={12} color="rgba(255, 255, 255, 0.8)" />
                   <Text
-                    className="text-white text-lg font-bold mb-1"
                     style={{
-                      textShadowColor: "rgba(0, 0, 0, 0.8)",
-                      textShadowOffset: { width: 0, height: 2 },
-                      textShadowRadius: 4,
+                      color: "rgba(255, 255, 255, 0.8)",
+                      fontSize: 12,
+                      fontWeight: "500",
                     }}
                   >
-                    Adhān
+                    {location.city}, {location.country}
                   </Text>
-                  <View className="flex-row items-center gap-1">
-                    <Ionicons
-                      name="location"
-                      size={12}
-                      color="rgba(255, 255, 255, 0.9)"
-                    />
-                    <Text
-                      className="text-white/90 text-xs"
-                      style={{
-                        textShadowColor: "rgba(0, 0, 0, 0.6)",
-                        textShadowOffset: { width: 0, height: 1 },
-                        textShadowRadius: 3,
-                      }}
-                    >
-                      {location.city}, {location.country}
-                    </Text>
-                  </View>
                 </View>
               </View>
 
               {/* Middle Section - Countdown */}
-              <View className="items-center justify-center flex-1 px-4">
+              <View style={{ alignItems: "center", paddingVertical: 20 }}>
                 <Text
-                  className="text-white text-4xl font-bold mb-2"
                   style={{
-                    textShadowColor: "rgba(0, 0, 0, 0.9)",
-                    textShadowOffset: { width: 0, height: 3 },
-                    textShadowRadius: 6,
+                    color: "#FFFFFF",
+                    fontSize: 32,
+                    fontWeight: "700",
+                    marginBottom: 8,
+                    letterSpacing: 1,
                   }}
                 >
                   {countdown}
                 </Text>
                 <Text
-                  className="text-white/95 text-base font-medium mb-3 text-center"
                   style={{
-                    textShadowColor: "rgba(0, 0, 0, 0.7)",
-                    textShadowOffset: { width: 0, height: 2 },
-                    textShadowRadius: 4,
+                    color: "rgba(255, 255, 255, 0.9)",
+                    fontSize: 15,
+                    fontWeight: "600",
+                    marginBottom: 12,
                   }}
                 >
                   Until {nextPrayer?.name} ({nextPrayer?.arabic})
                 </Text>
                 <Text
-                  className="text-white/80 text-xs italic text-center px-2"
                   style={{
-                    textShadowColor: "rgba(0, 0, 0, 0.6)",
-                    textShadowOffset: { width: 0, height: 1 },
-                    textShadowRadius: 3,
+                    color: "rgba(255, 255, 255, 0.7)",
+                    fontSize: 11,
+                    fontStyle: "italic",
+                    textAlign: "center",
+                    lineHeight: 16,
+                    paddingHorizontal: 20,
                   }}
                 >
                   "Indeed, performing prayers is a duty on the believers at the
@@ -203,87 +217,95 @@ export default function PrayerTime() {
 
               {/* Footer - Prayer Times */}
               <View>
-                <View className="flex-row justify-between mb-3">
-                  {mockPrayerTimes.map((prayer) => (
-                    <View
-                      key={prayer.name}
-                      className={`items-center flex-1 ${
-                        prayer.next ? "scale-105" : ""
-                      }`}
-                    >
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    marginBottom: 16,
+                  }}
+                >
+                  {mockPrayerTimes.map((prayer) => {
+                    const IconComponent = prayer.icon; // Store the component
+                    return (
                       <View
+                        key={prayer.name}
                         style={{
-                          width: 36,
-                          height: 36,
-                          borderRadius: 18,
-                          justifyContent: "center",
                           alignItems: "center",
-                          marginBottom: 4,
-                          backgroundColor: prayer.next
-                            ? "rgba(255, 255, 255, 0.2)"
-                            : "transparent",
-                          shadowColor: prayer.next ? "#fff" : "#000",
-                          shadowOffset: { width: 0, height: 2 },
-                          shadowOpacity: prayer.next ? 0.3 : 0.2,
-                          shadowRadius: 4,
-                          elevation: prayer.next ? 4 : 2,
+                          flex: 1,
+                          opacity: prayer.next ? 1 : 0.7,
                         }}
                       >
-                        <Ionicons
-                          name={prayer.icon}
-                          size={18}
-                          color={
-                            prayer.next
-                              ? "rgba(255, 255, 255, 1)"
-                              : "rgba(245, 243, 240, 0.7)"
-                          }
-                        />
+                        <View
+                          style={{
+                            width: 40,
+                            height: 40,
+                            borderRadius: 20,
+                            justifyContent: "center",
+                            alignItems: "center",
+                            marginBottom: 6,
+                            backgroundColor: prayer.next
+                              ? "rgba(255, 255, 255, 0.15)"
+                              : "rgba(255, 255, 255, 0.05)",
+                            borderWidth: prayer.next ? 1 : 0,
+                            borderColor: "rgba(255, 255, 255, 0.2)",
+                          }}
+                        >
+                          <IconComponent
+                            size={20}
+                            color={
+                              prayer.next
+                                ? "#FFFFFF"
+                                : "rgba(255, 255, 255, 0.8)"
+                            }
+                            strokeWidth={2}
+                          />
+                        </View>
+                        <Text
+                          style={{
+                            fontSize: 11,
+                            fontWeight: prayer.next ? "700" : "600",
+                            color: prayer.next
+                              ? "#FFFFFF"
+                              : "rgba(255, 255, 255, 0.8)",
+                            marginBottom: 2,
+                          }}
+                        >
+                          {prayer.name}
+                        </Text>
+                        <Text
+                          style={{
+                            fontSize: 10,
+                            fontWeight: "500",
+                            color: prayer.next
+                              ? "rgba(255, 255, 255, 0.95)"
+                              : "rgba(255, 255, 255, 0.7)",
+                          }}
+                        >
+                          {prayer.time}
+                        </Text>
                       </View>
-                      <Text
-                        className={`text-xs font-medium mb-0.5 ${
-                          prayer.next ? "text-white" : "text-off-white/70"
-                        }`}
-                        style={{
-                          textShadowColor: "rgba(0, 0, 0, 0.7)",
-                          textShadowOffset: { width: 0, height: 1 },
-                          textShadowRadius: 2,
-                        }}
-                      >
-                        {prayer.name}
-                      </Text>
-                      <Text
-                        className={`text-xs ${
-                          prayer.next ? "text-white" : "text-off-white/70"
-                        }`}
-                        style={{
-                          textShadowColor: "rgba(0, 0, 0, 0.6)",
-                          textShadowOffset: { width: 0, height: 1 },
-                          textShadowRadius: 2,
-                        }}
-                      >
-                        {prayer.time}
-                      </Text>
-                    </View>
-                  ))}
+                    );
+                  })}
                 </View>
 
                 {/* Prayer indicators */}
-                <View className="flex-row justify-center gap-1.5">
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "center",
+                    gap: 6,
+                  }}
+                >
                   {mockPrayerTimes.map((prayer, index) => (
                     <View
                       key={index}
                       style={{
-                        width: 6,
+                        width: prayer.next ? 20 : 6,
                         height: 6,
                         borderRadius: 3,
                         backgroundColor: prayer.next
-                          ? "rgba(255, 255, 255, 1)"
-                          : "rgba(255, 255, 255, 0.3)",
-                        shadowColor: prayer.next ? "#fff" : "#000",
-                        shadowOffset: { width: 0, height: 1 },
-                        shadowOpacity: prayer.next ? 0.5 : 0.2,
-                        shadowRadius: 2,
-                        elevation: prayer.next ? 2 : 1,
+                          ? "rgba(255, 255, 255, 0.95)"
+                          : "rgba(255, 255, 255, 0.25)",
                       }}
                     />
                   ))}

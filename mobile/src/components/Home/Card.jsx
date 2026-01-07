@@ -1,81 +1,124 @@
-import React from "react";
-import { TouchableOpacity, Text, View } from "react-native";
+// components/Home/Card.js
+import { View, Text, Pressable } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useRouter } from "expo-router";
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  withSpring,
+} from "react-native-reanimated";
+
+const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
 export default function Card({ title, subtitle, route, gradientColors }) {
   const router = useRouter();
+  const scale = useSharedValue(1);
+
+  const animatedStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: scale.value }],
+  }));
+
+  const handlePressIn = () => {
+    scale.value = withSpring(0.96, { damping: 15, stiffness: 150 });
+  };
+
+  const handlePressOut = () => {
+    scale.value = withSpring(1, { damping: 15, stiffness: 150 });
+  };
 
   return (
-    <View
-      style={{
-        height: 80,
-        borderRadius: 12,
-        // Shadow for iOS
-        shadowColor: "#000",
-        shadowOffset: { width: 0, height: 6 },
-        shadowOpacity: 0.45,
-        shadowRadius: 12,
-        // Shadow for Android
-        elevation: 12,
-      }}
+    <AnimatedPressable
+      onPressIn={handlePressIn}
+      onPressOut={handlePressOut}
+      onPress={() => router.push(route)}
+      style={[
+        {
+          flex: 1,
+          borderRadius: 20,
+          // iOS shadow requirements
+          backgroundColor: "black", // IMPORTANT for iOS
+          shadowColor: "#000",
+          shadowOffset: { width: 6, height: 10 },
+          // shadowOpacity: 1,
+          shadowOpacity: 0.45,
+          shadowRadius: 16,
+          // Android shadow
+          elevation: 16,
+        },
+        animatedStyle,
+      ]}
     >
-      <TouchableOpacity
-        onPress={() => router.push(route)}
-        className="rounded-xl overflow-hidden"
-        style={{ flex: 1 }}
-        activeOpacity={0.8}
-      >
+      {/* Inner container with overflow hidden */}
+      <View style={{ flex: 1, borderRadius: 20, overflow: "hidden" }}>
         <LinearGradient
-          colors={gradientColors}
-          start={[0, 0]}
-          end={[1, 0]}
-          style={{ flex: 1, padding: 12, position: "relative" }}
+          colors={[gradientColors[0], gradientColors[1] || gradientColors[0]]}
+          start={[0.2, 0]}
+          end={[1, 1]}
+          style={{
+            flex: 1,
+            padding: 16,
+          }}
         >
+          {/* Subtle top shine */}
+          <View
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              right: 0,
+              height: "50%",
+              backgroundColor: "rgba(255, 255, 255, 0.04)",
+              borderTopLeftRadius: 20,
+              borderTopRightRadius: 20,
+            }}
+          />
+
           {/* Decorative circle */}
           <View
             style={{
               position: "absolute",
-              top: -15,
-              left: -15,
-              width: 50,
-              height: 50,
-              backgroundColor: "rgba(255, 255, 255, 0.05)",
-              borderRadius: 25,
+              bottom: -25,
+              left: -25,
+              width: 70,
+              height: 70,
+              backgroundColor: "rgba(0, 0, 0, 0.06)",
+              borderRadius: 35,
             }}
           />
 
-          {/* Subtitle - Top Left */}
-          {subtitle && (
-            <View style={{ position: "absolute", top: 8, left: 10 }}>
-              <Text
-                className="text-white/60 text-[10px] font-light"
-                style={{
-                  textShadowColor: "rgba(0, 0, 0, 0.7)",
-                  textShadowOffset: { width: 0, height: 2 },
-                  textShadowRadius: 4,
-                }}
-              >
-                {subtitle}
-              </Text>
-            </View>
-          )}
-
-          {/* Title - Bottom Right */}
-          <View style={{ position: "absolute", bottom: 8, right: 10 }}>
+          {/* Content */}
+          <View
+            style={{
+              flex: 1,
+              justifyContent: "flex-end",
+              zIndex: 1,
+            }}
+          >
             <Text
-              className="text-white text-base font-bold text-right"
               style={{
-                textShadowColor: "rgba(0, 0, 0, 0.8)",
-                textShadowOffset: { width: 0, height: 2 },
-                textShadowRadius: 5,
+                fontSize: 9,
+                fontWeight: "600",
+                color: "rgba(255, 255, 255, 0.65)",
+                marginBottom: 3,
+                letterSpacing: 1.5,
+                textTransform: "uppercase",
+              }}
+            >
+              {subtitle}
+            </Text>
+            <Text
+              style={{
+                fontSize: 18,
+                fontWeight: "700",
+                color: "#FFFFFF",
+                letterSpacing: 0.2,
               }}
             >
               {title}
             </Text>
           </View>
         </LinearGradient>
-      </TouchableOpacity>
-    </View>
+      </View>
+    </AnimatedPressable>
   );
 }

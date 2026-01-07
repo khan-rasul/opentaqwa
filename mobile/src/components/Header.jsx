@@ -1,13 +1,13 @@
+// components/Header.js
 import React, { useState } from "react";
-import { View, Text, TouchableOpacity, Image } from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
+import { View, Text, Pressable, Image } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { Languages, User, MapPin, LogOut, Bell } from "lucide-react-native";
+import { Languages, User, MapPin, Bell } from "lucide-react-native";
 
 export default function Header() {
   const [showUserMenu, setShowUserMenu] = useState(false);
 
-  // Mock data - replace with actual hooks later
+  // Mock data
   const isAuthenticated = false;
   const user = null;
   const nextPrayerDisplay = "Asr - 3:30 PM";
@@ -26,51 +26,94 @@ export default function Header() {
   return (
     <View
       style={{
-        borderRadius: 12,
-        // Shadow for iOS
+        borderRadius: 16,
+        backgroundColor: "rgba(26, 22, 20, 0.3)", // Lighter warm gray
         shadowColor: "#000",
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.3,
-        shadowRadius: 8,
-        // Shadow for Android
-        elevation: 8,
+        shadowOffset: { width: 3, height: 4 },
+        shadowOpacity: 0.25,
+        shadowRadius: 10,
+        elevation: 10,
       }}
     >
-      <View className="rounded-xl overflow-hidden">
-        <View className="flex-row justify-between items-center">
+      <View
+        style={{
+          borderRadius: 16,
+          overflow: "hidden",
+          backgroundColor: "rgba(255, 255, 255, 0.08)", // Slightly increased
+          borderWidth: 0.5,
+          borderColor: "rgba(255, 255, 255, 0.12)",
+        }}
+      >
+        {/* Subtle top shine */}
+        <View
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            right: 0,
+            height: "50%",
+            backgroundColor: "rgba(255, 255, 255, 0.04)",
+          }}
+        />
+
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+            padding: 12,
+          }}
+        >
           {/* Left side - Prayer Info */}
-          <View className="flex-row items-center gap-2 flex-1">
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              gap: 10,
+              flex: 1,
+            }}
+          >
             <Image
               source={require("../../assets/icon.png")}
               style={{
-                width: 24,
-                height: 24,
+                width: 22,
+                height: 22,
               }}
               resizeMode="contain"
             />
 
-            <View className="flex-1">
+            <View style={{ flex: 1 }}>
               <Text
-                className="text-white text-sm font-bold"
-                numberOfLines={1}
                 style={{
-                  textShadowColor: "rgba(0, 0, 0, 0.5)",
-                  textShadowOffset: { width: 0, height: 1 },
-                  textShadowRadius: 3,
+                  color: "#FFFFFF",
+                  fontSize: 12,
+                  fontWeight: "700",
+                  letterSpacing: 0.2,
                 }}
+                numberOfLines={1}
               >
                 {nextPrayerDisplay}
               </Text>
-              <View className="flex-row items-center gap-0.5">
-                <MapPin size={10} color="rgba(255, 255, 255, 0.7)" />
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  gap: 3,
+                  marginTop: 1,
+                }}
+              >
+                <MapPin
+                  size={9}
+                  color="rgba(255, 255, 255, 0.7)"
+                  strokeWidth={2.5}
+                />
                 <Text
-                  className="text-white/80 text-[10px]"
-                  numberOfLines={1}
                   style={{
-                    textShadowColor: "rgba(0, 0, 0, 0.4)",
-                    textShadowOffset: { width: 0, height: 1 },
-                    textShadowRadius: 2,
+                    color: "rgba(255, 255, 255, 0.7)",
+                    fontSize: 9,
+                    fontWeight: "500",
                   }}
+                  numberOfLines={1}
                 >
                   {location.city}, {location.country}
                 </Text>
@@ -79,95 +122,100 @@ export default function Header() {
           </View>
 
           {/* Right side - Action Buttons */}
-          <View className="flex-row items-center gap-1.5">
+          <View style={{ flexDirection: "row", alignItems: "center", gap: 6 }}>
             {/* Notification Button */}
-            <TouchableOpacity
+            <IconButton
               onPress={() => console.log("Notifications pressed")}
-              className="relative"
-              style={{
-                padding: 7,
-                shadowColor: "#000",
-                shadowOffset: { width: 0, height: 2 },
-                shadowOpacity: 0.25,
-                shadowRadius: 3,
-                elevation: 4,
-              }}
-              activeOpacity={0.7}
+              badge={notificationsEnabled}
             >
-              <Bell size={14} color="rgba(255, 255, 255, 0.9)" />
-              {notificationsEnabled && (
-                <View
-                  style={{
-                    position: "absolute",
-                    top: 5,
-                    right: 5,
-                    width: 6,
-                    height: 6,
-                    backgroundColor: "#af8f69",
-                    borderRadius: 3,
-                    shadowColor: "#af8f69",
-                    shadowOffset: { width: 0, height: 0 },
-                    shadowOpacity: 0.8,
-                    shadowRadius: 3,
-                    elevation: 3,
-                  }}
-                />
-              )}
-            </TouchableOpacity>
+              <Bell
+                size={14}
+                color="rgba(255, 255, 255, 0.9)"
+                strokeWidth={2}
+              />
+            </IconButton>
 
             {/* Language Button */}
-            <TouchableOpacity
-              onPress={() => console.log("Language pressed")}
-              style={{
-                padding: 7,
-                shadowColor: "#000",
-                shadowOffset: { width: 0, height: 2 },
-                shadowOpacity: 0.25,
-                shadowRadius: 3,
-                elevation: 4,
-              }}
-              activeOpacity={0.7}
-            >
-              <Languages size={14} color="rgba(255, 255, 255, 0.9)" />
-            </TouchableOpacity>
+            <IconButton onPress={() => console.log("Language pressed")}>
+              <Languages
+                size={14}
+                color="rgba(255, 255, 255, 0.9)"
+                strokeWidth={2}
+              />
+            </IconButton>
 
             {/* User Button */}
-            <TouchableOpacity
+            <IconButton
               onPress={() => console.log("User pressed")}
-              style={{
-                backgroundColor: isAuthenticated ? "#af8f69" : "transparent",
-                borderRadius: 16,
-                padding: 7,
-                width: 32,
-                height: 32,
-                justifyContent: "center",
-                alignItems: "center",
-                shadowColor: "#000",
-                shadowOffset: { width: 0, height: 2 },
-                shadowOpacity: 0.25,
-                shadowRadius: 3,
-                elevation: 4,
-              }}
-              activeOpacity={0.7}
+              isUser
+              isAuthenticated={isAuthenticated}
             >
               {isAuthenticated ? (
                 <Text
-                  className="text-white text-[10px] font-bold"
                   style={{
-                    textShadowColor: "rgba(0, 0, 0, 0.5)",
-                    textShadowOffset: { width: 0, height: 1 },
-                    textShadowRadius: 2,
+                    color: "#FFFFFF",
+                    fontSize: 9,
+                    fontWeight: "700",
                   }}
                 >
                   {getUserInitials(user)}
                 </Text>
               ) : (
-                <User size={14} color="rgba(255, 255, 255, 0.9)" />
+                <User
+                  size={14}
+                  color="rgba(255, 255, 255, 0.9)"
+                  strokeWidth={2}
+                />
               )}
-            </TouchableOpacity>
+            </IconButton>
           </View>
         </View>
       </View>
     </View>
+  );
+}
+
+// Reusable Icon Button Component
+function IconButton({ children, onPress, badge, isUser, isAuthenticated }) {
+  const [pressed, setPressed] = useState(false);
+
+  return (
+    <Pressable
+      onPressIn={() => setPressed(true)}
+      onPressOut={() => setPressed(false)}
+      onPress={onPress}
+      style={{
+        width: 30,
+        height: 30,
+        borderRadius: 15,
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor:
+          isUser && isAuthenticated
+            ? "rgba(175, 143, 105, 0.9)"
+            : "rgba(255, 255, 255, 0.1)",
+        borderWidth: 0.5,
+        borderColor: "rgba(255, 255, 255, 0.15)",
+        opacity: pressed ? 0.7 : 1,
+        transform: [{ scale: pressed ? 0.95 : 1 }],
+      }}
+    >
+      {children}
+      {badge && (
+        <View
+          style={{
+            position: "absolute",
+            top: 5,
+            right: 5,
+            width: 6,
+            height: 6,
+            backgroundColor: "#af8f69",
+            borderRadius: 3,
+            borderWidth: 0.5,
+            borderColor: "rgba(0, 0, 0, 0.2)",
+          }}
+        />
+      )}
+    </Pressable>
   );
 }

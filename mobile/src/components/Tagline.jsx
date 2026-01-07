@@ -32,7 +32,7 @@ export default function Tagline() {
 
           <Text className="text-sm font-semibold text-white">
             Open
-            <Text className="text-gold-light">Taqwā</Text>
+            <Text className="text-gold-light font-great-vibes">Taqwā</Text>
           </Text>
         </View>
       </View>
