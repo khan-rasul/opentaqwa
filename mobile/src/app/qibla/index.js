@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { View, Text, Dimensions, Platform, Pressable } from "react-native";
+import React, { useState, useEffect, useMemo } from "react";
+import { View, Text, Dimensions, Pressable } from "react-native";
 import * as Location from "expo-location";
 import { ChevronLeft, Crosshair, MapPin } from "lucide-react-native";
 import { useRouter } from "expo-router";
@@ -7,7 +7,6 @@ import Animated, {
     useAnimatedStyle,
     useSharedValue,
     withSpring,
-    withTiming,
 } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -15,6 +14,9 @@ const { width: SCREEN_WIDTH } = Dimensions.get("window");
 
 const MECCA_LAT = 21.4225;
 const MECCA_LON = 39.8262;
+
+// Degree markers for the compass
+const DEGREE_MARKERS = [0, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330];
 
 export default function QiblaScreen() {
     const router = useRouter();
@@ -36,18 +38,15 @@ export default function QiblaScreen() {
                 return;
             }
 
-            // Get current location for Qibla calculation
             let loc = await Location.getCurrentPositionAsync({});
             setLocation(loc);
 
             const qiblaAngle = calculateQibla(loc.coords.latitude, loc.coords.longitude);
             setQiblaDir(qiblaAngle);
 
-            // Subscribe to heading updates (Compass)
             headingSubscription = await Location.watchHeadingAsync((data) => {
                 const h = data.trueHeading >= 0 ? data.trueHeading : data.magHeading;
                 setHeading(h);
-                // Using withSpring for smooth needle movement
                 rotateAnim.value = withSpring(h, { damping: 20, stiffness: 90 });
             });
         })();
@@ -85,12 +84,10 @@ export default function QiblaScreen() {
         };
     });
 
-    // Check if phone is pointing to Qibla (within 5 degrees)
-    const isAligned = Math.abs((heading - qiblaDir + 360) % 360) < 5 || Math.abs((heading - qiblaDir + 360) % 360) > 355;
+    const isAligned = Math.abs((heading - qiblaDir + 360) % 360) < 3 || Math.abs((heading - qiblaDir + 360) % 360) > 357;
 
     return (
         <View className="flex-1">
-            {/* Absolute Header Padding */}
             <View className="pt-3" />
 
             <View className="flex-1 px-3">
@@ -107,11 +104,11 @@ export default function QiblaScreen() {
                     <View className="flex-row items-center justify-between mb-8 z-10">
                         <View>
                             <Text className="text-white text-2xl font-bold tracking-tight">Qiblah</Text>
-                            <Text className="text-white/40 text-[10px] font-semibold tracking-[1.5px] uppercase mt-1">Direction Finder</Text>
+                            <Text className="text-white/40 text-[10px] font-semibold tracking-[1.5px] uppercase mt-1">Holy Kaaba Direction</Text>
                         </View>
                         <Pressable
                             onPress={() => router.back()}
-                            className="w-10 h-10 items-center justify-center rounded-full bg-white/5 border border-white/10"
+                            className="w-10 h-10 items-center justify-center rounded-full"
                         >
                             <ChevronLeft size={24} color="#af8f69" strokeWidth={2.5} />
                         </Pressable>
@@ -121,86 +118,112 @@ export default function QiblaScreen() {
                     <View className="flex-1 justify-center items-center">
                         <View className="w-[300px] h-[300px] justify-center items-center">
 
-                            {/* Glow effect when aligned */}
+                            {/* Alignment Glow */}
                             {isAligned && (
-                                <Animated.View
-                                    className="absolute w-[320px] h-[320px] bg-[#af8f69]/10 rounded-full"
-                                />
+                                <View className="absolute w-[320px] h-[320px] bg-[#af8f69]/20 rounded-full blur-xl" />
                             )}
 
-                            {/* Static Outer Ring with North Indicator */}
-                            <View className="absolute w-[300px] h-[300px] rounded-full border border-white/5 items-center">
-                                <View className="w-1 h-4 bg-white/20 rounded-full mt-[-8px]" />
-                            </View>
+                            {/* Outer Static Frame */}
+                            <View className="absolute w-[300px] h-[300px] rounded-full border-[0.5px] border-white/10" />
+                            <View className="absolute top-0 w-1 h-4 bg-[#af8f69] rounded-full z-10" />
 
-                            {/* Animated Compass Face */}
-                            <Animated.View style={[compassStyle]} className="w-full h-full items-center justify-center">
+                            {/* Rotating Compass Face */}
+                            <Animated.View style={[compassStyle]} className="absolute w-[280px] h-[280px] items-center justify-center">
+                                {/* Degree Ticks */}
+                                {DEGREE_MARKERS.map((deg) => (
+                                    <View
+                                        key={deg}
+                                        className="absolute items-center"
+                                        style={{
+                                            transform: [{ rotate: `${deg}deg` }, { translateY: -125 }],
+                                        }}
+                                    >
+                                        <View className={`w-0.5 ${deg % 90 === 0 ? 'h-3 bg-white/40' : 'h-1.5 bg-white/20'}`} />
+                                    </View>
+                                ))}
+
                                 {/* Cardinal Points */}
-                                <View className="absolute inset-0 items-center">
-                                    <Text className="text-white/40 text-xs mt-3 font-black">N</Text>
+                                <View className="absolute top-4 items-center">
+                                    <Text className="text-white text-sm font-black text-red-500/80">N</Text>
                                 </View>
-                                <View className="absolute inset-0 items-center justify-end">
-                                    <Text className="text-white/20 text-xs mb-3 font-bold">S</Text>
+                                <View className="absolute bottom-4 items-center">
+                                    <Text className="text-white/30 text-[10px] font-bold">S</Text>
                                 </View>
-                                <View className="absolute inset-0 justify-center items-start">
-                                    <Text className="text-white/20 text-xs ml-3 font-bold">W</Text>
+                                <View className="absolute left-4 justify-center">
+                                    <Text className="text-white/30 text-[10px] font-bold">W</Text>
                                 </View>
-                                <View className="absolute inset-0 justify-center items-end">
-                                    <Text className="text-white/20 text-xs mr-3 font-bold">E</Text>
+                                <View className="absolute right-4 justify-center">
+                                    <Text className="text-white/30 text-[10px] font-bold">E</Text>
                                 </View>
 
-                                {/* Decorative Rings */}
-                                <View className="w-[260px] h-[260px] rounded-full border-[0.5px] border-white/10" />
-                                <View className="absolute w-[220px] h-[220px] rounded-full border-[0.5px] border-white/5 border-dashed" />
-
-                                {/* North Needle on Compass Face */}
-                                <View className="absolute top-8 w-1 h-6 bg-red-500/80 rounded-full" />
+                                {/* Concentric Background Rings */}
+                                <View className="absolute w-[220px] h-[220px] rounded-full border-[0.5px] border-white/5" />
+                                <View className="absolute w-[160px] h-[160px] rounded-full border-[0.5px] border-white/5" />
                             </Animated.View>
 
-                            {/* Qibla Needle (Relative to device rotation) */}
+                            {/* Qibla Needle (Relative to rotation) */}
                             <Animated.View
                                 style={[qiblaNeedleStyle, { position: 'absolute' }]}
-                                className="w-[280px] h-[280px] items-center justify-start"
+                                className="w-[280px] h-[280px] items-center justify-start z-20"
                             >
                                 <View className="items-center">
-                                    <View className={`w-1.5 h-32 rounded-full shadow-lg ${isAligned ? 'bg-[#af8f69]' : 'bg-white/40'}`} />
+                                    {/* Main Tapered Needle */}
+                                    <View className={`w-1 h-32 rounded-full ${isAligned ? 'bg-[#af8f69]' : 'bg-white/60'} shadow-sm`} />
+
+                                    {/* Kaaba Indicator */}
                                     <View
-                                        style={{ backgroundColor: isAligned ? '#af8f69' : '#333' }}
-                                        className="w-14 h-14 rounded-full items-center justify-center mt-[-28px] border-[6px] border-[#1a1614] shadow-2xl"
+                                        style={{ backgroundColor: isAligned ? '#af8f69' : '#2a2522' }}
+                                        className="w-14 h-14 rounded-full items-center justify-center mt-[-28px] border-[6px] border-[#131110] shadow-2xl"
                                     >
                                         <MapPin size={24} color="white" fill="white" />
                                     </View>
                                 </View>
                             </Animated.View>
 
-                            {/* Center Pivot */}
-                            <View className="w-4 h-4 rounded-full bg-white border-4 border-[#af8f69] z-50 shadow-sm" />
+                            {/* Center Pin */}
+                            <View className="absolute w-3 h-3 rounded-full bg-white border-2 border-[#af8f69] z-30" />
                         </View>
 
-                        {/* Alignment Text */}
-                        <View className="mt-8 h-8 items-center justify-center">
+                        {/* Alignment Feedback */}
+                        <View className="mt-10 items-center justify-center h-6">
                             {isAligned && (
-                                <Text className="text-[#af8f69] text-sm font-bold tracking-widest uppercase">
-                                    Perfectly Aligned
-                                </Text>
+                                <View className="flex-row items-center gap-2">
+                                    <View className="w-1.5 h-1.5 rounded-full bg-[#af8f69]" />
+                                    <Text className="text-[#af8f69] text-[11px] font-black tracking-[3px] uppercase">
+                                        Aligned to Kaaba
+                                    </Text>
+                                    <View className="w-1.5 h-1.5 rounded-full bg-[#af8f69]" />
+                                </View>
                             )}
                         </View>
 
-                        {/* Info Section */}
+                        {/* Coordinates & Degree */}
                         <View className="mt-4 items-center">
-                            <View className="flex-row items-center gap-2 mb-1">
-                                <Crosshair size={14} color="#af8f69" />
-                                <Text className="text-white/40 text-[10px] font-bold uppercase tracking-[2px]">Mecca Bearing</Text>
+                            <View className="flex-row items-center gap-2 mb-2 bg-white/5 px-4 py-1.5 rounded-full border border-white/5">
+                                <Crosshair size={12} color="#af8f69" />
+                                <Text className="text-white/40 text-[10px] font-extrabold uppercase tracking-[2px]">
+                                    Bearing: <Text className="text-white">{Math.round(qiblaDir)}°</Text>
+                                </Text>
                             </View>
-                            <Text className="text-white text-5xl font-black mb-1">{Math.round(qiblaDir)}°</Text>
-                            <Text className="text-white/30 text-xs font-medium">Relative to True North</Text>
+
+                            <View className="flex-row gap-4 mt-2">
+                                <View className="items-center">
+                                    <Text className="text-white/30 text-[9px] font-bold uppercase tracking-widest">Device</Text>
+                                    <Text className="text-white/80 text-xl font-black">{Math.round(heading)}°</Text>
+                                </View>
+                                <View className="w-[0.5px] h-full bg-white/10" />
+                                <View className="items-center">
+                                    <Text className="text-white/30 text-[9px] font-bold uppercase tracking-widest">Qiblah</Text>
+                                    <Text className="text-[#af8f69] text-xl font-black">{Math.round(qiblaDir)}°</Text>
+                                </View>
+                            </View>
                         </View>
                     </View>
 
-                    {/* Prompt/Guide */}
+                    {/* Guidelines */}
                     <View className="bg-white/5 border border-white/5 rounded-2xl p-4 mt-8">
-                        <Text className="text-white/60 text-[11px] text-center leading-4 font-medium">
-                            Hold your device flat. Avoid magnetic interference from cases, speakers, or nearby electronics for the most accurate calculation.
+                        <Text className="text-white/50 text-[10px] text-center leading-4 font-medium italic">
+                            Keep device horizontal and away from metal objects for maximum precision.
                         </Text>
                     </View>
                 </View>
