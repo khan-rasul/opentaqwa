@@ -7,7 +7,6 @@ import { StatusBar } from "expo-status-bar";
 import Header from "@/components/Header";
 import Tagline from "@/components/Tagline";
 import PrayerTime from "@/components/PrayerTime";
-import Footer from "@/components/Footer";
 import Card from "@/components/Home/Card";
 import FeatureCards from "@/components/Home/FeatureCards";
 
@@ -16,7 +15,7 @@ export default function Page() {
 
   return (
     <>
-      <StatusBar style="light" />
+      <StatusBar style="dark" />
       <View style={{ flex: 1, backgroundColor: "#0f0d0c" }}>
         <LinearGradient
           colors={["#3d3530", "#2a2522", "#1a1614", "#0f0d0c"]}
@@ -72,7 +71,6 @@ export default function Page() {
 
               <PrayerTime />
               <FeatureCards />
-              <Footer />
             </View>
           </ScrollView>
         </LinearGradient>
