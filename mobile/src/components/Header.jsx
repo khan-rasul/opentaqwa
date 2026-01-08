@@ -1,14 +1,13 @@
-// components/Header.js
 import React, { useState } from "react";
 import { View, Text, Pressable, Image } from "react-native";
 import { Languages, User, MapPin, Bell } from "lucide-react-native";
+import { usePrayer } from "@/context/PrayerContext";
 
 export default function Header() {
-  // Mock data
+  const { nextPrayer, locationName, loading } = usePrayer();
   const isAuthenticated = false;
   const user = null;
-  const nextPrayerDisplay = "Asr, 3:30 PM";
-  const location = { city: "New York", country: "USA" };
+  const nextPrayerDisplay = loading ? "Loading..." : `${nextPrayer?.name || "---"}, ${nextPrayer?.time || "---"}`;
   const notificationsEnabled = true;
 
   const getUserInitials = (user) => {
@@ -47,7 +46,7 @@ export default function Header() {
               <View className="flex-row items-center gap-[3px] mt-[1px]">
                 <MapPin size={9} color="rgba(255, 255, 255, 0.7)" strokeWidth={2.5} />
                 <Text className="color-white/70 text-[9px] font-medium" numberOfLines={1}>
-                  {location.city}, {location.country}
+                  {loading ? "Detecting..." : `${locationName.city}, ${locationName.country}`}
                 </Text>
               </View>
             </View>

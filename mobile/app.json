@@ -11,8 +11,27 @@
       {
         "origin": "https://n"
       }
+    ],
+    [
+      "expo-location",
+      {
+        "locationAlwaysPermission": "Allow OpenTaqwā to use your location to calculate accurate prayer times.",
+        "locationWhenInUsePermission": "Allow OpenTaqwā to use your location to calculate accurate prayer times."
+      }
     ]
   ],
   "name": "mobile",
-  "slug": "mobile"
+  "slug": "mobile",
+  "ios": {
+    "supportsTablet": true,
+    "infoPlist": {
+      "NSLocationWhenInUseUsageDescription": "Allow OpenTaqwā to use your location to calculate accurate prayer times."
+    }
+  },
+  "android": {
+    "permissions": [
+      "ACCESS_COARSE_LOCATION",
+      "ACCESS_FINE_LOCATION"
+    ]
+  }
 }

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { View, Text, ImageBackground, ActivityIndicator } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import {
@@ -9,61 +9,49 @@ import {
   Sunset,
   Moon,
 } from "lucide-react-native";
+import { usePrayer } from "@/context/PrayerContext";
 
-// Mock data - replace with actual hooks later
-const mockPrayerTimes = [
-  {
-    name: "Fajr",
-    arabic: "الفجر",
-    time: "5:30 AM",
-    icon: Sunrise,
-    next: false,
-  },
-  {
-    name: "Dhuhr",
-    arabic: "الظهر",
-    time: "12:45 PM",
-    icon: Sun,
-    next: false,
-  },
-  {
-    name: "Asr",
-    arabic: "العصر",
-    time: "3:30 PM",
-    icon: CloudSun,
-    next: true,
-  },
-  {
-    name: "Maghrib",
-    arabic: "المغرب",
-    time: "6:15 PM",
-    icon: Sunset,
-    next: false,
-  },
-  {
-    name: "Isha",
-    arabic: "العشاء",
-    time: "7:45 PM",
-    icon: Moon,
-    next: false,
-  },
-];
+const PRAYER_ICONS = {
+  Fajr: Sunrise,
+  Dhuhr: Sun,
+  Asr: CloudSun,
+  Maghrib: Sunset,
+  Isha: Moon,
+};
 
 const BACKGROUND_IMAGE_URL =
   "https://images.pexels.com/photos/33759665/pexels-photo-33759665.jpeg";
 
 export default function PrayerTime() {
-  const [countdown, setCountdown] = useState("02:15:30");
-  const [loading, setLoading] = useState(false);
-  const location = { city: "New York", country: "USA" };
-  const nextPrayer = mockPrayerTimes.find((prayer) => prayer.next);
+  const { prayerTimes, nextPrayer, locationName, loading } = usePrayer();
+  const [countdown, setCountdown] = useState("");
+
+  const calculateCountdown = useCallback(() => {
+    if (!nextPrayer) return;
+
+    const now = new Date();
+    const diff = nextPrayer.date - now;
+
+    if (diff <= 0) {
+      setCountdown("00:00:00");
+      return;
+    }
+
+    const h = Math.floor(diff / (1000 * 60 * 60));
+    const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const s = Math.floor((diff % (1000 * 60)) / 1000);
+
+    setCountdown(`${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`);
+  }, [nextPrayer]);
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      // Update countdown logic here
-    }, 1000);
+    if (!nextPrayer) return;
+
+    calculateCountdown();
+    const timer = setInterval(calculateCountdown, 1000);
+
     return () => clearInterval(timer);
-  }, []);
+  }, [nextPrayer, calculateCountdown]);
 
   if (loading) {
     return (
@@ -126,7 +114,7 @@ export default function PrayerTime() {
                 <View className="flex-row items-center gap-1">
                   <MapPin size={12} color="rgba(255, 255, 255, 0.8)" />
                   <Text className="text-white/80 text-[12px] font-medium">
-                    {location.city}, {location.country}
+                    {locationName.city}{locationName.country ? `, ${locationName.country}` : ''}
                   </Text>
                 </View>
               </View>
@@ -134,7 +122,7 @@ export default function PrayerTime() {
               {/* Middle Section - Countdown */}
               <View className="items-center py-5">
                 <Text className="text-white text-[32px] font-bold mb-2 tracking-widest">
-                  {countdown}
+                  {countdown || "--:--:--"}
                 </Text>
                 <Text className="text-white/90 text-[15px] font-semibold mb-3">
                   Until {nextPrayer?.name} ({nextPrayer?.arabic})
@@ -148,27 +136,28 @@ export default function PrayerTime() {
               {/* Footer - Prayer Times */}
               <View>
                 <View className="flex-row justify-between mb-4">
-                  {mockPrayerTimes.map((prayer) => {
-                    const IconComponent = prayer.icon;
+                  {prayerTimes.map((prayer) => {
+                    const IconComponent = PRAYER_ICONS[prayer.id];
+                    const isNext = nextPrayer?.id === prayer.id;
                     return (
                       <View
-                        key={prayer.name}
-                        className={`items-center flex-1 ${prayer.next ? 'opacity-100' : 'opacity-70'}`}
+                        key={prayer.id}
+                        className={`items-center flex-1 ${isNext ? 'opacity-100' : 'opacity-70'}`}
                       >
                         <View
                           className={`w-10 h-10 rounded-full justify-center items-center mb-1.5 border-white/20
-                            ${prayer.next ? 'bg-white/15 border' : 'bg-white/5 border-0'}`}
+                            ${isNext ? 'bg-white/15 border' : 'bg-white/5 border-0'}`}
                         >
                           <IconComponent
                             size={20}
-                            color={prayer.next ? "#FFFFFF" : "rgba(255, 255, 255, 0.8)"}
+                            color={isNext ? "#FFFFFF" : "rgba(255, 255, 255, 0.8)"}
                             strokeWidth={2}
                           />
                         </View>
-                        <Text className={`text-[11px] mb-0.5 ${prayer.next ? 'text-white font-bold' : 'text-white/80 font-semibold'}`}>
+                        <Text className={`text-[11px] mb-0.5 ${isNext ? 'text-white font-bold' : 'text-white/80 font-semibold'}`}>
                           {prayer.name}
                         </Text>
-                        <Text className={`text-[10px] font-medium ${prayer.next ? 'text-white/95' : 'text-white/70'}`}>
+                        <Text className={`text-[10px] font-medium ${isNext ? 'text-white/95' : 'text-white/70'}`}>
                           {prayer.time}
                         </Text>
                       </View>
@@ -178,10 +167,10 @@ export default function PrayerTime() {
 
                 {/* Prayer indicators */}
                 <View className="flex-row justify-center gap-1.5">
-                  {mockPrayerTimes.map((prayer, index) => (
+                  {prayerTimes.map((prayer, index) => (
                     <View
                       key={index}
-                      className={`h-1.5 rounded-full ${prayer.next ? 'w-5 bg-white/95' : 'w-1.5 bg-white/25'}`}
+                      className={`h-1.5 rounded-full ${nextPrayer?.id === prayer.id ? 'w-5 bg-white/95' : 'w-1.5 bg-white/25'}`}
                     />
                   ))}
                 </View>

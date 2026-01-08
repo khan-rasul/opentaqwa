@@ -5,6 +5,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { StatusBar } from "expo-status-bar";
 import { SafeAreaProvider, useSafeAreaInsets } from "react-native-safe-area-context";
 import Header from "@/components/Header";
+import { PrayerProvider } from "@/context/PrayerContext";
 
 function LayoutContent() {
   const insets = useSafeAreaInsets();
@@ -37,7 +38,9 @@ function LayoutContent() {
 export default function Layout() {
   return (
     <SafeAreaProvider>
-      <LayoutContent />
+      <PrayerProvider>
+        <LayoutContent />
+      </PrayerProvider>
     </SafeAreaProvider>
   );
 }
