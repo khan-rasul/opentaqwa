@@ -52,12 +52,22 @@ export const HeroView = ({
 
     return (
         <View style={{ flex: 1 }}>
-            {/* Header Section */}
+            {/* Header Section as a Floating Card */}
             <View
                 style={{
-                    paddingTop: 16,
-                    paddingHorizontal: 20,
-                    paddingBottom: 20,
+                    marginHorizontal: 16,
+                    marginTop: 8,
+                    marginBottom: 20,
+                    padding: 16,
+                    borderRadius: 20,
+                    backgroundColor: "rgba(26, 22, 20, 0.5)",
+                    borderWidth: 0.5,
+                    borderColor: "rgba(255, 255, 255, 0.1)",
+                    shadowColor: "#000",
+                    shadowOffset: { width: 0, height: 4 },
+                    shadowOpacity: 0.2,
+                    shadowRadius: 8,
+                    elevation: 5,
                 }}
             >
                 <HeroHeader
@@ -75,54 +85,56 @@ export const HeroView = ({
             </View>
 
             {/* Content Section */}
-            {filteredItems.length > 0 ? (
-                <>
-                    <Animated.ScrollView
-                        horizontal
-                        pagingEnabled
-                        showsHorizontalScrollIndicator={false}
-                        onScroll={scrollHandler}
-                        scrollEventThrottle={16}
-                        decelerationRate="fast"
-                        snapToInterval={CARD_WIDTH + 20}
-                        contentContainerStyle={{
-                            paddingHorizontal: 20,
-                            gap: 20,
-                            paddingBottom: insets.bottom + 40,
-                        }}
-                        key={selectedCategory}
-                    >
-                        {filteredItems.map((item, index) => (
-                            <HeroCard
-                                key={item.id}
-                                cardGradient={gradient}
-                                item={item}
-                                index={index}
-                                scrollX={scrollX}
-                                isFavorited={favorites.includes(item.id)}
-                                onToggleFavorite={() => toggleFavorite(item.id)}
-                                cardWidth={CARD_WIDTH}
-                                onPlayAudio={() => onPlayAudio?.(item)}
-                                onShare={() => onShare?.(item)}
-                            />
-                        ))}
-                    </Animated.ScrollView>
+            <View style={{ flex: 1 }}>
+                {filteredItems.length > 0 ? (
+                    <>
+                        <Animated.ScrollView
+                            horizontal
+                            pagingEnabled
+                            showsHorizontalScrollIndicator={false}
+                            onScroll={scrollHandler}
+                            scrollEventThrottle={16}
+                            decelerationRate="fast"
+                            snapToInterval={CARD_WIDTH + 20}
+                            contentContainerStyle={{
+                                paddingHorizontal: 20,
+                                gap: 20,
+                                paddingBottom: insets.bottom,
+                            }}
+                            key={selectedCategory}
+                        >
+                            {filteredItems.map((item, index) => (
+                                <HeroCard
+                                    key={item.id}
+                                    cardGradient={gradient}
+                                    item={item}
+                                    index={index}
+                                    scrollX={scrollX}
+                                    isFavorited={favorites.includes(item.id)}
+                                    onToggleFavorite={() => toggleFavorite(item.id)}
+                                    cardWidth={CARD_WIDTH}
+                                    onPlayAudio={() => onPlayAudio?.(item)}
+                                    onShare={() => onShare?.(item)}
+                                />
+                            ))}
+                        </Animated.ScrollView>
 
-                    <View style={{ paddingBottom: insets.bottom + 20 }}>
-                        <HeroPagination
-                            data={filteredItems}
-                            accentColor={accentColor}
-                            scrollX={scrollX}
-                            cardWidth={CARD_WIDTH}
-                        />
-                    </View>
-                </>
-            ) : (
-                <HeroEmptyState
-                    message={emptyStateMessage || "No items found"}
-                    detail={emptyStateDetail || "Try selecting a different category"}
-                />
-            )}
+                        <View style={{ paddingBottom: insets.bottom }}>
+                            <HeroPagination
+                                data={filteredItems}
+                                accentColor={accentColor}
+                                scrollX={scrollX}
+                                cardWidth={CARD_WIDTH}
+                            />
+                        </View>
+                    </>
+                ) : (
+                    <HeroEmptyState
+                        message={emptyStateMessage || "No items found"}
+                        detail={emptyStateDetail || "Try selecting a different category"}
+                    />
+                )}
+            </View>
         </View>
     );
 };
