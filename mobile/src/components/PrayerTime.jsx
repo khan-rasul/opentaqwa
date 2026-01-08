@@ -135,18 +135,6 @@ export default function PrayerTime() {
             end={[1, 1]}
             style={{ flex: 1, padding: 20 }}
           >
-            {/* Subtle top shine - matching card style */}
-            <View
-              style={{
-                position: "absolute",
-                top: 0,
-                left: 0,
-                right: 0,
-                height: "35%",
-                backgroundColor: "rgba(255, 255, 255, 0.04)",
-              }}
-            />
-
             <View style={{ flex: 1, justifyContent: "space-between" }}>
               {/* Header */}
               <View>

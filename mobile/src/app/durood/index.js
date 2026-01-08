@@ -1,7 +1,7 @@
 // app/Durood/index.js
 import React from "react";
 import { BookOpen, Heart, Flower2, HeartHandshake } from "lucide-react-native";
-import { HeroView } from "@/components/Hero";
+import { HeroView } from "@/components/Hero/HeroView";
 
 const DUROOD_CATEGORIES = [
     { id: "all", label: "All", icon: BookOpen },

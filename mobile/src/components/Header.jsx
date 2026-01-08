@@ -44,18 +44,6 @@ export default function Header() {
           borderColor: "rgba(255, 255, 255, 0.12)",
         }}
       >
-        {/* Subtle top shine */}
-        <View
-          style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            right: 0,
-            height: "50%",
-            backgroundColor: "rgba(255, 255, 255, 0.04)",
-          }}
-        />
-
         <View
           style={{
             flexDirection: "row",

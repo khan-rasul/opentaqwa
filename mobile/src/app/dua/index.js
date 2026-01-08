@@ -1,7 +1,7 @@
 // app/Dua/index.js
 import React from "react";
 import { BookOpen, Heart, Stars, Cloud } from "lucide-react-native";
-import { HeroView } from "@/components/Hero";
+import { HeroView } from "@/components/Hero/HeroView";
 
 const DUA_CATEGORIES = [
     { id: "all", label: "All", icon: BookOpen },

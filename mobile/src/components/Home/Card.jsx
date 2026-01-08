@@ -59,19 +59,6 @@ export default function Card({ title, subtitle, route, gradientColors }) {
             padding: 16,
           }}
         >
-          {/* Subtle top shine */}
-          <View
-            style={{
-              position: "absolute",
-              top: 0,
-              left: 0,
-              right: 0,
-              height: "50%",
-              backgroundColor: "rgba(255, 255, 255, 0.04)",
-              borderTopLeftRadius: 20,
-              borderTopRightRadius: 20,
-            }}
-          />
 
           {/* Decorative circle */}
           <View
@@ -81,7 +68,7 @@ export default function Card({ title, subtitle, route, gradientColors }) {
               left: -25,
               width: 70,
               height: 70,
-              backgroundColor: "rgba(0, 0, 0, 0.06)",
+              backgroundColor: "rgba(255, 255, 255, 0.06)",
               borderRadius: 35,
             }}
           />

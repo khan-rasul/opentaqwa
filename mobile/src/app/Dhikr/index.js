@@ -1,7 +1,7 @@
 // app/Dhikr/index.js
 import React from "react";
 import { BookOpen, Sun, Moon, Heart } from "lucide-react-native";
-import { HeroView } from "@/components/Hero";
+import { HeroView } from "@/components/Hero/HeroView";
 
 const DHIKR_CATEGORIES = [
   { id: "all", label: "All", icon: BookOpen },

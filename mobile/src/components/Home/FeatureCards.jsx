@@ -71,20 +71,6 @@ function FeatureCard({ title, subtitle, route, icon: Icon, color }) {
           borderColor: "rgba(255, 255, 255, 0.12)",
         }}
       >
-        {/* Subtle top shine */}
-        <View
-          style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            right: 0,
-            height: "50%",
-            backgroundColor: "rgba(255, 255, 255, 0.04)",
-            borderTopLeftRadius: 16,
-            borderTopRightRadius: 16,
-          }}
-        />
-
         {/* Decorative circle */}
         <View
           style={{
@@ -93,7 +79,7 @@ function FeatureCard({ title, subtitle, route, icon: Icon, color }) {
             right: -15,
             width: 45,
             height: 45,
-            backgroundColor: "rgba(0, 0, 0, 0.06)",
+            backgroundColor: "rgba(255, 255, 255, 0.06)",
             borderRadius: 22.5,
           }}
         />
@@ -102,45 +88,49 @@ function FeatureCard({ title, subtitle, route, icon: Icon, color }) {
           style={{
             flex: 1,
             padding: 14,
-            justifyContent: "space-between",
+            justifyContent: "center",
+            alignItems: "center",
+            gap: 12,
           }}
         >
           {/* Icon */}
           <View
             style={{
-              width: 40,
-              height: 40,
-              borderRadius: 20,
-              backgroundColor: `${color}30`, // Increased opacity
+              width: 44,
+              height: 44,
+              borderRadius: 22,
+              backgroundColor: `${color}25`,
               justifyContent: "center",
               alignItems: "center",
-              borderWidth: 0.5,
-              borderColor: `${color}50`,
+              borderWidth: 1,
+              borderColor: `${color}40`,
             }}
           >
-            <Icon size={20} color={color} strokeWidth={2} />
+            <Icon size={22} color={color} strokeWidth={2} />
           </View>
 
           {/* Text */}
-          <View style={{ zIndex: 1 }}>
+          <View style={{ alignItems: "center", zIndex: 1 }}>
             <Text
               style={{
                 fontSize: 9,
-                fontWeight: "600",
-                color: "rgba(255, 255, 255, 0.65)",
+                fontWeight: "700",
+                color: "rgba(255, 255, 255, 0.5)",
                 marginBottom: 2,
-                letterSpacing: 1.2,
+                letterSpacing: 1.5,
                 textTransform: "uppercase",
+                textAlign: "center",
               }}
             >
               {subtitle}
             </Text>
             <Text
               style={{
-                fontSize: 16,
+                fontSize: 15,
                 fontWeight: "700",
                 color: "#FFFFFF",
-                letterSpacing: 0.2,
+                letterSpacing: 0.3,
+                textAlign: "center",
               }}
             >
               {title}
