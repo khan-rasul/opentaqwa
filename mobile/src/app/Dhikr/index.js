@@ -11,7 +11,6 @@ import {
   BookOpen,
   Sun,
   Moon,
-  Sparkles,
 } from "lucide-react-native";
 import { useRouter } from "expo-router";
 import Animated, {
@@ -238,93 +237,150 @@ export default function DhikrPage() {
         </View>
 
         {/* Dhikr Cards */}
-        <Animated.ScrollView
-          horizontal
-          pagingEnabled
-          showsHorizontalScrollIndicator={false}
-          onScroll={scrollHandler}
-          scrollEventThrottle={16}
-          decelerationRate="fast"
-          snapToInterval={CARD_WIDTH + 20}
-          contentContainerStyle={{
-            paddingHorizontal: 20,
-            gap: 20,
-            paddingBottom: insets.bottom + 40,
-          }}
-        >
-          {filteredDhikr.map((dhikr, index) => (
-            <DhikrCard
-              key={dhikr.id}
-              dhikr={dhikr}
-              index={index}
-              scrollX={scrollX}
-              isFavorited={favorites.includes(dhikr.id)}
-              onToggleFavorite={() => toggleFavorite(dhikr.id)}
+        {filteredDhikr.length > 0 ? (
+          <>
+            <Animated.ScrollView
+              horizontal
+              pagingEnabled
+              showsHorizontalScrollIndicator={false}
+              onScroll={scrollHandler}
+              scrollEventThrottle={16}
+              decelerationRate="fast"
+              snapToInterval={CARD_WIDTH + 20}
+              contentContainerStyle={{
+                paddingHorizontal: 20,
+                gap: 20,
+                paddingBottom: insets.bottom + 40,
+              }}
+              // KEY FIX: Reset scroll position when filter changes
+              key={selectedCategory}
+            >
+              {filteredDhikr.map((dhikr, index) => (
+                <DhikrCard
+                  key={dhikr.id}
+                  dhikr={dhikr}
+                  index={index}
+                  scrollX={scrollX}
+                  isFavorited={favorites.includes(dhikr.id)}
+                  onToggleFavorite={() => toggleFavorite(dhikr.id)}
+                  cardWidth={CARD_WIDTH}
+                />
+              ))}
+            </Animated.ScrollView>
+
+            {/* Pagination Dots */}
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "center",
+                gap: 8,
+                paddingBottom: insets.bottom + 20,
+              }}
+            >
+              {filteredDhikr.map((dhikr, index) => (
+                <PaginationDot
+                  key={dhikr.id}
+                  index={index}
+                  scrollX={scrollX}
+                  cardWidth={CARD_WIDTH}
+                />
+              ))}
+            </View>
+          </>
+        ) : (
+          // Empty state for favorites
+          <View
+            style={{
+              flex: 1,
+              justifyContent: "center",
+              alignItems: "center",
+              paddingHorizontal: 40,
+            }}
+          >
+            <Heart
+              size={48}
+              color="rgba(255, 255, 255, 0.3)"
+              strokeWidth={1.5}
             />
-          ))}
-        </Animated.ScrollView>
-
-        {/* Pagination Dots */}
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "center",
-            gap: 8,
-            paddingBottom: insets.bottom + 20,
-          }}
-        >
-          {filteredDhikr.map((_, index) => {
-            const inputRange = [
-              (index - 1) * (CARD_WIDTH + 20),
-              index * (CARD_WIDTH + 20),
-              (index + 1) * (CARD_WIDTH + 20),
-            ];
-
-            const animatedDotStyle = useAnimatedStyle(() => {
-              const width = interpolate(
-                scrollX.value,
-                inputRange,
-                [8, 24, 8],
-                "clamp"
-              );
-              const opacity = interpolate(
-                scrollX.value,
-                inputRange,
-                [0.3, 1, 0.3],
-                "clamp"
-              );
-
-              return { width, opacity };
-            });
-
-            return (
-              <Animated.View
-                key={index}
-                style={[
-                  {
-                    height: 8,
-                    borderRadius: 4,
-                    backgroundColor: "#af8f69",
-                  },
-                  animatedDotStyle,
-                ]}
-              />
-            );
-          })}
-        </View>
+            <Text
+              style={{
+                color: "rgba(255, 255, 255, 0.6)",
+                fontSize: 16,
+                fontWeight: "600",
+                marginTop: 16,
+                textAlign: "center",
+              }}
+            >
+              No favorites yet
+            </Text>
+            <Text
+              style={{
+                color: "rgba(255, 255, 255, 0.4)",
+                fontSize: 13,
+                fontWeight: "500",
+                marginTop: 8,
+                textAlign: "center",
+              }}
+            >
+              Tap the heart icon on any dhikr to save it here
+            </Text>
+          </View>
+        )}
       </LinearGradient>
     </View>
   );
 }
 
-// Dhikr Card Component
-function DhikrCard({ dhikr, index, scrollX, isFavorited, onToggleFavorite }) {
+// FIXED: Separate component for pagination dots
+function PaginationDot({ index, scrollX, cardWidth }) {
+  const inputRange = [
+    (index - 1) * (cardWidth + 20),
+    index * (cardWidth + 20),
+    (index + 1) * (cardWidth + 20),
+  ];
+
+  const animatedDotStyle = useAnimatedStyle(() => {
+    const width = interpolate(scrollX.value, inputRange, [8, 24, 8], "clamp");
+    const opacity = interpolate(
+      scrollX.value,
+      inputRange,
+      [0.3, 1, 0.3],
+      "clamp"
+    );
+
+    return { width, opacity };
+  });
+
+  return (
+    <Animated.View
+      style={[
+        {
+          height: 8,
+          borderRadius: 4,
+          backgroundColor: "#af8f69",
+        },
+        animatedDotStyle,
+      ]}
+    />
+  );
+}
+
+// FIXED: Dhikr Card Component - hooks always called in same order
+function DhikrCard({
+  dhikr,
+  index,
+  scrollX,
+  isFavorited,
+  onToggleFavorite,
+  cardWidth,
+}) {
   const [showBenefit, setShowBenefit] = useState(false);
 
+  // IMPORTANT: Hooks must be called unconditionally
   const inputRange = [
-    (index - 1) * (CARD_WIDTH + 20),
-    index * (CARD_WIDTH + 20),
-    (index + 1) * (CARD_WIDTH + 20),
+    (index - 1) * (cardWidth + 20),
+    index * (cardWidth + 20),
+    (index + 1) * (cardWidth + 20),
   ];
 
   const animatedStyle = useAnimatedStyle(() => {
@@ -348,7 +404,7 @@ function DhikrCard({ dhikr, index, scrollX, isFavorited, onToggleFavorite }) {
     <Animated.View
       style={[
         {
-          width: CARD_WIDTH,
+          width: cardWidth,
           borderRadius: 24,
           shadowColor: "#000",
           shadowOffset: { width: 6, height: 10 },
@@ -367,7 +423,7 @@ function DhikrCard({ dhikr, index, scrollX, isFavorited, onToggleFavorite }) {
         }}
       >
         <LinearGradient
-          colors={dhikr.gradient}
+          colors={["#af8f69", "#4a3f32"]}
           start={[0, 0]}
           end={[1, 1]}
           style={{ flex: 1 }}
