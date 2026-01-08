@@ -51,19 +51,11 @@ export const HeroView = ({
     };
 
     return (
-        <View style={{ flex: 1 }}>
+        <View className="flex-1">
             {/* Header Section as a Floating Card */}
             <View
+                className="mx-4 mt-2 mb-5 p-4 rounded-[20px] bg-[rgba(26,22,20,0.5)] border-[0.5px] border-white/10 shadow-black"
                 style={{
-                    marginHorizontal: 16,
-                    marginTop: 8,
-                    marginBottom: 20,
-                    padding: 16,
-                    borderRadius: 20,
-                    backgroundColor: "rgba(26, 22, 20, 0.5)",
-                    borderWidth: 0.5,
-                    borderColor: "rgba(255, 255, 255, 0.1)",
-                    shadowColor: "#000",
                     shadowOffset: { width: 0, height: 4 },
                     shadowOpacity: 0.2,
                     shadowRadius: 8,
@@ -85,7 +77,7 @@ export const HeroView = ({
             </View>
 
             {/* Content Section */}
-            <View style={{ flex: 1 }}>
+            <View className="flex-1">
                 {filteredItems.length > 0 ? (
                     <>
                         <Animated.ScrollView
@@ -119,7 +111,10 @@ export const HeroView = ({
                             ))}
                         </Animated.ScrollView>
 
-                        <View style={{ paddingBottom: insets.bottom }}>
+                        <View
+                            className="mt-[-20px]"
+                            style={{ paddingBottom: insets.bottom }}
+                        >
                             <HeroPagination
                                 data={filteredItems}
                                 accentColor={accentColor}

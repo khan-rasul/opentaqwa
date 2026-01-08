@@ -4,13 +4,7 @@ import Animated, { useAnimatedStyle, interpolate } from "react-native-reanimated
 
 export const HeroPagination = ({ data, accentColor, scrollX, cardWidth, spacing = 20 }) => {
     return (
-        <View
-            style={{
-                flexDirection: "row",
-                justifyContent: "center",
-                gap: 8,
-            }}
-        >
+        <View className="flex-row justify-center gap-2">
             {data.map((_, index) => (
                 <PaginationDot
                     accentColor={accentColor}
@@ -46,10 +40,9 @@ function PaginationDot({ index, scrollX, cardWidth, spacing, accentColor }) {
 
     return (
         <Animated.View
+            className="h-2 rounded-full"
             style={[
                 {
-                    height: 8,
-                    borderRadius: 4,
                     backgroundColor: accentColor,
                 },
                 animatedDotStyle,

@@ -12,7 +12,7 @@ export default function Page() {
 
   return (
     <ScrollView
-      style={{ flex: 1 }}
+      className="flex-1"
       showsVerticalScrollIndicator={false}
       contentContainerStyle={{
         padding: 12,
@@ -22,8 +22,8 @@ export default function Page() {
     >
       <View className="flex flex-col gap-3">
         {/* First row - Dhikr and Durood */}
-        <View className="flex-row gap-3" style={{ height: 100 }}>
-          <View style={{ flex: 8 }}>
+        <View className="flex-row gap-3 h-[100px]">
+          <View className="flex-[8]">
             <Card
               title="Dhikr"
               subtitle="Remembrance"
@@ -31,7 +31,7 @@ export default function Page() {
               gradientColors={["#625443", "#4a3f32"]}
             />
           </View>
-          <View style={{ flex: 10 }}>
+          <View className="flex-[10]">
             <Card
               title="Durūd"
               subtitle="Blessings"
@@ -42,8 +42,8 @@ export default function Page() {
         </View>
 
         {/* Second row - Dua and Tagline */}
-        <View className="flex-row gap-3" style={{ height: 100 }}>
-          <View style={{ flex: 2 }}>
+        <View className="flex-row gap-3 h-[100px]">
+          <View className="flex-[2]">
             <Card
               title="Du'ā"
               subtitle="Supplication"
@@ -51,7 +51,7 @@ export default function Page() {
               gradientColors={["#5E4B56", "#463640"]}
             />
           </View>
-          <View style={{ flex: 1 }}>
+          <View className="flex-1">
             <Tagline />
           </View>
         </View>

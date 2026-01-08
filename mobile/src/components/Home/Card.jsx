@@ -31,76 +31,31 @@ export default function Card({ title, subtitle, route, gradientColors }) {
       onPressIn={handlePressIn}
       onPressOut={handlePressOut}
       onPress={() => router.push(route)}
+      className="flex-1 rounded-[20px] bg-black shadow-black shadow-offset-[6px,10px] shadow-opacity-45 shadow-radius-16"
       style={[
         {
-          flex: 1,
-          borderRadius: 20,
-          // iOS shadow requirements
-          backgroundColor: "black", // IMPORTANT for iOS
-          shadowColor: "#000",
-          shadowOffset: { width: 6, height: 10 },
-          // shadowOpacity: 1,
-          shadowOpacity: 0.45,
-          shadowRadius: 16,
-          // Android shadow
           elevation: 16,
         },
         animatedStyle,
       ]}
     >
       {/* Inner container with overflow hidden */}
-      <View style={{ flex: 1, borderRadius: 20, overflow: "hidden" }}>
+      <View className="flex-1 rounded-[20px] overflow-hidden">
         <LinearGradient
           colors={[gradientColors[0], gradientColors[1] || gradientColors[0]]}
           start={[0.2, 0]}
           end={[1, 1]}
-          style={{
-            flex: 1,
-            padding: 16,
-          }}
+          style={{ flex: 1, padding: 16 }}
         >
-
           {/* Decorative circle */}
-          <View
-            style={{
-              position: "absolute",
-              bottom: -25,
-              left: -25,
-              width: 70,
-              height: 70,
-              backgroundColor: "rgba(255, 255, 255, 0.06)",
-              borderRadius: 35,
-            }}
-          />
+          <View className="absolute -bottom-6 -left-6 w-[70px] h-[70px] bg-white/5 rounded-full" />
 
           {/* Content */}
-          <View
-            style={{
-              flex: 1,
-              justifyContent: "flex-end",
-              zIndex: 1,
-            }}
-          >
-            <Text
-              style={{
-                fontSize: 9,
-                fontWeight: "600",
-                color: "rgba(255, 255, 255, 0.65)",
-                marginBottom: 3,
-                letterSpacing: 1.5,
-                textTransform: "uppercase",
-              }}
-            >
+          <View className="flex-1 justify-end z-[1]">
+            <Text className="text-[9px] font-semibold text-white/65 mb-[3px] tracking-[1.5px] uppercase">
               {subtitle}
             </Text>
-            <Text
-              style={{
-                fontSize: 18,
-                fontWeight: "700",
-                color: "#FFFFFF",
-                letterSpacing: 0.2,
-              }}
-            >
+            <Text className="text-[18px] font-bold text-white tracking-[0.2px]">
               {title}
             </Text>
           </View>

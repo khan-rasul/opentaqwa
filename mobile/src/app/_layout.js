@@ -10,7 +10,7 @@ function LayoutContent() {
   const insets = useSafeAreaInsets();
 
   return (
-    <View style={{ flex: 1, backgroundColor: "#0f0d0c" }}>
+    <View className="flex-1 bg-[#0f0d0c]">
       <LinearGradient
         colors={["#3d3530", "#2a2522", "#1a1614", "#0f0d0c"]}
         locations={[0, 0.3, 0.7, 1]}
@@ -18,16 +18,15 @@ function LayoutContent() {
       >
         <StatusBar style="light" />
         {/* Persistent Header */}
-        <View style={{
-          paddingTop: insets.top + 8,
-          paddingHorizontal: 12,
-          zIndex: 100
-        }}>
+        <View
+          className="px-3 z-[100]"
+          style={{ paddingTop: insets.top + 8 }}
+        >
           <Header />
         </View>
 
         {/* Content Area */}
-        <View style={{ flex: 1 }}>
+        <View className="flex-1">
           <Slot />
         </View>
       </LinearGradient>

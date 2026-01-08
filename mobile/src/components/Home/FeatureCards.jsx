@@ -10,27 +10,27 @@ const featureCards = [
     subtitle: "Read",
     route: "/quran",
     icon: BookOpen,
-    color: "#af8f69", // gold
+    color: "#af8f69",
   },
   {
     title: "Qiblah",
     subtitle: "Direction",
     route: "/qibla",
     icon: Compass,
-    color: "#8B9D98", // forest
+    color: "#8B9D98",
   },
   {
     title: "Names",
     subtitle: "99 Divine",
     route: "/names",
     icon: Sparkles,
-    color: "#B8A4B0", // plum
+    color: "#B8A4B0",
   },
 ];
 
 export default function FeatureCards() {
   return (
-    <View style={{ flexDirection: "row", gap: 12 }}>
+    <View className="flex-row gap-3">
       {featureCards.map((card) => (
         <FeatureCard key={card.title} {...card} />
       ))}
@@ -47,62 +47,25 @@ function FeatureCard({ title, subtitle, route, icon: Icon, color }) {
       onPressIn={() => setPressed(true)}
       onPressOut={() => setPressed(false)}
       onPress={() => router.push(route)}
+      className={`flex-1 rounded-2xl bg-[rgba(26,22,20,0.7)] shadow-black min-h-[120px] 
+        ${pressed ? 'opacity-85 scale-[0.97]' : 'opacity-100 scale-100'}`}
       style={{
-        flex: 1,
-        borderRadius: 16,
-        backgroundColor: "rgba(26, 22, 20, 0.7)", // Lighter warm gray
-        shadowColor: "#000",
         shadowOffset: { width: 3, height: 4 },
         shadowOpacity: 0.3,
         shadowRadius: 10,
         elevation: 10,
-        opacity: pressed ? 0.85 : 1,
-        transform: [{ scale: pressed ? 0.97 : 1 }],
-        minHeight: 120,
       }}
     >
-      <View
-        style={{
-          flex: 1,
-          borderRadius: 16,
-          backgroundColor: "rgba(255, 255, 255, 0.08)", // Slightly increased
-          overflow: "hidden",
-          borderWidth: 0.5,
-          borderColor: "rgba(255, 255, 255, 0.12)",
-        }}
-      >
+      <View className="flex-1 rounded-2xl overflow-hidden bg-white/10 border-[0.5px] border-white/15">
         {/* Decorative circle */}
-        <View
-          style={{
-            position: "absolute",
-            bottom: -15,
-            right: -15,
-            width: 45,
-            height: 45,
-            backgroundColor: "rgba(255, 255, 255, 0.06)",
-            borderRadius: 22.5,
-          }}
-        />
+        <View className="absolute -bottom-4 -right-4 w-[45px] h-[45px] bg-white/5 rounded-full" />
 
-        <View
-          style={{
-            flex: 1,
-            padding: 14,
-            justifyContent: "center",
-            alignItems: "center",
-            gap: 12,
-          }}
-        >
+        <View className="flex-1 p-3.5 justify-center items-center gap-3">
           {/* Icon */}
           <View
+            className="w-11 h-11 rounded-full justify-center items-center border"
             style={{
-              width: 44,
-              height: 44,
-              borderRadius: 22,
               backgroundColor: `${color}25`,
-              justifyContent: "center",
-              alignItems: "center",
-              borderWidth: 1,
               borderColor: `${color}40`,
             }}
           >
@@ -110,29 +73,11 @@ function FeatureCard({ title, subtitle, route, icon: Icon, color }) {
           </View>
 
           {/* Text */}
-          <View style={{ alignItems: "center", zIndex: 1 }}>
-            <Text
-              style={{
-                fontSize: 9,
-                fontWeight: "700",
-                color: "rgba(255, 255, 255, 0.5)",
-                marginBottom: 2,
-                letterSpacing: 1.5,
-                textTransform: "uppercase",
-                textAlign: "center",
-              }}
-            >
+          <View className="items-center z-[1]">
+            <Text className="text-[9px] font-bold text-white/50 mb-0.5 tracking-[1.5px] uppercase text-center">
               {subtitle}
             </Text>
-            <Text
-              style={{
-                fontSize: 15,
-                fontWeight: "700",
-                color: "#FFFFFF",
-                letterSpacing: 0.3,
-                textAlign: "center",
-              }}
-            >
+            <Text className="text-[15px] font-bold text-white tracking-[0.3px] text-center">
               {title}
             </Text>
           </View>

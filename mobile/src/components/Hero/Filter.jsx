@@ -17,21 +17,15 @@ export const HeroFilter = ({ accentColor, categories, selectedCategory, onSelect
                         <Pressable
                             key={category.id}
                             onPress={() => onSelectCategory(category.id)}
-                            style={{
-                                flexDirection: "row",
-                                alignItems: "center",
-                                gap: 6,
-                                paddingHorizontal: 14,
-                                paddingVertical: 10,
-                                borderRadius: 12,
-                                backgroundColor: isSelected
-                                    ? `${accentColor}20`
-                                    : "rgba(26, 22, 20, 0.4)",
+                            className={`flex-row items-center gap-1.5 px-3.5 py-2.5 rounded-xl border-[0.5px] 
+                                ${isSelected
+                                    ? 'border-transparent'
+                                    : 'bg-[rgba(26,22,20,0.4)] border-white/10'}`}
+                            style={isSelected ? {
+                                backgroundColor: `${accentColor}20`,
+                                borderColor: accentColor,
                                 borderWidth: 0.5,
-                                borderColor: isSelected
-                                    ? accentColor
-                                    : "rgba(255, 255, 255, 0.08)",
-                            }}
+                            } : null}
                         >
                             {Icon && (
                                 <Icon
@@ -41,11 +35,7 @@ export const HeroFilter = ({ accentColor, categories, selectedCategory, onSelect
                                 />
                             )}
                             <Text
-                                style={{
-                                    color: isSelected ? "#FFFFFF" : "rgba(255, 255, 255, 0.5)",
-                                    fontSize: 12,
-                                    fontWeight: isSelected ? "700" : "600",
-                                }}
+                                className={`text-[12px] ${isSelected ? 'text-white font-bold' : 'text-white/50 font-semibold'}`}
                             >
                                 {category.label}
                             </Text>

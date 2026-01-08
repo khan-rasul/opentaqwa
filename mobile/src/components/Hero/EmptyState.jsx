@@ -4,39 +4,16 @@ import { Heart } from "lucide-react-native";
 
 export const HeroEmptyState = ({ icon: Icon = Heart, message = "No items yet", detail = "Try adding some to your favorites" }) => {
     return (
-        <View
-            style={{
-                flex: 1,
-                justifyContent: "center",
-                alignItems: "center",
-                paddingHorizontal: 40,
-            }}
-        >
+        <View className="flex-1 justify-center items-center px-10">
             <Icon
                 size={48}
                 color="rgba(255, 255, 255, 0.3)"
                 strokeWidth={1.5}
             />
-            <Text
-                style={{
-                    color: "rgba(255, 255, 255, 0.6)",
-                    fontSize: 16,
-                    fontWeight: "600",
-                    marginTop: 16,
-                    textAlign: "center",
-                }}
-            >
+            <Text className="text-white/60 text-base font-semibold mt-4 text-center">
                 {message}
             </Text>
-            <Text
-                style={{
-                    color: "rgba(255, 255, 255, 0.4)",
-                    fontSize: 13,
-                    fontWeight: "500",
-                    marginTop: 8,
-                    textAlign: "center",
-                }}
-            >
+            <Text className="text-white/40 text-[13px] font-medium mt-2 text-center">
                 {detail}
             </Text>
         </View>

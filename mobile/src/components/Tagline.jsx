@@ -4,17 +4,7 @@ import { View, Text, Image } from "react-native";
 export default function Tagline() {
   return (
     <View className="flex-1 rounded-xl overflow-hidden">
-      <View
-        style={{
-          position: "absolute",
-          top: -10,
-          right: -10,
-          width: 30,
-          height: 30,
-          backgroundColor: "rgba(255, 255, 255, 0.05)",
-          borderRadius: 15,
-        }}
-      />
+      <View className="absolute -top-2.5 -right-2.5 w-[30px] h-[30px] bg-white/5 rounded-full" />
 
       {/* Content */}
       <View className="flex-1 justify-center items-start">
@@ -26,13 +16,13 @@ export default function Tagline() {
         <View className="flex-row items-center gap-1.5">
           <Image
             source={require("../../assets/icon.png")}
-            style={{ width: 20, height: 20 }}
+            className="w-5 h-5"
             resizeMode="contain"
           />
 
           <Text className="text-sm font-semibold text-white">
             Open
-            <Text className="text-gold-light font-great-vibes">Taqwā</Text>
+            <Text className="text-[#af8f69] font-serif italic">Taqwā</Text>
           </Text>
         </View>
       </View>

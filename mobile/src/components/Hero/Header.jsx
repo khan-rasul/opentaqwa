@@ -15,37 +15,14 @@ export const HeroHeader = ({ title, subtitle, accentColor, onBack }) => {
     };
 
     return (
-        <View
-            style={{
-                flexDirection: "row",
-                alignItems: "center",
-                justifyContent: "space-between",
-                marginBottom: 12,
-            }}
-        >
+        <View className="flex-row items-center justify-between mb-3">
             {/* Title / Subtitle Group */}
-            <View style={{ flex: 1 }}>
-                <Text
-                    style={{
-                        fontSize: 20,
-                        fontWeight: "800",
-                        color: "#FFFFFF",
-                        letterSpacing: 0.5,
-                    }}
-                >
+            <View className="flex-1">
+                <Text className="text-[20px] font-extrabold text-white tracking-[0.5px]">
                     {title}
                 </Text>
                 {subtitle && (
-                    <Text
-                        style={{
-                            fontSize: 10,
-                            fontWeight: "600",
-                            color: "rgba(255, 255, 255, 0.4)",
-                            letterSpacing: 1.2,
-                            textTransform: "uppercase",
-                            marginTop: 1,
-                        }}
-                    >
+                    <Text className="text-[10px] font-semibold text-white/40 tracking-[1.2px] uppercase mt-[1px]">
                         {subtitle}
                     </Text>
                 )}
@@ -54,13 +31,7 @@ export const HeroHeader = ({ title, subtitle, accentColor, onBack }) => {
             {/* Back Button - Moved to right, smaller, no background */}
             <Pressable
                 onPress={handleBack}
-                style={({ pressed }) => ({
-                    width: 32,
-                    height: 32,
-                    justifyContent: "center",
-                    alignItems: "center",
-                    opacity: pressed ? 0.6 : 1,
-                })}
+                className="w-8 h-8 justify-center items-center active:opacity-60"
             >
                 <ChevronLeft size={24} color={accentColor} strokeWidth={2.5} />
             </Pressable>

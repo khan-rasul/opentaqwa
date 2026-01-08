@@ -68,11 +68,8 @@ export default function PrayerTime() {
   if (loading) {
     return (
       <View
+        className="h-[360px] rounded-2xl overflow-hidden shadow-black"
         style={{
-          height: 360,
-          borderRadius: 20,
-          overflow: "hidden",
-          shadowColor: "#000",
           shadowOffset: { width: 6, height: 10 },
           shadowOpacity: 0.5,
           shadowRadius: 18,
@@ -83,22 +80,10 @@ export default function PrayerTime() {
           colors={["#264872", "#1a3454"]}
           start={[0, 0]}
           end={[1, 1]}
-          style={{
-            flex: 1,
-            justifyContent: "center",
-            alignItems: "center",
-            padding: 20,
-          }}
+          style={{ flex: 1, justifyContent: "center", alignItems: "center", padding: 20 }}
         >
           <ActivityIndicator size="large" color="#FFFFFF" />
-          <Text
-            style={{
-              color: "#FFFFFF",
-              fontSize: 16,
-              fontWeight: "600",
-              marginTop: 12,
-            }}
-          >
+          <Text className="text-white text-base font-semibold mt-3">
             Loading Adhān times
           </Text>
         </LinearGradient>
@@ -108,21 +93,18 @@ export default function PrayerTime() {
 
   return (
     <View
+      className="h-[360px] rounded-2xl bg-black shadow-black"
       style={{
-        height: 360,
-        borderRadius: 20,
-        backgroundColor: "black", // IMPORTANT for iOS
-        shadowColor: "#000",
         shadowOffset: { width: 6, height: 10 },
         shadowOpacity: 0.45,
         shadowRadius: 18,
         elevation: 18,
       }}
     >
-      <View style={{ borderRadius: 20, overflow: "hidden", flex: 1 }}>
+      <View className="flex-1 rounded-2xl overflow-hidden">
         <ImageBackground
           source={{ uri: BACKGROUND_IMAGE_URL }}
-          style={{ flex: 1 }}
+          className="flex-1"
           resizeMode="cover"
         >
           <LinearGradient
@@ -135,69 +117,29 @@ export default function PrayerTime() {
             end={[1, 1]}
             style={{ flex: 1, padding: 20 }}
           >
-            <View style={{ flex: 1, justifyContent: "space-between" }}>
+            <View className="flex-1 justify-between">
               {/* Header */}
               <View>
-                <Text
-                  style={{
-                    color: "#FFFFFF",
-                    fontSize: 20,
-                    fontWeight: "700",
-                    marginBottom: 4,
-                    letterSpacing: 0.3,
-                  }}
-                >
+                <Text className="text-white text-xl font-bold mb-1 tracking-tight">
                   Adhān
                 </Text>
-                <View
-                  style={{ flexDirection: "row", alignItems: "center", gap: 4 }}
-                >
+                <View className="flex-row items-center gap-1">
                   <MapPin size={12} color="rgba(255, 255, 255, 0.8)" />
-                  <Text
-                    style={{
-                      color: "rgba(255, 255, 255, 0.8)",
-                      fontSize: 12,
-                      fontWeight: "500",
-                    }}
-                  >
+                  <Text className="text-white/80 text-[12px] font-medium">
                     {location.city}, {location.country}
                   </Text>
                 </View>
               </View>
 
               {/* Middle Section - Countdown */}
-              <View style={{ alignItems: "center", paddingVertical: 20 }}>
-                <Text
-                  style={{
-                    color: "#FFFFFF",
-                    fontSize: 32,
-                    fontWeight: "700",
-                    marginBottom: 8,
-                    letterSpacing: 1,
-                  }}
-                >
+              <View className="items-center py-5">
+                <Text className="text-white text-[32px] font-bold mb-2 tracking-widest">
                   {countdown}
                 </Text>
-                <Text
-                  style={{
-                    color: "rgba(255, 255, 255, 0.9)",
-                    fontSize: 15,
-                    fontWeight: "600",
-                    marginBottom: 12,
-                  }}
-                >
+                <Text className="text-white/90 text-[15px] font-semibold mb-3">
                   Until {nextPrayer?.name} ({nextPrayer?.arabic})
                 </Text>
-                <Text
-                  style={{
-                    color: "rgba(255, 255, 255, 0.7)",
-                    fontSize: 11,
-                    fontStyle: "italic",
-                    textAlign: "center",
-                    lineHeight: 16,
-                    paddingHorizontal: 20,
-                  }}
-                >
+                <Text className="text-white/70 text-[11px] italic text-center leading-4 px-5">
                   "Indeed, performing prayers is a duty on the believers at the
                   appointed times."
                 </Text>
@@ -205,70 +147,28 @@ export default function PrayerTime() {
 
               {/* Footer - Prayer Times */}
               <View>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    marginBottom: 16,
-                  }}
-                >
+                <View className="flex-row justify-between mb-4">
                   {mockPrayerTimes.map((prayer) => {
-                    const IconComponent = prayer.icon; // Store the component
+                    const IconComponent = prayer.icon;
                     return (
                       <View
                         key={prayer.name}
-                        style={{
-                          alignItems: "center",
-                          flex: 1,
-                          opacity: prayer.next ? 1 : 0.7,
-                        }}
+                        className={`items-center flex-1 ${prayer.next ? 'opacity-100' : 'opacity-70'}`}
                       >
                         <View
-                          style={{
-                            width: 40,
-                            height: 40,
-                            borderRadius: 20,
-                            justifyContent: "center",
-                            alignItems: "center",
-                            marginBottom: 6,
-                            backgroundColor: prayer.next
-                              ? "rgba(255, 255, 255, 0.15)"
-                              : "rgba(255, 255, 255, 0.05)",
-                            borderWidth: prayer.next ? 1 : 0,
-                            borderColor: "rgba(255, 255, 255, 0.2)",
-                          }}
+                          className={`w-10 h-10 rounded-full justify-center items-center mb-1.5 border-white/20
+                            ${prayer.next ? 'bg-white/15 border' : 'bg-white/5 border-0'}`}
                         >
                           <IconComponent
                             size={20}
-                            color={
-                              prayer.next
-                                ? "#FFFFFF"
-                                : "rgba(255, 255, 255, 0.8)"
-                            }
+                            color={prayer.next ? "#FFFFFF" : "rgba(255, 255, 255, 0.8)"}
                             strokeWidth={2}
                           />
                         </View>
-                        <Text
-                          style={{
-                            fontSize: 11,
-                            fontWeight: prayer.next ? "700" : "600",
-                            color: prayer.next
-                              ? "#FFFFFF"
-                              : "rgba(255, 255, 255, 0.8)",
-                            marginBottom: 2,
-                          }}
-                        >
+                        <Text className={`text-[11px] mb-0.5 ${prayer.next ? 'text-white font-bold' : 'text-white/80 font-semibold'}`}>
                           {prayer.name}
                         </Text>
-                        <Text
-                          style={{
-                            fontSize: 10,
-                            fontWeight: "500",
-                            color: prayer.next
-                              ? "rgba(255, 255, 255, 0.95)"
-                              : "rgba(255, 255, 255, 0.7)",
-                          }}
-                        >
+                        <Text className={`text-[10px] font-medium ${prayer.next ? 'text-white/95' : 'text-white/70'}`}>
                           {prayer.time}
                         </Text>
                       </View>
@@ -277,24 +177,11 @@ export default function PrayerTime() {
                 </View>
 
                 {/* Prayer indicators */}
-                <View
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "center",
-                    gap: 6,
-                  }}
-                >
+                <View className="flex-row justify-center gap-1.5">
                   {mockPrayerTimes.map((prayer, index) => (
                     <View
                       key={index}
-                      style={{
-                        width: prayer.next ? 20 : 6,
-                        height: 6,
-                        borderRadius: 3,
-                        backgroundColor: prayer.next
-                          ? "rgba(255, 255, 255, 0.95)"
-                          : "rgba(255, 255, 255, 0.25)",
-                      }}
+                      className={`h-1.5 rounded-full ${prayer.next ? 'w-5 bg-white/95' : 'w-1.5 bg-white/25'}`}
                     />
                   ))}
                 </View>
