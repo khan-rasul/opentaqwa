@@ -60,7 +60,11 @@ export const HeroView = ({
                     paddingBottom: 20,
                 }}
             >
-                <HeroHeader title={title} subtitle={subtitle} />
+                <HeroHeader
+                    title={title}
+                    subtitle={subtitle}
+                    accentColor={accentColor}
+                />
 
                 <HeroFilter
                     accentColor={accentColor}

@@ -50,7 +50,7 @@ function FeatureCard({ title, subtitle, route, icon: Icon, color }) {
       style={{
         flex: 1,
         borderRadius: 16,
-        backgroundColor: "rgba(26, 22, 20, 1)", // Lighter warm gray
+        backgroundColor: "rgba(26, 22, 20, 0.7)", // Lighter warm gray
         shadowColor: "#000",
         shadowOffset: { width: 3, height: 4 },
         shadowOpacity: 0.3,

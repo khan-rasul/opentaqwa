@@ -26,7 +26,7 @@ export default function DuaPage() {
     return (
         <HeroView
             title="Du'ā"
-            gradient={["#B8A4B0", "#B8A4B077"]}
+            gradient={["#B8A4B0dd", "#B8A4B077"]}
             accentColor="#B8A4B0"
             subtitle="Supplications Collection"
             categories={DUA_CATEGORIES}

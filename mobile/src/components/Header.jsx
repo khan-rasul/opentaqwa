@@ -27,7 +27,7 @@ export default function Header() {
     <View
       style={{
         borderRadius: 16,
-        backgroundColor: "rgba(26, 22, 20, 0.3)", // Lighter warm gray
+        backgroundColor: "rgba(26, 22, 20, 0.7)", // Lighter warm gray
         shadowColor: "#000",
         shadowOffset: { width: 3, height: 4 },
         shadowOpacity: 0.25,
