@@ -43,7 +43,7 @@ export const HeroCard = ({
 
     return (
         <Animated.View
-            className="rounded-3xl shadow-black"
+            className="rounded-2xl shadow-black"
             style={[
                 {
                     width: cardWidth,
@@ -55,7 +55,7 @@ export const HeroCard = ({
                 animatedStyle,
             ]}
         >
-            <View className="flex-1 rounded-3xl overflow-hidden">
+            <View className="flex-1 rounded-2xl overflow-hidden">
                 <LinearGradient
                     colors={cardGradient || ["#af8f69", "#af8f6977"]}
                     start={[0, 0]}
@@ -77,8 +77,8 @@ export const HeroCard = ({
                                 <IconButton onPress={onToggleFavorite}>
                                     <Heart
                                         size={20}
-                                        color={isFavorited ? "#ef4444" : "#FFFFFF"}
-                                        fill={isFavorited ? "#ef4444" : "none"}
+                                        color={isFavorited ? "#550d0dff" : "#FFFFFF"}
+                                        fill={isFavorited ? "#550d0dff" : "none"}
                                         strokeWidth={2}
                                     />
                                 </IconButton>

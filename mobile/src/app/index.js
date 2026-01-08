@@ -3,7 +3,7 @@ import { ScrollView, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import Tagline from "@/components/Tagline";
-import PrayerTime from "@/components/PrayerTime";
+import PrayerTime from "@/components/Home/PrayerTime";
 import Card from "@/components/Home/Card";
 import FeatureCards from "@/components/Home/FeatureCards";
 
@@ -20,9 +20,9 @@ export default function Page() {
         paddingBottom: insets.bottom + 24,
       }}
     >
-      <View className="flex flex-col gap-3">
+      <View className="flex flex-col gap-2">
         {/* First row - Dhikr and Durood */}
-        <View className="flex-row gap-3 h-[100px]">
+        <View className="flex-row gap-2 h-[100px]">
           <View className="flex-[8]">
             <Card
               title="Dhikr"
@@ -42,7 +42,7 @@ export default function Page() {
         </View>
 
         {/* Second row - Dua and Tagline */}
-        <View className="flex-row gap-3 h-[100px]">
+        <View className="flex-row gap-2 h-[100px]">
           <View className="flex-[2]">
             <Card
               title="Du'ā"

@@ -31,7 +31,7 @@ export default function Card({ title, subtitle, route, gradientColors }) {
       onPressIn={handlePressIn}
       onPressOut={handlePressOut}
       onPress={() => router.push(route)}
-      className="flex-1 rounded-[20px] bg-black shadow-black shadow-offset-[6px,10px] shadow-opacity-45 shadow-radius-16"
+      className="flex-1 rounded-2xl bg-black shadow-black shadow-offset-[6px,10px] shadow-opacity-45 shadow-radius-16"
       style={[
         {
           elevation: 16,
@@ -40,7 +40,7 @@ export default function Card({ title, subtitle, route, gradientColors }) {
       ]}
     >
       {/* Inner container with overflow hidden */}
-      <View className="flex-1 rounded-[20px] overflow-hidden">
+      <View className="flex-1 rounded-2xl overflow-hidden">
         <LinearGradient
           colors={[gradientColors[0], gradientColors[1] || gradientColors[0]]}
           start={[0.2, 0]}

@@ -7,7 +7,7 @@ export default function Header() {
   // Mock data
   const isAuthenticated = false;
   const user = null;
-  const nextPrayerDisplay = "Asr - 3:30 PM";
+  const nextPrayerDisplay = "Asr, 3:30 PM";
   const location = { city: "New York", country: "USA" };
   const notificationsEnabled = true;
 

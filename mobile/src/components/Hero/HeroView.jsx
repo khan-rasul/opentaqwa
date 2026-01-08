@@ -54,7 +54,7 @@ export const HeroView = ({
         <View className="flex-1">
             {/* Header Section as a Floating Card */}
             <View
-                className="mx-4 mt-2 mb-5 p-4 rounded-[20px] bg-[rgba(26,22,20,0.5)] border-[0.5px] border-white/10 shadow-black"
+                className="mx-3 my-2 p-4 rounded-2xl bg-[rgba(26,22,20,0.5)] border-[0.5px] border-white/10 shadow-black"
                 style={{
                     shadowOffset: { width: 0, height: 4 },
                     shadowOpacity: 0.2,

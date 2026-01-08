@@ -30,7 +30,7 @@ const featureCards = [
 
 export default function FeatureCards() {
   return (
-    <View className="flex-row gap-3">
+    <View className="flex-row gap-2">
       {featureCards.map((card) => (
         <FeatureCard key={card.title} {...card} />
       ))}
