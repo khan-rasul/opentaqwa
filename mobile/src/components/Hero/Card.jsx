@@ -69,18 +69,6 @@ export const HeroCard = ({
                     end={[1, 1]}
                     style={{ flex: 1 }}
                 >
-                    {/* Top shine */}
-                    <View
-                        style={{
-                            position: "absolute",
-                            top: 0,
-                            left: 0,
-                            right: 0,
-                            height: "35%",
-                            backgroundColor: "rgba(255, 255, 255, 0.05)",
-                        }}
-                    />
-
                     {/* Decorative circles */}
                     <View
                         style={{
@@ -100,7 +88,7 @@ export const HeroCard = ({
                             left: -20,
                             width: 70,
                             height: 70,
-                            backgroundColor: "rgba(0, 0, 0, 0.08)",
+                            backgroundColor: "rgba(255, 255, 255, 0.08)",
                             borderRadius: 35,
                         }}
                     />
