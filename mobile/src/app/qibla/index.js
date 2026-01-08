@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useMemo } from "react";
-import { View, Text, Dimensions, Pressable } from "react-native";
+import React, { useState, useEffect } from "react";
+import { View, Text, Dimensions, Pressable, Image } from "react-native";
 import * as Location from "expo-location";
-import { ChevronLeft, Crosshair, MapPin } from "lucide-react-native";
+import { ChevronLeft, Crosshair } from "lucide-react-native";
 import { useRouter } from "expo-router";
 import Animated, {
     useAnimatedStyle,
@@ -15,8 +15,9 @@ const { width: SCREEN_WIDTH } = Dimensions.get("window");
 const MECCA_LAT = 21.4225;
 const MECCA_LON = 39.8262;
 
-// Degree markers for the compass
-const DEGREE_MARKERS = [0, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330];
+// Layout Constants
+const COMPASS_SIZE = 280;
+const CENTER = COMPASS_SIZE / 2;
 
 export default function QiblaScreen() {
     const router = useRouter();
@@ -108,7 +109,7 @@ export default function QiblaScreen() {
                         </View>
                         <Pressable
                             onPress={() => router.back()}
-                            className="w-10 h-10 items-center justify-center rounded-full"
+                            className="w-10 h-10 items-center justify-center rounded-full active:opacity-60"
                         >
                             <ChevronLeft size={24} color="#af8f69" strokeWidth={2.5} />
                         </Pressable>
@@ -116,114 +117,128 @@ export default function QiblaScreen() {
 
                     {/* Compass Area */}
                     <View className="flex-1 justify-center items-center">
-                        <View className="w-[300px] h-[300px] justify-center items-center">
+                        <View style={{ width: COMPASS_SIZE, height: COMPASS_SIZE }} className="justify-center items-center">
 
-                            {/* Alignment Glow */}
+                            {/* Main Concentric Rings with Increased Depth */}
+                            <View className="absolute w-full h-full rounded-full border-[1.5px] border-white/20" />
+                            <View className="absolute w-[92%] h-[92%] rounded-full border-[1px] border-white/10" />
+                            <View className="absolute w-[85%] h-[85%] rounded-full border-[1px] border-white/5" />
+
+                            {/* Static Background Alignment Glow - Subtler but present */}
                             {isAligned && (
-                                <View className="absolute w-[320px] h-[320px] bg-[#af8f69]/20 rounded-full blur-xl" />
+                                <View className="absolute w-[105%] h-[105%] bg-[#af8f69]/10 rounded-full" />
                             )}
 
-                            {/* Outer Static Frame */}
-                            <View className="absolute w-[300px] h-[300px] rounded-full border-[0.5px] border-white/10" />
-                            <View className="absolute top-0 w-1 h-4 bg-[#af8f69] rounded-full z-10" />
+                            {/* North Pointer (Fixed Top Indicator) */}
+                            <View className="absolute top-[-10] items-center z-10">
+                                <View className="w-1 h-5 bg-[#af8f69] rounded-full shadow-lg shadow-[#af8f69]" />
+                            </View>
 
-                            {/* Rotating Compass Face */}
-                            <Animated.View style={[compassStyle]} className="absolute w-[280px] h-[280px] items-center justify-center">
-                                {/* Degree Ticks */}
-                                {DEGREE_MARKERS.map((deg) => (
-                                    <View
-                                        key={deg}
-                                        className="absolute items-center"
-                                        style={{
-                                            transform: [{ rotate: `${deg}deg` }, { translateY: -125 }],
-                                        }}
-                                    >
-                                        <View className={`w-0.5 ${deg % 90 === 0 ? 'h-3 bg-white/40' : 'h-1.5 bg-white/20'}`} />
+                            {/* Rotating Compass Dial */}
+                            <Animated.View style={[compassStyle]} className="absolute w-full h-full">
+                                {/* North - Exactly Centered At Top */}
+                                <View className="absolute top-4 left-0 right-0 items-center">
+                                    <View className="w-[1.5px] h-3 bg-[#af8f69] mb-1.5" />
+                                    <Text className="text-[#af8f69] text-[12px] font-black tracking-widest">N</Text>
+                                </View>
+
+                                {/* South - Exactly Symmetric to North */}
+                                <View className="absolute bottom-4 left-0 right-0 items-center opacity-40">
+                                    <Text className="text-white text-[10px] font-bold">S</Text>
+                                    <View className="w-[1.5px] h-2 bg-white/40 mt-1.5" />
+                                </View>
+
+                                {/* West */}
+                                <View className="absolute left-4 top-0 bottom-0 justify-center items-center opacity-40">
+                                    <View className="flex-row items-center">
+                                        <Text className="text-white text-[10px] font-bold mr-1.5">W</Text>
+                                        <View className="w-2 h-[1.5px] bg-white/40" />
                                     </View>
-                                ))}
-
-                                {/* Cardinal Points */}
-                                <View className="absolute top-4 items-center">
-                                    <Text className="text-white text-sm font-black text-red-500/80">N</Text>
-                                </View>
-                                <View className="absolute bottom-4 items-center">
-                                    <Text className="text-white/30 text-[10px] font-bold">S</Text>
-                                </View>
-                                <View className="absolute left-4 justify-center">
-                                    <Text className="text-white/30 text-[10px] font-bold">W</Text>
-                                </View>
-                                <View className="absolute right-4 justify-center">
-                                    <Text className="text-white/30 text-[10px] font-bold">E</Text>
                                 </View>
 
-                                {/* Concentric Background Rings */}
-                                <View className="absolute w-[220px] h-[220px] rounded-full border-[0.5px] border-white/5" />
-                                <View className="absolute w-[160px] h-[160px] rounded-full border-[0.5px] border-white/5" />
+                                {/* East */}
+                                <View className="absolute right-4 top-0 bottom-0 justify-center items-center opacity-40">
+                                    <View className="flex-row items-center">
+                                        <View className="w-2 h-[1.5px] bg-white/40" />
+                                        <Text className="text-white text-[10px] font-bold ml-1.5">E</Text>
+                                    </View>
+                                </View>
                             </Animated.View>
 
-                            {/* Qibla Needle (Relative to rotation) */}
+                            {/* Qibla Indicator - Logo On Circumference */}
                             <Animated.View
-                                style={[qiblaNeedleStyle, { position: 'absolute' }]}
-                                className="w-[280px] h-[280px] items-center justify-start z-20"
+                                style={[qiblaNeedleStyle]}
+                                className="absolute w-full h-full items-center justify-start z-30"
                             >
-                                <View className="items-center">
-                                    {/* Main Tapered Needle */}
-                                    <View className={`w-1 h-32 rounded-full ${isAligned ? 'bg-[#af8f69]' : 'bg-white/60'} shadow-sm`} />
-
-                                    {/* Kaaba Indicator */}
+                                <View className="absolute top-[-15] items-center">
+                                    {/* Logo Container precisely on the ring */}
                                     <View
-                                        style={{ backgroundColor: isAligned ? '#af8f69' : '#2a2522' }}
-                                        className="w-14 h-14 rounded-full items-center justify-center mt-[-28px] border-[6px] border-[#131110] shadow-2xl"
+                                        className={`w-12 h-12 rounded-full items-center justify-center p-1 border-[1.5px]
+                                            ${isAligned ? 'border-[#af8f69] bg-[#1c1816] shadow-xl shadow-[#af8f69]/40' : 'border-white/10 bg-[#1c1816]'}`}
                                     >
-                                        <MapPin size={24} color="white" fill="white" />
+                                        <Image
+                                            source={require("../../../assets/icon.png")}
+                                            className="w-full h-full"
+                                            resizeMode="contain"
+                                            style={{ opacity: isAligned ? 1 : 0.4 }}
+                                        />
                                     </View>
+
+                                    {/* Small Pointer beneath logo */}
+                                    <View className={`w-[2px] h-8 mt-1 ${isAligned ? 'bg-[#af8f69]' : 'bg-white/20'}`} />
                                 </View>
                             </Animated.View>
 
-                            {/* Center Pin */}
-                            <View className="absolute w-3 h-3 rounded-full bg-white border-2 border-[#af8f69] z-30" />
+                            {/* Minimal Center Pin */}
+                            <View className="absolute w-2 h-2 rounded-full bg-[#af8f69] z-50 border border-[#131110]" />
                         </View>
 
                         {/* Alignment Feedback */}
-                        <View className="mt-10 items-center justify-center h-6">
+                        <View className="mt-14 items-center justify-center h-6">
                             {isAligned && (
-                                <View className="flex-row items-center gap-2">
-                                    <View className="w-1.5 h-1.5 rounded-full bg-[#af8f69]" />
-                                    <Text className="text-[#af8f69] text-[11px] font-black tracking-[3px] uppercase">
+                                <View className="flex-row items-center gap-3">
+                                    <View className="w-4 h-[1px] bg-[#af8f69]/30" />
+                                    <Text className="text-[#af8f69] text-[11px] font-black tracking-[4px] uppercase">
                                         Aligned to Kaaba
                                     </Text>
-                                    <View className="w-1.5 h-1.5 rounded-full bg-[#af8f69]" />
+                                    <View className="w-4 h-[1px] bg-[#af8f69]/30" />
                                 </View>
                             )}
                         </View>
 
-                        {/* Coordinates & Degree */}
-                        <View className="mt-4 items-center">
-                            <View className="flex-row items-center gap-2 mb-2 bg-white/5 px-4 py-1.5 rounded-full border border-white/5">
-                                <Crosshair size={12} color="#af8f69" />
-                                <Text className="text-white/40 text-[10px] font-extrabold uppercase tracking-[2px]">
-                                    Bearing: <Text className="text-white">{Math.round(qiblaDir)}°</Text>
+                        {/* Detailed Bearing Info */}
+                        <View className="mt-8 items-center">
+                            <View className="flex-row items-center gap-2 mb-3 bg-white/5 py-1.5 px-4 rounded-full border border-white/5">
+                                <Crosshair size={12} color="#af8f69" strokeWidth={3} />
+                                <Text className="text-white/40 text-[9px] font-black uppercase tracking-[2.5px]">
+                                    Bearing <Text className="text-white">{Math.round(qiblaDir)}°</Text>
                                 </Text>
                             </View>
 
-                            <View className="flex-row gap-4 mt-2">
+                            <View className="flex-row gap-8 mt-1">
                                 <View className="items-center">
-                                    <Text className="text-white/30 text-[9px] font-bold uppercase tracking-widest">Device</Text>
-                                    <Text className="text-white/80 text-xl font-black">{Math.round(heading)}°</Text>
+                                    <Text className="text-white/20 text-[8px] font-bold uppercase tracking-widest mb-1">Heading</Text>
+                                    <View className="flex-row items-baseline">
+                                        <Text className="text-white/90 text-2xl font-black">{Math.round(heading)}</Text>
+                                        <Text className="text-white/40 text-xs ml-0.5">°</Text>
+                                    </View>
                                 </View>
-                                <View className="w-[0.5px] h-full bg-white/10" />
+                                <View className="w-[1px] h-10 bg-white/10" />
                                 <View className="items-center">
-                                    <Text className="text-white/30 text-[9px] font-bold uppercase tracking-widest">Qiblah</Text>
-                                    <Text className="text-[#af8f69] text-xl font-black">{Math.round(qiblaDir)}°</Text>
+                                    <Text className="text-white/20 text-[8px] font-bold uppercase tracking-widest mb-1">Target</Text>
+                                    <View className="flex-row items-baseline">
+                                        <Text className="text-[#af8f69] text-2xl font-black">{Math.round(qiblaDir)}</Text>
+                                        <Text className="text-[#af8f69]/40 text-xs ml-0.5">°</Text>
+                                    </View>
                                 </View>
                             </View>
                         </View>
                     </View>
 
-                    {/* Guidelines */}
-                    <View className="bg-white/5 border border-white/5 rounded-2xl p-4 mt-8">
-                        <Text className="text-white/50 text-[10px] text-center leading-4 font-medium italic">
-                            Keep device horizontal and away from metal objects for maximum precision.
+                    {/* Footer Guide */}
+                    <View className="mt-auto items-center pb-2">
+                        <Text className="text-white/20 text-[9px] text-center font-bold tracking-[0.5px] uppercase">
+                            Keep phone horizontal for precision
                         </Text>
                     </View>
                 </View>
