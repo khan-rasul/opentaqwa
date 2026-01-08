@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { View, Dimensions } from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Animated, {
     useSharedValue,
@@ -52,80 +51,74 @@ export const HeroView = ({
     };
 
     return (
-        <View style={{ flex: 1, backgroundColor: "#0f0d0c" }}>
-            <LinearGradient
-                colors={["#3d3530", "#2a2522", "#1a1614", "#0f0d0c"]}
-                locations={[0, 0.3, 0.7, 1]}
-                style={{ flex: 1 }}
+        <View style={{ flex: 1 }}>
+            {/* Header Section */}
+            <View
+                style={{
+                    paddingTop: 16,
+                    paddingHorizontal: 20,
+                    paddingBottom: 20,
+                }}
             >
-                {/* Header Section */}
-                <View
-                    style={{
-                        paddingTop: insets.top + 16,
-                        paddingHorizontal: 20,
-                        paddingBottom: 20,
-                    }}
-                >
-                    <HeroHeader title={title} subtitle={subtitle} />
+                <HeroHeader title={title} subtitle={subtitle} />
 
-                    <HeroFilter
-                        accentColor={accentColor}
-                        categories={categories}
-                        selectedCategory={selectedCategory}
-                        onSelectCategory={setSelectedCategory}
-                    />
-                </View>
+                <HeroFilter
+                    accentColor={accentColor}
+                    categories={categories}
+                    selectedCategory={selectedCategory}
+                    onSelectCategory={setSelectedCategory}
+                />
+            </View>
 
-                {/* Content Section */}
-                {filteredItems.length > 0 ? (
-                    <>
-                        <Animated.ScrollView
-                            horizontal
-                            pagingEnabled
-                            showsHorizontalScrollIndicator={false}
-                            onScroll={scrollHandler}
-                            scrollEventThrottle={16}
-                            decelerationRate="fast"
-                            snapToInterval={CARD_WIDTH + 20}
-                            contentContainerStyle={{
-                                paddingHorizontal: 20,
-                                gap: 20,
-                                paddingBottom: insets.bottom + 40,
-                            }}
-                            key={selectedCategory}
-                        >
-                            {filteredItems.map((item, index) => (
-                                <HeroCard
-                                    key={item.id}
-                                    cardGradient={gradient}
-                                    item={item}
-                                    index={index}
-                                    scrollX={scrollX}
-                                    isFavorited={favorites.includes(item.id)}
-                                    onToggleFavorite={() => toggleFavorite(item.id)}
-                                    cardWidth={CARD_WIDTH}
-                                    onPlayAudio={() => onPlayAudio?.(item)}
-                                    onShare={() => onShare?.(item)}
-                                />
-                            ))}
-                        </Animated.ScrollView>
-
-                        <View style={{ paddingBottom: insets.bottom + 20 }}>
-                            <HeroPagination
-                                data={filteredItems}
-                                accentColor={accentColor}
+            {/* Content Section */}
+            {filteredItems.length > 0 ? (
+                <>
+                    <Animated.ScrollView
+                        horizontal
+                        pagingEnabled
+                        showsHorizontalScrollIndicator={false}
+                        onScroll={scrollHandler}
+                        scrollEventThrottle={16}
+                        decelerationRate="fast"
+                        snapToInterval={CARD_WIDTH + 20}
+                        contentContainerStyle={{
+                            paddingHorizontal: 20,
+                            gap: 20,
+                            paddingBottom: insets.bottom + 40,
+                        }}
+                        key={selectedCategory}
+                    >
+                        {filteredItems.map((item, index) => (
+                            <HeroCard
+                                key={item.id}
+                                cardGradient={gradient}
+                                item={item}
+                                index={index}
                                 scrollX={scrollX}
+                                isFavorited={favorites.includes(item.id)}
+                                onToggleFavorite={() => toggleFavorite(item.id)}
                                 cardWidth={CARD_WIDTH}
+                                onPlayAudio={() => onPlayAudio?.(item)}
+                                onShare={() => onShare?.(item)}
                             />
-                        </View>
-                    </>
-                ) : (
-                    <HeroEmptyState
-                        message={emptyStateMessage || "No items found"}
-                        detail={emptyStateDetail || "Try selecting a different category"}
-                    />
-                )}
-            </LinearGradient>
+                        ))}
+                    </Animated.ScrollView>
+
+                    <View style={{ paddingBottom: insets.bottom + 20 }}>
+                        <HeroPagination
+                            data={filteredItems}
+                            accentColor={accentColor}
+                            scrollX={scrollX}
+                            cardWidth={CARD_WIDTH}
+                        />
+                    </View>
+                </>
+            ) : (
+                <HeroEmptyState
+                    message={emptyStateMessage || "No items found"}
+                    detail={emptyStateDetail || "Try selecting a different category"}
+                />
+            )}
         </View>
     );
 };
