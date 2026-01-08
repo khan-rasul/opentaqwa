@@ -4,11 +4,11 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { LinearGradient } from "expo-linear-gradient";
 import { StatusBar } from "expo-status-bar";
 
-import Header from "../components/Header";
-import Tagline from "../components/Tagline";
-import PrayerTime from "../components/PrayerTime";
-import Footer from "../components/Footer";
-import Card from "../components/Home/Card";
+import Header from "@/components/Header";
+import Tagline from "@/components/Tagline";
+import PrayerTime from "@/components/PrayerTime";
+import Footer from "@/components/Footer";
+import Card from "@/components/Home/Card";
 import FeatureCards from "@/components/Home/FeatureCards";
 
 export default function Page() {
@@ -41,7 +41,7 @@ export default function Page() {
                   <Card
                     title="Dhikr"
                     subtitle="Remembrance"
-                    route="/Dhikr"
+                    route="/dhikr"
                     gradientColors={["#625443", "#4a3f32"]}
                   />
                 </View>
