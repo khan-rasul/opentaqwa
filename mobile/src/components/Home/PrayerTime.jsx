@@ -19,8 +19,7 @@ const PRAYER_ICONS = {
   Isha: Moon,
 };
 
-const BACKGROUND_IMAGE_URL =
-  "https://images.pexels.com/photos/33759665/pexels-photo-33759665.jpeg";
+const KAABAH_IMAGE = require("../../../assets/kaabah.jpeg");
 
 export default function PrayerTime() {
   const { prayerTimes, nextPrayer, locationName, loading } = usePrayer();
@@ -91,7 +90,7 @@ export default function PrayerTime() {
     >
       <View className="flex-1 rounded-2xl overflow-hidden">
         <ImageBackground
-          source={{ uri: BACKGROUND_IMAGE_URL }}
+          source={KAABAH_IMAGE}
           className="flex-1"
           resizeMode="cover"
         >
