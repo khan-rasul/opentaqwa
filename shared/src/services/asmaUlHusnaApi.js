@@ -35,4 +35,13 @@ export const asmaUlHusnaApi = {
       throw new Error("Failed to fetch daily name");
     }
   },
+
+  getAllNames: async () => {
+    try {
+      const response = await axios.get(`${BASE_URL}/names`);
+      return response.data;
+    } catch (error) {
+      throw new Error("Failed to fetch all names");
+    }
+  },
 };

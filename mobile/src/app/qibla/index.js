@@ -28,6 +28,8 @@ export default function QiblaScreen() {
     const [errorMsg, setErrorMsg] = useState(null);
 
     const rotateAnim = useSharedValue(0);
+    const targetHeading = useSharedValue(0);
+    const lastHeading = useSharedValue(-1);
 
     useEffect(() => {
         let headingSubscription;
@@ -48,7 +50,23 @@ export default function QiblaScreen() {
             headingSubscription = await Location.watchHeadingAsync((data) => {
                 const h = data.trueHeading >= 0 ? data.trueHeading : data.magHeading;
                 setHeading(h);
-                rotateAnim.value = withSpring(h, { damping: 20, stiffness: 90 });
+
+                if (lastHeading.value === -1) {
+                    targetHeading.value = h;
+                    rotateAnim.value = h;
+                    lastHeading.value = h;
+                } else {
+                    let delta = h - lastHeading.value;
+                    if (delta > 180) delta -= 360;
+                    else if (delta < -180) delta += 360;
+
+                    targetHeading.value = targetHeading.value + delta;
+                    rotateAnim.value = withSpring(targetHeading.value, {
+                        damping: 20,
+                        stiffness: 90
+                    });
+                    lastHeading.value = h;
+                }
             });
         })();
 
@@ -219,16 +237,14 @@ export default function QiblaScreen() {
                                 <View className="items-center">
                                     <Text className="text-white/20 text-[8px] font-bold uppercase tracking-widest mb-1">Heading</Text>
                                     <View className="flex-row items-baseline">
-                                        <Text className="text-white/90 text-2xl font-black">{Math.round(heading)}</Text>
-                                        <Text className="text-white/40 text-xs ml-0.5">°</Text>
+                                        <Text className="text-white/90 text-2xl font-black">{Math.round(heading)}°</Text>
                                     </View>
                                 </View>
                                 <View className="w-[1px] h-10 bg-white/10" />
                                 <View className="items-center">
                                     <Text className="text-white/20 text-[8px] font-bold uppercase tracking-widest mb-1">Target</Text>
                                     <View className="flex-row items-baseline">
-                                        <Text className="text-[#af8f69] text-2xl font-black">{Math.round(qiblaDir)}</Text>
-                                        <Text className="text-[#af8f69]/40 text-xs ml-0.5">°</Text>
+                                        <Text className="text-[#af8f69] text-2xl font-black">{Math.round(qiblaDir)}°</Text>
                                     </View>
                                 </View>
                             </View>
