@@ -72,7 +72,7 @@ export default function NamesScreen() {
         return (
             <View className="flex-1 justify-center items-center bg-[#0f0d0c]">
                 <ActivityIndicator size="large" color="#af8f69" />
-                <Text className="text-white/40 mt-4 font-medium italic">Revealing the Divine Name...</Text>
+                <Text className="text-white/40 mt-4 font-quicksand font-bold italic">Revealing the Divine Name...</Text>
             </View>
         );
     }
@@ -130,7 +130,7 @@ export default function NamesScreen() {
                                 {/* Number */}
                                 <View className="items-center mb-6">
                                     <View className="bg-white/5 px-3 py-1 rounded-full border border-white/10">
-                                        <Text className="text-white/40 text-[11px] font-black uppercase tracking-[1.5px]">
+                                        <Text className="text-white/40 text-[11px] font-montserrat font-black uppercase tracking-[1.5px]">
                                             Name {nameData.number} of 99
                                         </Text>
                                     </View>
@@ -180,11 +180,11 @@ export default function NamesScreen() {
                             >
                                 <View className="flex-row items-center gap-2">
                                     <Sparkles size={14} color="#af8f69" />
-                                    <Text className="text-white/60 text-[11px] font-bold uppercase tracking-[1.5px]">
+                                    <Text className="text-white/60 text-[11px] font-quicksand font-bold uppercase tracking-[1.5px]">
                                         Summary & Wisdom
                                     </Text>
                                 </View>
-                                <Text className="text-[#af8f69] text-[10px] font-black uppercase tracking-[1px]">
+                                <Text className="text-[#af8f69] text-[10px] font-montserrat font-black uppercase tracking-[1px]">
                                     {showSummary ? "Hide" : "Discover"}
                                 </Text>
                             </Pressable>
@@ -203,14 +203,14 @@ export default function NamesScreen() {
                                         <View>
                                             <View className="flex-row items-center gap-2 mb-3">
                                                 <BookOpen size={14} color="#af8f69" />
-                                                <Text className="text-white/60 text-[11px] font-bold uppercase tracking-[1px]">
+                                                <Text className="text-white/60 text-[11px] font-quicksand font-bold uppercase tracking-[1px]">
                                                     Referenced in Qur’ān
                                                 </Text>
                                             </View>
                                             <View className="flex-row flex-wrap gap-2">
                                                 {nameData.location.filter(l => l).map((loc, idx) => (
                                                     <View key={idx} className="bg-white/5 px-3 py-1.5 rounded-lg border border-white/10">
-                                                        <Text className="text-white/50 text-[12px] font-mono">Surah {loc}</Text>
+                                                        <Text className="text-white/50 text-[12px] font-quicksand font-bold">Surah {loc}</Text>
                                                     </View>
                                                 ))}
                                             </View>
@@ -227,14 +227,14 @@ export default function NamesScreen() {
                                 className="flex-1 flex-row items-center justify-center gap-2 bg-white/5 border border-white/10 rounded-xl py-3 active:bg-white/10"
                             >
                                 <RefreshCw size={14} color="#af8f69" />
-                                <Text className="text-[#af8f69] font-bold text-xs uppercase tracking-widest">Shuffle</Text>
+                                <Text className="text-[#af8f69] font-montserrat font-black text-xs uppercase tracking-widest">Shuffle</Text>
                             </Pressable>
 
                             <Pressable
                                 className="flex-1 flex-row items-center justify-center gap-2 bg-[#af8f69] rounded-xl py-3 active:opacity-80"
                             >
                                 <Share2 size={14} color="white" />
-                                <Text className="text-white font-bold text-xs uppercase tracking-widest">Share</Text>
+                                <Text className="text-white font-montserrat font-black text-xs uppercase tracking-widest">Share</Text>
                             </Pressable>
                         </View>
                     </Animated.View>

@@ -35,7 +35,7 @@ export const HeroFilter = ({ accentColor, categories, selectedCategory, onSelect
                                 />
                             )}
                             <Text
-                                className={`text-[12px] ${isSelected ? 'text-white font-bold' : 'text-white/50 font-semibold'}`}
+                                className={`text-[12px] font-quicksand ${isSelected ? 'text-white font-bold' : 'text-white/50 font-semibold'}`}
                             >
                                 {category.label}
                             </Text>

@@ -10,10 +10,10 @@ export const HeroEmptyState = ({ icon: Icon = Heart, message = "No items yet", d
                 color="rgba(255, 255, 255, 0.3)"
                 strokeWidth={1.5}
             />
-            <Text className="text-white/60 text-base font-semibold mt-4 text-center">
+            <Text className="text-white/60 text-base font-montserrat font-bold mt-4 text-center">
                 {message}
             </Text>
-            <Text className="text-white/40 text-[13px] font-medium mt-2 text-center">
+            <Text className="text-white/40 text-[13px] font-quicksand font-medium mt-2 text-center">
                 {detail}
             </Text>
         </View>

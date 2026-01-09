@@ -122,8 +122,8 @@ export default function QiblaScreen() {
                     {/* Header */}
                     <View className="flex-row items-center justify-between mb-8 z-10">
                         <View>
-                            <Text className="text-white text-2xl font-bold tracking-tight">Qiblah</Text>
-                            <Text className="text-white/40 text-[10px] font-semibold tracking-[1.5px] uppercase mt-1">Holy Kaaba Direction</Text>
+                            <Text className="text-white text-2xl font-montserrat font-black tracking-tight">Qiblah</Text>
+                            <Text className="text-white/40 text-[10px] font-quicksand font-bold tracking-[1.5px] uppercase mt-1">Holy Kaaba Direction</Text>
                         </View>
                         <Pressable
                             onPress={() => router.back()}
@@ -157,19 +157,19 @@ export default function QiblaScreen() {
                                 {/* North - Exactly Centered At Top */}
                                 <View className="absolute top-4 left-0 right-0 items-center">
                                     <View className="w-[1.5px] h-3 bg-[#af8f69] mb-1.5" />
-                                    <Text className="text-[#af8f69] text-[12px] font-black tracking-widest">N</Text>
+                                    <Text className="text-[#af8f69] text-[12px] font-montserrat font-black tracking-widest">N</Text>
                                 </View>
 
                                 {/* South - Exactly Symmetric to North */}
                                 <View className="absolute bottom-4 left-0 right-0 items-center opacity-40">
-                                    <Text className="text-white text-[10px] font-bold">S</Text>
+                                    <Text className="text-white text-[10px] font-montserrat font-bold">S</Text>
                                     <View className="w-[1.5px] h-2 bg-white/40 mt-1.5" />
                                 </View>
 
                                 {/* West */}
                                 <View className="absolute left-4 top-0 bottom-0 justify-center items-center opacity-40">
                                     <View className="flex-row items-center">
-                                        <Text className="text-white text-[10px] font-bold mr-1.5">W</Text>
+                                        <Text className="text-white text-[10px] font-montserrat font-bold mr-1.5">W</Text>
                                         <View className="w-2 h-[1.5px] bg-white/40" />
                                     </View>
                                 </View>
@@ -178,7 +178,7 @@ export default function QiblaScreen() {
                                 <View className="absolute right-4 top-0 bottom-0 justify-center items-center opacity-40">
                                     <View className="flex-row items-center">
                                         <View className="w-2 h-[1.5px] bg-white/40" />
-                                        <Text className="text-white text-[10px] font-bold ml-1.5">E</Text>
+                                        <Text className="text-white text-[10px] font-montserrat font-bold ml-1.5">E</Text>
                                     </View>
                                 </View>
                             </Animated.View>
@@ -216,7 +216,7 @@ export default function QiblaScreen() {
                             {isAligned && (
                                 <View className="flex-row items-center gap-3">
                                     <View className="w-4 h-[1px] bg-[#af8f69]/30" />
-                                    <Text className="text-[#af8f69] text-[11px] font-black tracking-[4px] uppercase">
+                                    <Text className="text-[#af8f69] text-[11px] font-montserrat font-black tracking-[4px] uppercase">
                                         Aligned to Kaaba
                                     </Text>
                                     <View className="w-4 h-[1px] bg-[#af8f69]/30" />
@@ -228,23 +228,23 @@ export default function QiblaScreen() {
                         <View className="mt-8 items-center">
                             <View className="flex-row items-center gap-2 mb-3 bg-white/5 py-1.5 px-4 rounded-full border border-white/5">
                                 <Crosshair size={12} color="#af8f69" strokeWidth={3} />
-                                <Text className="text-white/40 text-[9px] font-black uppercase tracking-[2.5px]">
-                                    Bearing <Text className="text-white">{Math.round(qiblaDir)}°</Text>
+                                <Text className="text-white/40 text-[9px] font-quicksand font-bold uppercase tracking-[2.5px]">
+                                    Bearing <Text className="text-white font-montserrat font-black">{Math.round(qiblaDir)}°</Text>
                                 </Text>
                             </View>
 
                             <View className="flex-row gap-8 mt-1">
                                 <View className="items-center">
-                                    <Text className="text-white/20 text-[8px] font-bold uppercase tracking-widest mb-1">Heading</Text>
+                                    <Text className="text-white/20 text-[8px] font-quicksand font-bold uppercase tracking-widest mb-1">Heading</Text>
                                     <View className="flex-row items-baseline">
-                                        <Text className="text-white/90 text-2xl font-black">{Math.round(heading)}°</Text>
+                                        <Text className="text-white/90 text-2xl font-montserrat font-black">{Math.round(heading)}°</Text>
                                     </View>
                                 </View>
                                 <View className="w-[1px] h-10 bg-white/10" />
                                 <View className="items-center">
-                                    <Text className="text-white/20 text-[8px] font-bold uppercase tracking-widest mb-1">Target</Text>
+                                    <Text className="text-white/20 text-[8px] font-quicksand font-bold uppercase tracking-widest mb-1">Target</Text>
                                     <View className="flex-row items-baseline">
-                                        <Text className="text-[#af8f69] text-2xl font-black">{Math.round(qiblaDir)}°</Text>
+                                        <Text className="text-[#af8f69] text-2xl font-montserrat font-black">{Math.round(qiblaDir)}°</Text>
                                     </View>
                                 </View>
                             </View>

@@ -91,7 +91,7 @@ export default function QuranScreen() {
         return (
             <View className="flex-1 justify-center items-center bg-[#0f0d0c]">
                 <ActivityIndicator size="large" color="#af8f69" />
-                <Text className="text-white/40 mt-4 font-medium italic">Preparing the Revelation...</Text>
+                <Text className="text-white/40 mt-4 font-quicksand font-bold italic">Preparing the Revelation...</Text>
             </View>
         );
     }
@@ -151,7 +151,7 @@ export default function QuranScreen() {
                         className="rounded-2xl items-center justify-center bg-white/5 border border-dashed border-white/20"
                     >
                         <RefreshCw size={32} color="#af8f69" opacity={0.5} />
-                        <Text className="text-white/40 font-bold mt-4 uppercase tracking-[2px] text-xs">Discover More</Text>
+                        <Text className="text-white/40 font-montserrat font-black mt-4 uppercase tracking-[2px] text-xs">Discover More</Text>
                     </Pressable>
                 </Animated.ScrollView>
             </View>
@@ -160,7 +160,7 @@ export default function QuranScreen() {
             <View className="items-center pb-6">
                 <View className="flex-row items-center gap-2 bg-white/5 px-4 py-2 rounded-full border border-white/5">
                     <Sparkles size={12} color="#af8f69" />
-                    <Text className="text-white/30 text-[9px] font-bold uppercase tracking-[1px]">
+                    <Text className="text-white/30 text-[9px] font-quicksand font-bold uppercase tracking-[1px]">
                         Paging through the eternal signs
                     </Text>
                 </View>

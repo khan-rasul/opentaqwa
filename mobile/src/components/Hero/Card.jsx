@@ -107,14 +107,14 @@ export const HeroCard = ({
 
                             {/* Transliteration */}
                             {item.transliteration && (
-                                <Text className="text-white/90 text-base font-semibold italic text-center mb-3">
+                                <Text className="text-white/90 text-[17px] font-quicksand font-bold italic text-center mb-3">
                                     {item.transliteration}
                                 </Text>
                             )}
 
                             {/* Translation */}
                             {item.translation && (
-                                <Text className="text-white/85 text-[15px] font-medium text-center leading-6 mb-6">
+                                <Text className="text-white/85 text-[15px] font-quicksand font-medium text-center leading-6 mb-6">
                                     "{item.translation}"
                                 </Text>
                             )}
@@ -125,7 +125,7 @@ export const HeroCard = ({
                                     onPress={() => setShowBenefit(!showBenefit)}
                                     className="bg-white/10 py-3 px-5 rounded-2xl border border-white/15 self-center active:opacity-70"
                                 >
-                                    <Text className="text-white text-[13px] font-semibold text-center">
+                                    <Text className="text-white text-[13px] font-montserrat font-black text-center uppercase tracking-widest">
                                         {showBenefit ? "Hide Benefit" : "Show Benefit"}
                                     </Text>
                                 </Pressable>
@@ -135,13 +135,13 @@ export const HeroCard = ({
                             {showBenefit && item.benefit && (
                                 <View className="mt-5">
                                     <View className="bg-black/20 p-4 rounded-2xl border border-white/10">
-                                        <Text className="text-white/75 text-[13px] font-medium leading-5 mb-3 text-center">
+                                        <Text className="text-white/75 text-[13px] font-quicksand font-medium leading-5 mb-3 text-center">
                                             {item.benefit}
                                         </Text>
                                         {item.reference && (
                                             <View className="flex-row items-center justify-center gap-1.5">
                                                 <BookOpen size={12} color="rgba(255, 255, 255, 0.5)" />
-                                                <Text className="text-white/50 text-[11px] font-medium italic">
+                                                <Text className="text-white/50 text-[11px] font-montserrat font-bold italic uppercase tracking-wider">
                                                     {item.reference}
                                                 </Text>
                                             </View>
