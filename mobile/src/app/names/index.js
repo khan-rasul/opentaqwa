@@ -1,134 +1,103 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect } from "react";
 import {
     View,
     Text,
-    FlatList,
-    TextInput,
     ActivityIndicator,
     Pressable,
-    Dimensions,
+    ImageBackground,
+    ScrollView,
 } from "react-native";
 import { useRouter } from "expo-router";
-import { Search, ChevronLeft, Sparkles, BookOpen } from "lucide-react-native";
+import { ChevronLeft, Sparkles, BookOpen, Quote, Share2, RefreshCw } from "lucide-react-native";
 import { asmaUlHusnaApi } from "@opentaqwa/shared";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { LinearGradient } from "expo-linear-gradient";
 import Animated, {
+    FadeIn,
     FadeInDown,
     Layout,
-    FadeIn
+    useAnimatedStyle,
+    useSharedValue,
+    withSpring,
+    withSequence,
+    withTiming
 } from "react-native-reanimated";
-
-const { width: SCREEN_WIDTH } = Dimensions.get("window");
-const COLUMN_WIDTH = (SCREEN_WIDTH - 36) / 2; // 12px gap, 12px padding
 
 export default function NamesScreen() {
     const router = useRouter();
     const insets = useSafeAreaInsets();
-    const [names, setNames] = useState([]);
+    const [nameData, setNameData] = useState(null);
     const [loading, setLoading] = useState(true);
-    const [searchQuery, setSearchQuery] = useState("");
+    const [showSummary, setShowSummary] = useState(false);
+
+    const scale = useSharedValue(1);
 
     useEffect(() => {
-        fetchNames();
+        fetchDailyName();
     }, []);
 
-    const fetchNames = async () => {
+    const fetchDailyName = async () => {
         try {
             setLoading(true);
-            const data = await asmaUlHusnaApi.getAllNames();
-            setNames(data);
+            const data = await asmaUlHusnaApi.getDailyName();
+            setNameData(data);
         } catch (error) {
-            console.error("Failed to fetch names:", error);
+            console.error("Failed to fetch daily name:", error);
         } finally {
             setLoading(false);
+            setShowSummary(false);
         }
     };
 
-    const filteredNames = useMemo(() => {
-        if (!searchQuery.trim()) return names;
-        const query = searchQuery.toLowerCase();
-        return names.filter(
-            (item) =>
-                item.english.toLowerCase().includes(query) ||
-                item.meaning.toLowerCase().includes(query) ||
-                item.arabic.includes(query)
-        );
-    }, [names, searchQuery]);
+    const fetchRandomName = async () => {
+        scale.value = withSequence(withTiming(0.95), withSpring(1));
+        try {
+            setLoading(true);
+            const randomId = Math.floor(Math.random() * 99) + 1;
+            const data = await asmaUlHusnaApi.getNameById(randomId);
+            setNameData(data);
+        } catch (error) {
+            console.error("Failed to fetch random name:", error);
+        } finally {
+            setLoading(false);
+            setShowSummary(false);
+        }
+    };
 
-    const renderItem = ({ item, index }) => (
-        <Animated.View
-            entering={FadeInDown.delay(index * 20).duration(400)}
-            layout={Layout.springify()}
-            style={{ width: COLUMN_WIDTH, marginBottom: 12 }}
-        >
-            <Pressable className="flex-1">
-                <View
-                    className="bg-[rgba(26,22,20,0.5)] border-[0.5px] border-white/10 rounded-2xl overflow-hidden shadow-black"
-                    style={{
-                        shadowOffset: { width: 0, height: 4 },
-                        shadowOpacity: 0.2,
-                        shadowRadius: 8,
-                        elevation: 5,
-                    }}
-                >
-                    <LinearGradient
-                        colors={["rgba(255,255,255,0.05)", "rgba(255,255,255,0)"]}
-                        className="p-4 items-center h-[180px] justify-between"
-                    >
-                        {/* Number Tag */}
-                        <View className="absolute top-2 left-2 w-6 h-6 rounded-full bg-white/5 items-center justify-center border border-white/10">
-                            <Text className="text-white/40 text-[9px] font-bold">{item.number}</Text>
-                        </View>
+    const animatedStyle = useAnimatedStyle(() => ({
+        transform: [{ scale: scale.value }]
+    }));
 
-                        {/* Arabic */}
-                        <View className="mt-4">
-                            <Text className="text-[#af8f69] text-3xl font-bold text-center mb-1">
-                                {item.arabic}
-                            </Text>
-                        </View>
-
-                        {/* Content */}
-                        <View className="items-center">
-                            <Text className="text-white text-sm font-bold tracking-tight text-center" numberOfLines={1}>
-                                {item.english}
-                            </Text>
-                            <Text className="text-white/40 text-[10px] italic text-center mt-1" numberOfLines={2}>
-                                {item.meaning}
-                            </Text>
-                        </View>
-                    </LinearGradient>
-                </View>
-            </Pressable>
-        </Animated.View>
-    );
-
-    if (loading) {
+    if (loading && !nameData) {
         return (
             <View className="flex-1 justify-center items-center bg-[#0f0d0c]">
                 <ActivityIndicator size="large" color="#af8f69" />
-                <Text className="text-white/60 mt-4 font-medium italic">Revealing the Divine Names...</Text>
+                <Text className="text-white/40 mt-4 font-medium italic">Revealing the Divine Name...</Text>
             </View>
         );
     }
 
     return (
-        <View className="flex-1 bg-[#0f0d0c]">
-            {/* Floating Header Space */}
-            <View style={{ height: insets.top + 70 }} />
+        <View className="flex-1">
+            {/* Header Space */}
+            <View className="pt-3" />
 
-            <View className="flex-1 px-3">
+            <ScrollView
+                className="flex-1 px-4"
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={{ paddingBottom: insets.bottom + 40 }}
+            >
                 {/* Screen Header */}
                 <View className="flex-row items-center justify-between mb-6 px-1">
                     <View>
                         <View className="flex-row items-center gap-2">
                             <Sparkles size={18} color="#af8f69" />
                             <Text className="text-white text-2xl font-black tracking-tight">
-                                Asmā’ al-Husnā
+                                al-Asmā’
                             </Text>
                         </View>
                         <Text className="text-white/40 text-[10px] font-bold uppercase tracking-[2px] mt-1">
-                            99 Beautiful Names of Allah
+                            Divine Reflection of the Day
                         </Text>
                     </View>
 
@@ -140,38 +109,137 @@ export default function NamesScreen() {
                     </Pressable>
                 </View>
 
-                {/* Search Bar */}
-                <View
-                    className="flex-row items-center bg-white/5 border border-white/10 rounded-2xl px-4 py-3.5 mb-6"
-                >
-                    <Search size={18} color="rgba(255,255,255,0.4)" />
-                    <TextInput
-                        placeholder="Search by name or meaning..."
-                        placeholderTextColor="rgba(255,255,255,0.3)"
-                        className="flex-1 ml-3 text-white text-[15px] font-medium"
-                        value={searchQuery}
-                        onChangeText={setSearchQuery}
-                    />
-                </View>
+                {nameData && (
+                    <Animated.View
+                        entering={FadeInDown.duration(800)}
+                        style={animatedStyle}
+                    >
+                        {/* Main Name Card */}
+                        <View
+                            className="rounded-2xl overflow-hidden bg-black shadow-black shadow-offset-[0,10px] shadow-opacity-30 shadow-radius-20"
+                            style={{ elevation: 10 }}
+                        >
+                            <LinearGradient
+                                colors={["#625443", "#62544399"]}
+                                style={{ padding: 16, paddingBottom: 20 }}
+                            >
+                                {/* Decorative Elements */}
+                                <View className="absolute top-[-20] right-[-20] w-40 h-40 rounded-full bg-white/5 opacity-20" />
+                                <View className="absolute bottom-[-10] left-[-10] w-20 h-20 rounded-full bg-[#af8f69]/10 opacity-30" />
 
-                {/* Names Grid */}
-                <FlatList
-                    data={filteredNames}
-                    renderItem={renderItem}
-                    keyExtractor={(item) => item.number.toString()}
-                    numColumns={2}
-                    columnWrapperStyle={{ justifyContent: "space-between" }}
-                    showsVerticalScrollIndicator={false}
-                    contentContainerStyle={{
-                        paddingBottom: insets.bottom + 20,
-                    }}
-                    ListEmptyComponent={
-                        <View className="flex-1 items-center justify-center pt-20">
-                            <Text className="text-white/40 italic font-medium">No names found matches your search.</Text>
+                                {/* Number */}
+                                <View className="items-center mb-6">
+                                    <View className="bg-white/5 px-3 py-1 rounded-full border border-white/10">
+                                        <Text className="text-white/40 text-[11px] font-black uppercase tracking-[1.5px]">
+                                            Name {nameData.number} of 99
+                                        </Text>
+                                    </View>
+                                </View>
+
+                                {/* Arabic Name */}
+                                <View className="items-center mb-6">
+                                    <Text className="text-[#af8f69] text-[72px] font-bold text-center leading-[90px]">
+                                        {nameData.arabic}
+                                    </Text>
+                                </View>
+
+                                {/* Transliteration & Meaning */}
+                                <View className="items-center mb-8">
+                                    <Text className="text-white text-2xl font-black tracking-tight text-center mb-2">
+                                        {nameData.english}
+                                    </Text>
+                                    <View className="flex-row items-center gap-2 bg-[#af8f69]/10 px-4 py-1.5 rounded-full">
+                                        <Text className="text-[#af8f69] text-sm font-bold italic">
+                                            {nameData.meaning}
+                                        </Text>
+                                    </View>
+                                </View>
+
+                                {/* Separator */}
+                                <View className="h-[1px] w-full bg-white/5 mb-8" />
+
+                                {/* Description */}
+                                <View className="flex-row gap-3">
+                                    <Quote size={20} color="#af8f69" opacity={0.5} />
+                                    <Text className="flex-1 text-white/70 text-[15px] leading-[22px] font-medium italic">
+                                        {nameData.description}
+                                    </Text>
+                                </View>
+                            </LinearGradient>
                         </View>
-                    }
-                />
-            </View>
+
+                        {/* Deep Reflection Section */}
+                        <Animated.View
+                            layout={Layout.springify()}
+                            entering={FadeIn.delay(200)}
+                            className="mt-6 bg-[rgba(26,22,20,0.5)] border-[0.5px] border-white/10 rounded-2xl overflow-hidden"
+                        >
+                            <Pressable
+                                onPress={() => setShowSummary(!showSummary)}
+                                className="flex-row items-center justify-between p-5"
+                            >
+                                <View className="flex-row items-center gap-2">
+                                    <Sparkles size={14} color="#af8f69" />
+                                    <Text className="text-white/60 text-[11px] font-bold uppercase tracking-[1.5px]">
+                                        Summary & Wisdom
+                                    </Text>
+                                </View>
+                                <Text className="text-[#af8f69] text-[10px] font-black uppercase tracking-[1px]">
+                                    {showSummary ? "Hide" : "Discover"}
+                                </Text>
+                            </Pressable>
+
+                            {showSummary && (
+                                <Animated.View
+                                    entering={FadeInDown.duration(400)}
+                                    className="px-5 pb-6 border-t border-white/5 pt-4"
+                                >
+                                    <Text className="text-white/80 text-[14px] leading-[21px] font-normal mb-6">
+                                        {nameData.summary}
+                                    </Text>
+
+                                    {/* Quran References */}
+                                    {nameData.location && nameData.location.filter(l => l).length > 0 && (
+                                        <View>
+                                            <View className="flex-row items-center gap-2 mb-3">
+                                                <BookOpen size={14} color="#af8f69" />
+                                                <Text className="text-white/60 text-[11px] font-bold uppercase tracking-[1px]">
+                                                    Referenced in Qur’ān
+                                                </Text>
+                                            </View>
+                                            <View className="flex-row flex-wrap gap-2">
+                                                {nameData.location.filter(l => l).map((loc, idx) => (
+                                                    <View key={idx} className="bg-white/5 px-3 py-1.5 rounded-lg border border-white/10">
+                                                        <Text className="text-white/50 text-[12px] font-mono">Surah {loc}</Text>
+                                                    </View>
+                                                ))}
+                                            </View>
+                                        </View>
+                                    )}
+                                </Animated.View>
+                            )}
+                        </Animated.View>
+
+                        {/* Actions */}
+                        <View className="flex-row gap-3 mt-6">
+                            <Pressable
+                                onPress={fetchRandomName}
+                                className="flex-1 flex-row items-center justify-center gap-2 bg-white/5 border border-white/10 rounded-xl py-3 active:bg-white/10"
+                            >
+                                <RefreshCw size={14} color="#af8f69" />
+                                <Text className="text-[#af8f69] font-bold text-xs uppercase tracking-widest">Shuffle</Text>
+                            </Pressable>
+
+                            <Pressable
+                                className="flex-1 flex-row items-center justify-center gap-2 bg-[#af8f69] rounded-xl py-3 active:opacity-80"
+                            >
+                                <Share2 size={14} color="white" />
+                                <Text className="text-white font-bold text-xs uppercase tracking-widest">Share</Text>
+                            </Pressable>
+                        </View>
+                    </Animated.View>
+                )}
+            </ScrollView>
         </View>
     );
 }
