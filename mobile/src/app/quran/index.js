@@ -255,13 +255,13 @@ function QuranCard({ item, index, scrollX, isFavorited, onToggleFavorite, onShar
                             {/* English Translation Section at the bottom */}
                             <View className="mt-auto">
                                 <View className="bg-black/20 p-5 rounded-2xl border border-white/10">
-                                    <Text className="text-white/90 text-base font-medium italic text-center leading-6 mb-4">
+                                    <Text className="text-white text-[15px] font-quicksand font-semibold italic text-center leading-6 mb-4">
                                         "{item.english}"
                                     </Text>
 
                                     <View className="flex-row items-center justify-center gap-1.5 pt-3 border-t border-white/5 opacity-60">
                                         <BookOpen size={12} color="white" />
-                                        <Text className="text-white text-[10px] font-black uppercase tracking-widest">
+                                        <Text className="text-white text-[10px] font-montserrat font-black uppercase tracking-widest">
                                             {item.reference}
                                         </Text>
                                     </View>

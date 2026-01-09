@@ -92,11 +92,11 @@ export default function NamesScreen() {
                     <View>
                         <View className="flex-row items-center gap-2">
                             <Sparkles size={18} color="#af8f69" />
-                            <Text className="text-white text-2xl font-black tracking-tight">
+                            <Text className="text-white text-2xl font-montserrat font-black tracking-tight">
                                 al-Asmā’
                             </Text>
                         </View>
-                        <Text className="text-white/40 text-[10px] font-bold uppercase tracking-[2px] mt-1">
+                        <Text className="text-white/40 text-[10px] font-quicksand font-bold uppercase tracking-[2px] mt-1">
                             Divine Reflection of the Day
                         </Text>
                     </View>
@@ -145,11 +145,11 @@ export default function NamesScreen() {
 
                                 {/* Transliteration & Meaning */}
                                 <View className="items-center mb-8">
-                                    <Text className="text-white text-2xl font-black tracking-tight text-center mb-2">
+                                    <Text className="text-white text-2xl font-montserrat font-black tracking-tight text-center mb-2">
                                         {nameData.english}
                                     </Text>
                                     <View className="flex-row items-center gap-2 bg-[#af8f69]/10 px-4 py-1.5 rounded-full">
-                                        <Text className="text-[#af8f69] text-sm font-bold italic">
+                                        <Text className="text-[#af8f69] text-sm font-quicksand font-bold italic">
                                             {nameData.meaning}
                                         </Text>
                                     </View>
@@ -161,7 +161,7 @@ export default function NamesScreen() {
                                 {/* Description */}
                                 <View className="flex-row gap-3">
                                     <Quote size={20} color="#af8f69" opacity={0.5} />
-                                    <Text className="flex-1 text-white/70 text-[15px] leading-[22px] font-medium italic">
+                                    <Text className="flex-1 text-white/70 text-[15px] leading-[22px] font-quicksand font-medium italic">
                                         {nameData.description}
                                     </Text>
                                 </View>
@@ -194,7 +194,7 @@ export default function NamesScreen() {
                                     entering={FadeInDown.duration(400)}
                                     className="px-5 pb-6 border-t border-white/5 pt-4"
                                 >
-                                    <Text className="text-white/80 text-[14px] leading-[21px] font-normal mb-6">
+                                    <Text className="text-white/80 text-[14px] leading-[21px] font-quicksand font-normal mb-6">
                                         {nameData.summary}
                                     </Text>
 

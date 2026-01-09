@@ -107,12 +107,12 @@ export default function PrayerTime() {
             <View className="flex-1 justify-between">
               {/* Header */}
               <View>
-                <Text className="text-white text-xl font-bold mb-1 tracking-tight">
+                <Text className="text-white text-xl font-montserrat font-bold mb-1 tracking-tight">
                   Adhān
                 </Text>
                 <View className="flex-row items-center gap-1">
                   <MapPin size={12} color="rgba(255, 255, 255, 0.8)" />
-                  <Text className="text-white/80 text-[12px] font-medium">
+                  <Text className="text-white/80 text-[12px] font-quicksand font-medium">
                     {locationName.city}{locationName.country ? `, ${locationName.country}` : ''}
                   </Text>
                 </View>
@@ -120,13 +120,13 @@ export default function PrayerTime() {
 
               {/* Middle Section - Countdown */}
               <View className="items-center py-5">
-                <Text className="text-white text-[32px] font-bold mb-2 tracking-widest">
+                <Text className="text-white text-[32px] font-montserrat font-black mb-2 tracking-widest">
                   {countdown || "--:--:--"}
                 </Text>
-                <Text className="text-white/90 text-[15px] font-semibold mb-3">
+                <Text className="text-white/90 text-[15px] font-quicksand font-bold mb-3">
                   Until {nextPrayer?.name} ({nextPrayer?.arabic})
                 </Text>
-                <Text className="text-white/70 text-[11px] italic text-center leading-4 px-5">
+                <Text className="text-white/70 text-[11px] font-quicksand italic text-center leading-4 px-5">
                   "Indeed, performing prayers is a duty on the believers at the
                   appointed times."
                 </Text>
@@ -153,10 +153,10 @@ export default function PrayerTime() {
                             strokeWidth={2}
                           />
                         </View>
-                        <Text className={`text-[11px] mb-0.5 ${isNext ? 'text-white font-bold' : 'text-white/80 font-semibold'}`}>
+                        <Text className={`text-[11px] mb-0.5 font-montserrat ${isNext ? 'text-white font-black' : 'text-white/80 font-bold'}`}>
                           {prayer.name}
                         </Text>
-                        <Text className={`text-[10px] font-medium ${isNext ? 'text-white/95' : 'text-white/70'}`}>
+                        <Text className={`text-[10px] font-quicksand font-bold ${isNext ? 'text-white/95' : 'text-white/70'}`}>
                           {prayer.time}
                         </Text>
                       </View>

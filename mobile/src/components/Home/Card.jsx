@@ -52,10 +52,10 @@ export default function Card({ title, subtitle, route, gradientColors }) {
 
           {/* Content */}
           <View className="flex-1 justify-end z-[1]">
-            <Text className="text-[9px] font-semibold text-white/65 mb-[3px] tracking-[1.5px] uppercase">
+            <Text className="text-[9px] font-quicksand font-bold text-white/65 mb-[3px] tracking-[1.5px] uppercase">
               {subtitle}
             </Text>
-            <Text className="text-[18px] font-bold text-white tracking-[0.2px]">
+            <Text className="text-[18px] font-montserrat font-black text-white tracking-[0.2px]">
               {title}
             </Text>
           </View>

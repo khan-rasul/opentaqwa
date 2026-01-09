@@ -74,10 +74,10 @@ function FeatureCard({ title, subtitle, route, icon: Icon, color }) {
 
           {/* Text */}
           <View className="items-center z-[1]">
-            <Text className="text-[9px] font-bold text-white/50 mb-0.5 tracking-[1.5px] uppercase text-center">
+            <Text className="text-[9px] font-quicksand font-bold text-white/50 mb-0.5 tracking-[1.5px] uppercase text-center">
               {subtitle}
             </Text>
-            <Text className="text-[15px] font-bold text-white tracking-[0.3px] text-center">
+            <Text className="text-[15px] font-montserrat font-bold text-white tracking-[0.3px] text-center">
               {title}
             </Text>
           </View>

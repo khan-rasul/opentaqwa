@@ -20,9 +20,9 @@ export default function Tagline() {
             resizeMode="contain"
           />
 
-          <Text className="text-sm font-semibold text-white">
+          <Text className="text-sm font-montserrat font-bold text-white">
             Open
-            <Text className="text-[#af8f69] font-serif italic">Taqwā</Text>
+            <Text className="text-[#af8f69] font-great-vibes text-lg leading-4"> Taqwā</Text>
           </Text>
         </View>
       </View>

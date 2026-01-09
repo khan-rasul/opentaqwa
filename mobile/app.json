@@ -18,7 +18,8 @@
         "locationAlwaysPermission": "Allow OpenTaqwā to use your location to calculate accurate prayer times.",
         "locationWhenInUsePermission": "Allow OpenTaqwā to use your location to calculate accurate prayer times."
       }
-    ]
+    ],
+    "expo-font"
   ],
   "name": "mobile",
   "slug": "mobile",
