@@ -69,19 +69,17 @@ export const HeroCard = ({
                     <View className="flex-1 p-6">
                         {/* Actions */}
                         <View className="flex-row justify-between mb-6 z-[1]">
-                            <IconButton onPress={onPlayAudio}>
-                                <Volume2 size={20} color="#FFFFFF" strokeWidth={2} />
+                            <IconButton onPress={onToggleFavorite}>
+                                <Heart
+                                    size={20}
+                                    color={isFavorited ? "#550d0dff" : "#FFFFFF"}
+                                    fill={isFavorited ? "#550d0dff" : "none"}
+                                    strokeWidth={2}
+                                />
                             </IconButton>
 
                             <View className="flex-row gap-2.5">
-                                <IconButton onPress={onToggleFavorite}>
-                                    <Heart
-                                        size={20}
-                                        color={isFavorited ? "#550d0dff" : "#FFFFFF"}
-                                        fill={isFavorited ? "#550d0dff" : "none"}
-                                        strokeWidth={2}
-                                    />
-                                </IconButton>
+
 
                                 <IconButton onPress={onShare}>
                                     <Share2 size={20} color="#FFFFFF" strokeWidth={2} />

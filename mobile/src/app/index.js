@@ -2,7 +2,7 @@ import React from "react";
 import { ScrollView, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import Tagline from "@/components/Tagline";
+import Tagline from "@/components/Home/Tagline";
 import PrayerTime from "@/components/Home/PrayerTime";
 import Card from "@/components/Home/Card";
 import FeatureCards from "@/components/Home/FeatureCards";

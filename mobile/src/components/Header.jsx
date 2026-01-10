@@ -44,8 +44,8 @@ export default function Header() {
                 {nextPrayerDisplay}
               </Text>
               <View className="flex-row items-center gap-[3px] mt-[1px]">
-                <MapPin size={9} color="rgba(255, 255, 255, 0.7)" strokeWidth={2.5} />
-                <Text className="color-white/70 text-[9px] font-quicksand font-semibold uppercase tracking-wider" numberOfLines={1}>
+                <MapPin size={9} color="rgba(255, 255, 255, 0.7)" />
+                <Text className="color-white/70 text-[9px] font-quicksand font-semibold tracking-wider" numberOfLines={1}>
                   {loading ? "Detecting..." : `${locationName.city}, ${locationName.country}`}
                 </Text>
               </View>
