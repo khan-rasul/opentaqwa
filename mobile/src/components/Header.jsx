@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import { View, Text, Pressable, Image } from "react-native";
-import { Languages, User, MapPin, Bell } from "lucide-react-native";
+import { Languages, User, MapPin, Bell, LogOut } from "lucide-react-native";
 import { usePrayer } from "@/context/PrayerContext";
+import { useAuth } from "@/context/AuthContext";
+import { useRouter } from "expo-router";
 
 export default function Header() {
+  const router = useRouter();
   const { nextPrayer, locationName, loading } = usePrayer();
-  const isAuthenticated = false;
-  const user = null;
+  const { user, isAuthenticated, logout } = useAuth();
   const nextPrayerDisplay = loading ? "Loading..." : `${nextPrayer?.name || "---"}, ${nextPrayer?.time || "---"}`;
   const notificationsEnabled = true;
 
@@ -54,15 +56,11 @@ export default function Header() {
 
           {/* Right side - Action Buttons */}
           <View className="flex-row items-center gap-1.5">
-            <IconButton badge={notificationsEnabled}>
-              <Bell size={14} color="rgba(255, 255, 255, 0.9)" strokeWidth={2} />
-            </IconButton>
-
-            <IconButton>
-              <Languages size={14} color="rgba(255, 255, 255, 0.9)" strokeWidth={2} />
-            </IconButton>
-
-            <IconButton isUser isAuthenticated={isAuthenticated}>
+            <IconButton
+              isUser
+              isAuthenticated={isAuthenticated}
+              onPress={() => isAuthenticated ? logout() : router.push("/auth/login")}
+            >
               {isAuthenticated ? (
                 <Text className="color-white text-[9px] font-bold">
                   {getUserInitials(user)}
@@ -86,8 +84,8 @@ function IconButton({ children, onPress, badge, isUser, isAuthenticated }) {
       onPressIn={() => setPressed(true)}
       onPressOut={() => setPressed(false)}
       onPress={onPress}
-      className={`w-[30px] h-[30px] rounded-full justify-center items-center border-[0.5px] border-white/15 
-        ${isUser && isAuthenticated ? 'bg-[#af8f69]/90' : 'bg-white/10'} 
+      className={`w-[30px] h-[30px] rounded-full justify-center items-center  
+        ${isUser && isAuthenticated ? 'bg-[#af8f69]/90' : ''} 
         ${pressed ? 'opacity-70 scale-95' : 'opacity-100 scale-100'}`}
     >
       {children}

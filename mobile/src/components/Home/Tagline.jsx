@@ -15,7 +15,7 @@ export default function Tagline() {
         {/* Brand Name with Logo */}
         <View className="flex-row items-center gap-1.5">
           <Image
-            source={require("../../assets/icon.png")}
+            source={require("../../../assets/icon.png")}
             className="w-5 h-5"
             resizeMode="contain"
           />
