@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { View, Text, Pressable } from "react-native";
 import { useRouter } from "expo-router";
-import { BookOpen, Compass, Sparkles } from "lucide-react-native";
+import { BookOpen, Compass, Sparkles, Target } from "lucide-react-native";
 
 const featureCards = [
   {
@@ -25,6 +25,13 @@ const featureCards = [
     route: "/names",
     icon: Sparkles,
     color: "#B8A4B0",
+  },
+  {
+    title: "Goals",
+    subtitle: "Track Progress",
+    route: "/dhikr-goals",
+    icon: Target,
+    color: "#d4af37",
   },
 ];
 

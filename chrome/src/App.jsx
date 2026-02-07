@@ -19,7 +19,9 @@ import { LanguageProvider } from "./contexts/LanguageContext";
 import { AuthProvider } from "./contexts/AuthContext";
 import { LocationProvider } from "./contexts/LocationContext";
 import { NotificationProvider } from "./contexts/NotificationContext";
+import { DhikrGoalsProvider } from "./contexts/DhikrGoalsContext";
 import Footer from "./components/Footer";
+import DhikrGoalsPanel from "./components/DhikrGoals/DhikrGoalsPanel";
 
 const AppContent = () => {
   return (
@@ -43,6 +45,7 @@ const AppContent = () => {
           </div>
         </div>
         <PrayerTime />
+        <DhikrGoalsPanel />
         <Verse />
         <AsmaUlHusna />
         <Footer />
@@ -57,7 +60,9 @@ const App = () => {
       <AuthProvider>
         <NotificationProvider>
           <LanguageProvider>
-            <AppContent />
+            <DhikrGoalsProvider>
+              <AppContent />
+            </DhikrGoalsProvider>
           </LanguageProvider>
         </NotificationProvider>
       </AuthProvider>
