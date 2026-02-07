@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { ScrollView, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { Platform } from "react-native";
 
 import Tagline from "@/components/Home/Tagline";
 import PrayerTime from "@/components/Home/PrayerTime";

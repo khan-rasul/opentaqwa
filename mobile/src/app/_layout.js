@@ -1,7 +1,7 @@
 import "../global.css";
 import { useEffect } from "react";
 import { Slot } from "expo-router";
-import { View } from "react-native";
+import { View, Platform } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { StatusBar } from "expo-status-bar";
 import { SafeAreaProvider, useSafeAreaInsets } from "react-native-safe-area-context";
@@ -24,6 +24,15 @@ import { GreatVibes_400Regular } from '@expo-google-fonts/great-vibes';
 import Header from "@/components/Header";
 import { PrayerProvider } from "@/context/PrayerContext";
 import { AuthProvider } from "@/context/AuthContext";
+import { DhikrGoalsProvider } from "@/context/DhikrGoalsContext";
+
+// Import service for development testing (exposed to window in dev mode only)
+if (__DEV__ && typeof window !== 'undefined') {
+  import('@opentaqwa/shared').then(shared => {
+    window.dhikrGoalsService = shared.dhikrGoalsService;
+    window.dhikrList = shared.dhikrList;
+  }).catch(() => {});
+}
 
 // Keep the splash screen visible while we fetch resources
 SplashScreen.preventAutoHideAsync();
@@ -47,6 +56,7 @@ function LayoutContent() {
       SplashScreen.hideAsync();
     }
   }, [loaded, error]);
+
 
   if (!loaded && !error) {
     return null;
@@ -82,7 +92,9 @@ export default function Layout() {
     <SafeAreaProvider>
       <AuthProvider>
         <PrayerProvider>
-          <LayoutContent />
+          <DhikrGoalsProvider>
+            <LayoutContent />
+          </DhikrGoalsProvider>
         </PrayerProvider>
       </AuthProvider>
     </SafeAreaProvider>
