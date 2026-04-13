@@ -29,8 +29,7 @@ const PAGE_SUBTITLES = {
   "/favourites": "Your Collection",
 };
 
-const STACK_BACK = new Set(["/dhikr", "/dua", "/durood", "/names", "/qibla"]);
-const HOME_BACK = new Set(["/quran", "/prayer", "/favourites", "/more"]);
+const BACK_PATHS = new Set(["/dhikr", "/dua", "/durood", "/names", "/qibla", "/quran", "/prayer", "/favourites"]);
 
 export default function Header() {
   const router = useRouter();
@@ -40,10 +39,8 @@ export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const pageTitle = PAGE_TITLES[pathname];
   const pageSubtitle = PAGE_SUBTITLES[pathname];
-  const showBack = STACK_BACK.has(pathname) || HOME_BACK.has(pathname);
-  const handleBack = STACK_BACK.has(pathname)
-    ? () => router.back()
-    : () => router.push("/");
+  const showBack = BACK_PATHS.has(pathname);
+  const handleBack = () => router.back();
 
   return (
     <View
@@ -135,7 +132,7 @@ export default function Header() {
         }}
       >
         <Pressable
-          onPress={() => router.push("/(tabs)/favourites")}
+          onPress={() => router.push("/favourites")}
           style={{
             width: 34,
             height: 34,

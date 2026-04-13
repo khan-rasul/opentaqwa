@@ -1,6 +1,5 @@
-import "../global.css";
 import { useEffect } from "react";
-import { Slot } from "expo-router";
+import { Stack } from "expo-router";
 import { View } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { StatusBar } from "expo-status-bar";
@@ -52,24 +51,18 @@ function LayoutContent() {
   }
 
   return (
-    <View className="flex-1 bg-[#0f0d0c]">
+    <View style={{ flex: 1, backgroundColor: "#0f0d0c" }}>
       <LinearGradient
         colors={["#3d3530", "#2a2522", "#1a1614", "#0f0d0c"]}
         locations={[0, 0.3, 0.7, 1]}
         style={{ flex: 1 }}
       >
         <StatusBar style="light" />
-        {/* Persistent Header */}
-        <View
-          className="px-3 z-[100]"
-          style={{ paddingTop: insets.top + 8 }}
-        >
+        <View style={{ paddingHorizontal: 12, paddingTop: insets.top + 8, zIndex: 100 }}>
           <Header />
         </View>
-
-        {/* Content Area */}
-        <View className="flex-1">
-          <Slot />
+        <View style={{ flex: 1 }}>
+          <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: "transparent" } }} />
         </View>
       </LinearGradient>
     </View>

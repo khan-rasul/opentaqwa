@@ -1,4 +1,3 @@
-// components/Home/Card.js
 import { View, Text, Pressable } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useRouter } from "expo-router";
@@ -18,44 +17,28 @@ export default function Card({ title, subtitle, route, gradientColors }) {
     transform: [{ scale: scale.value }],
   }));
 
-  const handlePressIn = () => {
-    scale.value = withSpring(0.96, { damping: 15, stiffness: 150 });
-  };
-
-  const handlePressOut = () => {
-    scale.value = withSpring(1, { damping: 15, stiffness: 150 });
-  };
-
   return (
     <AnimatedPressable
-      onPressIn={handlePressIn}
-      onPressOut={handlePressOut}
+      onPressIn={() => { scale.value = withSpring(0.96, { damping: 15, stiffness: 150 }); }}
+      onPressOut={() => { scale.value = withSpring(1, { damping: 15, stiffness: 150 }); }}
       onPress={() => router.push(route)}
-      className="flex-1 rounded-2xl bg-black shadow-black shadow-offset-[6px,10px] shadow-opacity-45 shadow-radius-16"
-      style={[
-        {
-          elevation: 16,
-        },
-        animatedStyle,
-      ]}
+      style={[{ flex: 1, borderRadius: 16, backgroundColor: "#000", elevation: 16,
+        shadowColor: "#000", shadowOffset: { width: 6, height: 10 }, shadowOpacity: 0.45, shadowRadius: 16,
+      }, animatedStyle]}
     >
-      {/* Inner container with overflow hidden */}
-      <View className="flex-1 rounded-2xl overflow-hidden">
+      <View style={{ flex: 1, borderRadius: 16, overflow: "hidden" }}>
         <LinearGradient
           colors={[gradientColors[0], gradientColors[1] || gradientColors[0]]}
           start={[0.2, 0]}
           end={[1, 1]}
           style={{ flex: 1, padding: 16 }}
         >
-          {/* Decorative circle */}
-          <View className="absolute -bottom-6 -left-6 w-[70px] h-[70px] bg-white/5 rounded-full" />
-
-          {/* Content */}
-          <View className="flex-1 justify-end z-[1]">
-            <Text className="text-[9px] font-quicksand font-bold text-white/65 mb-[3px] tracking-[1.5px] uppercase">
+          <View style={{ position: "absolute", bottom: -24, left: -24, width: 70, height: 70, borderRadius: 35, backgroundColor: "rgba(255,255,255,0.05)" }} />
+          <View style={{ flex: 1, justifyContent: "flex-end", zIndex: 1 }}>
+            <Text style={{ fontSize: 9, fontFamily: "Quicksand-Bold", color: "rgba(255,255,255,0.65)", marginBottom: 3, textTransform: "uppercase", letterSpacing: 1.5 }}>
               {subtitle}
             </Text>
-            <Text className="text-[18px] font-montserrat font-black text-white tracking-[0.2px]">
+            <Text style={{ fontSize: 18, fontFamily: "Montserrat-Black", color: "white", letterSpacing: 0.2 }}>
               {title}
             </Text>
           </View>

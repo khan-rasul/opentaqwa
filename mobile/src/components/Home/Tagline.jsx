@@ -3,26 +3,20 @@ import { View, Text, Image } from "react-native";
 
 export default function Tagline() {
   return (
-    <View className="flex-1 rounded-xl overflow-hidden">
-      <View className="absolute -top-2.5 -right-2.5 w-[30px] h-[30px] bg-white/5 rounded-full" />
-
-      {/* Content */}
-      <View className="flex-1 justify-center items-start">
-        <Text className="text-[8px] font-light mb-1 text-white/60">
+    <View style={{ flex: 1, borderRadius: 12, overflow: "hidden" }}>
+      <View style={{ position: "absolute", top: -10, right: -10, width: 30, height: 30, borderRadius: 15, backgroundColor: "rgba(255,255,255,0.05)" }} />
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "flex-start" }}>
+        <Text style={{ fontSize: 8, fontWeight: "300", color: "rgba(255,255,255,0.6)", marginBottom: 4 }}>
           Companion for Ummah
         </Text>
-
-        {/* Brand Name with Logo */}
-        <View className="flex-row items-center gap-1.5">
+        <View style={{ flexDirection: "row", alignItems: "center", gap: 6 }}>
           <Image
             source={require("../../../assets/icon.png")}
-            className="w-5 h-5"
+            style={{ width: 20, height: 20 }}
             resizeMode="contain"
           />
-
-          <Text className="text-sm font-montserrat font-bold text-white">
-            Open
-            <Text className="text-[#af8f69] font-great-vibes text-lg leading-4"> Taqwā</Text>
+          <Text style={{ fontSize: 14, fontFamily: "Montserrat-Black", color: "white" }}>
+            Open<Text style={{ color: "#af8f69", fontFamily: "GreatVibes", fontSize: 18, lineHeight: 16 }}> Taqwā</Text>
           </Text>
         </View>
       </View>

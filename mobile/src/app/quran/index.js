@@ -12,6 +12,7 @@ export default function QuranScreen() {
   const insets = useSafeAreaInsets();
   const [verses, setVerses] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
   const [adding, setAdding] = useState(false);
   const { isSaved, toggle } = useFavoriteContent("quran");
 
@@ -19,6 +20,7 @@ export default function QuranScreen() {
 
   const loadInitialVerses = async () => {
     setLoading(true);
+    setError(false);
     try {
       const results = await Promise.all([
         quranApi.getRandomVerse(),
@@ -27,7 +29,7 @@ export default function QuranScreen() {
       ]);
       setVerses(results);
     } catch (e) {
-      console.error(e);
+      setError(true);
     } finally {
       setLoading(false);
     }
@@ -52,6 +54,33 @@ export default function QuranScreen() {
         <Text style={{ color: "rgba(255,255,255,0.3)", fontFamily: "Quicksand-Bold", fontSize: 11, marginTop: 12, fontStyle: "italic" }}>
           Preparing the Revelation...
         </Text>
+      </View>
+    );
+  }
+
+  if (error) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center", paddingHorizontal: 40 }}>
+        <Text style={{ color: "rgba(255,255,255,0.35)", fontFamily: "Montserrat-Black", fontSize: 15, textAlign: "center", letterSpacing: -0.2 }}>
+          Could not load verses
+        </Text>
+        <Text style={{ color: "rgba(255,255,255,0.2)", fontFamily: "Quicksand-Medium", fontSize: 12, marginTop: 6, textAlign: "center", lineHeight: 18 }}>
+          Check your connection and try again
+        </Text>
+        <Pressable
+          onPress={loadInitialVerses}
+          style={{
+            marginTop: 24, flexDirection: "row", alignItems: "center", gap: 8,
+            paddingVertical: 12, paddingHorizontal: 24, borderRadius: 14,
+            borderWidth: 0.5, borderColor: "rgba(175,143,105,0.25)",
+            backgroundColor: "rgba(175,143,105,0.06)",
+          }}
+        >
+          <RefreshCw size={14} color={ACCENT} />
+          <Text style={{ color: ACCENT, fontFamily: "Quicksand-Bold", fontSize: 12, textTransform: "uppercase", letterSpacing: 1.5 }}>
+            Try Again
+          </Text>
+        </Pressable>
       </View>
     );
   }

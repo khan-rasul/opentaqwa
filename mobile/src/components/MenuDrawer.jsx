@@ -25,7 +25,7 @@ const ITEMS = [
   {
     icon: Info,
     label: "About",
-    sublabel: "OpenTaqwā · v1.0.0",
+    sublabel: "OpenTaqwā · v0.0.1",
     onPress: null,
   },
 ];
