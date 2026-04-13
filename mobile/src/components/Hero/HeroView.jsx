@@ -1,18 +1,10 @@
 import React, { useState } from "react";
-import { View, Dimensions } from "react-native";
+import { View, ScrollView } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import Animated, {
-    useSharedValue,
-    useAnimatedScrollHandler,
-} from "react-native-reanimated";
 import { HeroHeader } from "./Header";
 import { HeroFilter } from "./Filter";
 import { HeroCard } from "./Card";
-import { HeroPagination } from "./Pagination";
 import { HeroEmptyState } from "./EmptyState";
-
-const { width: SCREEN_WIDTH } = Dimensions.get("window");
-const CARD_WIDTH = SCREEN_WIDTH - 40;
 
 export const HeroView = ({
     gradient,
@@ -27,16 +19,10 @@ export const HeroView = ({
     onShare,
     isFavorited,
     onToggleFavorite,
+    showBack = true,
 }) => {
     const insets = useSafeAreaInsets();
     const [selectedCategory, setSelectedCategory] = useState("all");
-    const scrollX = useSharedValue(0);
-
-    const scrollHandler = useAnimatedScrollHandler({
-        onScroll: (event) => {
-            scrollX.value = event.contentOffset.x;
-        },
-    });
 
     const filteredItems = collection.filter((item) => {
         if (selectedCategory === "all") return true;
@@ -45,20 +31,14 @@ export const HeroView = ({
     });
 
     return (
-        <View className="flex-1">
-            <View
-                className="mx-3 my-2 p-4 rounded-2xl bg-[rgba(26,22,20,0.5)] border-[0.5px] border-white/10 shadow-black"
-                style={{
-                    shadowOffset: { width: 0, height: 4 },
-                    shadowOpacity: 0.2,
-                    shadowRadius: 8,
-                    elevation: 5,
-                }}
-            >
+        <View style={{ flex: 1 }}>
+            {/* Sticky header + filter */}
+            <View style={{ paddingHorizontal: 16, paddingTop: 4, paddingBottom: 12 }}>
                 <HeroHeader
                     title={title}
                     subtitle={subtitle}
                     accentColor={accentColor}
+                    showBack={showBack}
                 />
                 <HeroFilter
                     accentColor={accentColor}
@@ -68,59 +48,33 @@ export const HeroView = ({
                 />
             </View>
 
-            <View className="flex-1">
-                {filteredItems.length > 0 ? (
-                    <>
-                        <Animated.ScrollView
-                            horizontal
-                            pagingEnabled
-                            showsHorizontalScrollIndicator={false}
-                            onScroll={scrollHandler}
-                            scrollEventThrottle={16}
-                            decelerationRate="fast"
-                            snapToInterval={CARD_WIDTH + 20}
-                            contentContainerStyle={{
-                                paddingHorizontal: 20,
-                                gap: 20,
-                                paddingBottom: insets.bottom,
-                            }}
-                            key={selectedCategory}
-                        >
-                            {filteredItems.map((item, index) => (
-                                <HeroCard
-                                    key={item.id}
-                                    cardGradient={gradient}
-                                    item={item}
-                                    index={index}
-                                    scrollX={scrollX}
-                                    isFavorited={isFavorited?.(item.id)}
-                                    onToggleFavorite={() => onToggleFavorite?.(item.id)}
-                                    cardWidth={CARD_WIDTH}
-                                    onPlayAudio={() => onPlayAudio?.(item)}
-                                    onShare={() => onShare?.(item)}
-                                />
-                            ))}
-                        </Animated.ScrollView>
-
-                        <View
-                            className="mt-[-20px]"
-                            style={{ paddingBottom: insets.bottom }}
-                        >
-                            <HeroPagination
-                                data={filteredItems}
-                                accentColor={accentColor}
-                                scrollX={scrollX}
-                                cardWidth={CARD_WIDTH}
-                            />
-                        </View>
-                    </>
-                ) : (
-                    <HeroEmptyState
-                        message={emptyStateMessage || "No items found"}
-                        detail={emptyStateDetail || "Try selecting a different category"}
-                    />
-                )}
-            </View>
+            {/* Content */}
+            {filteredItems.length > 0 ? (
+                <ScrollView
+                    showsVerticalScrollIndicator={false}
+                    contentContainerStyle={{
+                        paddingHorizontal: 16,
+                        paddingBottom: insets.bottom + 32,
+                        gap: 10,
+                    }}
+                >
+                    {filteredItems.map((item) => (
+                        <HeroCard
+                            key={item.id}
+                            item={item}
+                            accentColor={accentColor}
+                            isFavorited={isFavorited?.(item.id)}
+                            onToggleFavorite={() => onToggleFavorite?.(item.id)}
+                            onShare={() => onShare?.(item)}
+                        />
+                    ))}
+                </ScrollView>
+            ) : (
+                <HeroEmptyState
+                    message={emptyStateMessage || "No items found"}
+                    detail={emptyStateDetail || "Try selecting a different category"}
+                />
+            )}
         </View>
     );
 };

@@ -2,20 +2,36 @@ import React from "react";
 import { View, Text } from "react-native";
 import { Heart } from "lucide-react-native";
 
-export const HeroEmptyState = ({ icon: Icon = Heart, message = "No items yet", detail = "Try adding some to your favorites" }) => {
+export const HeroEmptyState = ({ icon: Icon = Heart, message = "No items yet", detail }) => {
     return (
-        <View className="flex-1 justify-center items-center px-10">
-            <Icon
-                size={48}
-                color="rgba(255, 255, 255, 0.3)"
-                strokeWidth={1.5}
-            />
-            <Text className="text-white/60 text-base font-montserrat font-bold mt-4 text-center">
+        <View style={{ flex: 1, justifyContent: "center", alignItems: "center", paddingHorizontal: 40 }}>
+            <Icon size={36} color="rgba(255,255,255,0.12)" strokeWidth={1.5} />
+            <Text
+                style={{
+                    color: "rgba(255,255,255,0.4)",
+                    fontFamily: "Montserrat-Black",
+                    fontSize: 14,
+                    marginTop: 16,
+                    textAlign: "center",
+                    letterSpacing: -0.2,
+                }}
+            >
                 {message}
             </Text>
-            <Text className="text-white/40 text-[13px] font-quicksand font-medium mt-2 text-center">
-                {detail}
-            </Text>
+            {!!detail && (
+                <Text
+                    style={{
+                        color: "rgba(255,255,255,0.2)",
+                        fontFamily: "Quicksand-Medium",
+                        fontSize: 12,
+                        marginTop: 6,
+                        textAlign: "center",
+                        lineHeight: 18,
+                    }}
+                >
+                    {detail}
+                </Text>
+            )}
         </View>
     );
 };
