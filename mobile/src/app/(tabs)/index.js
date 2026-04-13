@@ -1,6 +1,7 @@
 import React from "react";
-import { ScrollView, View } from "react-native";
+import { ScrollView, View, Pressable } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useRouter } from "expo-router";
 
 import Tagline from "@/components/Home/Tagline";
 import PrayerTime from "@/components/Home/PrayerTime";
@@ -9,6 +10,7 @@ import FeatureCards from "@/components/Home/FeatureCards";
 
 export default function Page() {
   const insets = useSafeAreaInsets();
+  const router = useRouter();
 
   return (
     <ScrollView
@@ -56,7 +58,9 @@ export default function Page() {
           </View>
         </View>
 
-        <PrayerTime />
+        <Pressable onPress={() => router.push("/prayer")} style={({ pressed }) => ({ opacity: pressed ? 0.9 : 1 })}>
+          <PrayerTime />
+        </Pressable>
         <FeatureCards />
       </View>
     </ScrollView>
