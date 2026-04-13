@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, Dimensions, Pressable, Image } from "react-native";
+import { View, Text, Dimensions, Image } from "react-native";
 import * as Location from "expo-location";
-import { ChevronLeft, Crosshair } from "lucide-react-native";
-import { useRouter } from "expo-router";
+import { Crosshair } from "lucide-react-native";
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
@@ -18,7 +17,6 @@ const COMPASS_SIZE = 280;
 const ACCENT = "#af8f69";
 
 export default function QiblaScreen() {
-  const router = useRouter();
   const insets = useSafeAreaInsets();
   const [heading, setHeading] = useState(0);
   const [qiblaDir, setQiblaDir] = useState(0);
@@ -116,23 +114,6 @@ export default function QiblaScreen() {
         shadowRadius: 20,
         elevation: 10,
       }}>
-        {/* Header */}
-        <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginBottom: 24, zIndex: 10 }}>
-          <View>
-            <Text style={{ color: "white", fontFamily: "Montserrat-Black", fontSize: 22, letterSpacing: -0.4 }}>
-              Qiblah
-            </Text>
-            <Text style={{ color: "rgba(255,255,255,0.3)", fontFamily: "Quicksand-Bold", fontSize: 9, textTransform: "uppercase", letterSpacing: 2, marginTop: 2 }}>
-              Holy Kaaba Direction
-            </Text>
-          </View>
-          <Pressable
-            onPress={() => router.back()}
-            style={{ width: 32, height: 32, alignItems: "center", justifyContent: "center", opacity: 0.7 }}
-          >
-            <ChevronLeft size={22} color={ACCENT} strokeWidth={2.5} />
-          </Pressable>
-        </View>
 
         {/* Compass area */}
         <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>

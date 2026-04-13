@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, ActivityIndicator, Pressable, ScrollView, Share } from "react-native";
-import { useRouter } from "expo-router";
-import { ChevronLeft, RefreshCw, Share2, BookOpen, ChevronDown, ChevronUp } from "lucide-react-native";
+import { RefreshCw, Share2, BookOpen, ChevronDown, ChevronUp } from "lucide-react-native";
 import { asmaUlHusnaApi } from "@opentaqwa/shared";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Animated, { FadeInDown } from "react-native-reanimated";
@@ -9,7 +8,6 @@ import Animated, { FadeInDown } from "react-native-reanimated";
 const ACCENT = "#af8f69";
 
 export default function NamesScreen() {
-  const router = useRouter();
   const insets = useSafeAreaInsets();
   const [nameData, setNameData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -74,23 +72,6 @@ export default function NamesScreen() {
         gap: 10,
       }}
     >
-      {/* Header row */}
-      <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginBottom: 6 }}>
-        <View>
-          <Text style={{ color: "white", fontFamily: "Montserrat-Black", fontSize: 22, letterSpacing: -0.4 }}>
-            al-Asmā'
-          </Text>
-          <Text style={{ color: "rgba(255,255,255,0.3)", fontFamily: "Quicksand-Bold", fontSize: 9, textTransform: "uppercase", letterSpacing: 2, marginTop: 2 }}>
-            99 Divine Names
-          </Text>
-        </View>
-        <Pressable
-          onPress={() => router.back()}
-          style={{ width: 32, height: 32, alignItems: "center", justifyContent: "center", opacity: 0.7 }}
-        >
-          <ChevronLeft size={22} color={ACCENT} strokeWidth={2.5} />
-        </Pressable>
-      </View>
 
       {nameData && (
         <Animated.View entering={FadeInDown.duration(500).springify()}>

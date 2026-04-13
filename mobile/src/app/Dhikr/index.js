@@ -16,10 +16,8 @@ export default function DhikrPage() {
 
   return (
     <HeroView
-      title="Adhkār"
       gradient={["#af8f69dd", "#af8f6977"]}
       accentColor="#af8f69"
-      subtitle="Remembrance Collection"
       categories={DHIKR_CATEGORIES}
       collection={dhikrList}
       emptyStateMessage="No favorites yet"

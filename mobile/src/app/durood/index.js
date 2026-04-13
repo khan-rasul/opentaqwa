@@ -16,10 +16,8 @@ export default function DuroodPage() {
 
   return (
     <HeroView
-      title="Durōōd"
       gradient={["#8B9D98dd", "#8B9D9877"]}
       accentColor="#8B9D98"
-      subtitle="Salutation Collection"
       categories={DUROOD_CATEGORIES}
       collection={duroodList}
       emptyStateMessage="No favorites yet"

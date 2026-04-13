@@ -66,16 +66,6 @@ export default function QuranScreen() {
         gap: 10,
       }}
     >
-      {/* Header */}
-      <View style={{ marginBottom: 6 }}>
-        <Text style={{ color: "white", fontFamily: "Montserrat-Black", fontSize: 22, letterSpacing: -0.4 }}>
-          al-Qur'ān
-        </Text>
-        <Text style={{ color: "rgba(255,255,255,0.3)", fontFamily: "Quicksand-Bold", fontSize: 9, textTransform: "uppercase", letterSpacing: 2, marginTop: 2 }}>
-          Divine Guidance
-        </Text>
-      </View>
-
       {/* Verse cards */}
       {verses.map((item, index) => (
         <VerseCard

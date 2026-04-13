@@ -45,16 +45,6 @@ export default function FavouritesScreen() {
 
   return (
     <View style={{ flex: 1 }}>
-      {/* Header */}
-      <View style={{ paddingHorizontal: 16, paddingTop: 4, paddingBottom: 16 }}>
-        <Text style={{ color: "white", fontFamily: "Montserrat-Black", fontSize: 22, letterSpacing: -0.4 }}>
-          Saved
-        </Text>
-        <Text style={{ color: "rgba(255,255,255,0.3)", fontFamily: "Quicksand-Bold", fontSize: 9, textTransform: "uppercase", letterSpacing: 2, marginTop: 2 }}>
-          Your favourites
-        </Text>
-      </View>
-
       {hasAny ? (
         <ScrollView
           showsVerticalScrollIndicator={false}

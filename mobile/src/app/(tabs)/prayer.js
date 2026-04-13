@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, ScrollView, Pressable, ActivityIndicator } from "react-native";
+import { View, Text, ScrollView, ActivityIndicator } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { LinearGradient } from "expo-linear-gradient";
-import { MapPin, RefreshCw, Clock } from "lucide-react-native";
+import { Clock } from "lucide-react-native";
 import { usePrayer } from "@/context/PrayerContext";
 
 function useCountdown(targetDate) {
@@ -32,7 +32,7 @@ function useCountdown(targetDate) {
 
 export default function PrayerScreen() {
   const insets = useSafeAreaInsets();
-  const { prayerTimes, nextPrayer, locationName, loading, error, refresh } = usePrayer();
+  const { prayerTimes, nextPrayer, locationName, loading, error } = usePrayer();
   const countdown = useCountdown(nextPrayer?.date);
 
   return (
@@ -44,34 +44,6 @@ export default function PrayerScreen() {
         paddingBottom: insets.bottom + 32,
       }}
     >
-      {/* Location row */}
-      <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginBottom: 20 }}>
-        <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
-          <MapPin size={13} color="#af8f69" />
-          <View>
-            <Text style={{ color: "white", fontFamily: "Montserrat-Black", fontSize: 15, letterSpacing: -0.3 }}>
-              {loading ? "Detecting..." : locationName.city}
-            </Text>
-            {!!locationName.country && (
-              <Text style={{ color: "rgba(255,255,255,0.35)", fontFamily: "Quicksand-Bold", fontSize: 10, textTransform: "uppercase", letterSpacing: 1.5 }}>
-                {locationName.country}
-              </Text>
-            )}
-          </View>
-        </View>
-        <Pressable
-          onPress={refresh}
-          disabled={loading}
-          style={{
-            width: 36, height: 36, borderRadius: 18,
-            backgroundColor: "rgba(255,255,255,0.04)",
-            borderWidth: 0.5, borderColor: "rgba(255,255,255,0.1)",
-            alignItems: "center", justifyContent: "center",
-          }}
-        >
-          <RefreshCw size={13} color={loading ? "rgba(255,255,255,0.15)" : "#af8f69"} />
-        </Pressable>
-      </View>
 
       {/* Loading */}
       {loading && (

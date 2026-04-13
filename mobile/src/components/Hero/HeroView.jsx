@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { View, ScrollView } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { HeroHeader } from "./Header";
 import { HeroFilter } from "./Filter";
 import { HeroCard } from "./Card";
 import { HeroEmptyState } from "./EmptyState";
@@ -9,8 +8,6 @@ import { HeroEmptyState } from "./EmptyState";
 export const HeroView = ({
     gradient,
     accentColor,
-    title,
-    subtitle,
     categories,
     collection,
     emptyStateMessage,
@@ -19,7 +16,6 @@ export const HeroView = ({
     onShare,
     isFavorited,
     onToggleFavorite,
-    showBack = true,
 }) => {
     const insets = useSafeAreaInsets();
     const [selectedCategory, setSelectedCategory] = useState("all");
@@ -32,14 +28,8 @@ export const HeroView = ({
 
     return (
         <View style={{ flex: 1 }}>
-            {/* Sticky header + filter */}
+            {/* Filter */}
             <View style={{ paddingHorizontal: 16, paddingTop: 4, paddingBottom: 12 }}>
-                <HeroHeader
-                    title={title}
-                    subtitle={subtitle}
-                    accentColor={accentColor}
-                    showBack={showBack}
-                />
                 <HeroFilter
                     accentColor={accentColor}
                     categories={categories}
