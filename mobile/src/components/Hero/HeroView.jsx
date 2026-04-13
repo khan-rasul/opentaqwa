@@ -48,10 +48,11 @@ export const HeroView = ({
                         gap: 10,
                     }}
                 >
-                    {filteredItems.map((item) => (
+                    {filteredItems.map((item, index) => (
                         <HeroCard
                             key={item.id}
                             item={item}
+                            index={index}
                             accentColor={accentColor}
                             isFavorited={isFavorited?.(item.id)}
                             onToggleFavorite={() => onToggleFavorite?.(item.id)}

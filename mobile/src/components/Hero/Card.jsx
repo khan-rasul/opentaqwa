@@ -5,6 +5,7 @@ import Animated, { FadeInDown } from "react-native-reanimated";
 
 export const HeroCard = ({
     item,
+    index = 0,
     accentColor = "#af8f69",
     isFavorited,
     onToggleFavorite,
@@ -25,7 +26,7 @@ export const HeroCard = ({
 
     return (
         <Animated.View
-            entering={FadeInDown.duration(400).springify()}
+            entering={FadeInDown.delay(index * 80).duration(400).springify()}
             style={{
                 backgroundColor: "rgba(255,255,255,0.035)",
                 borderRadius: 16,

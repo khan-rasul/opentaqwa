@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, ActivityIndicator, Pressable, ScrollView, Share } from "react-native";
-import { RefreshCw, Share2, BookOpen, ChevronDown, ChevronUp } from "lucide-react-native";
+import { RefreshCw, Share2, BookOpen, ChevronDown, ChevronUp, Heart } from "lucide-react-native";
 import { asmaUlHusnaApi } from "@opentaqwa/shared";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Animated, { FadeInDown } from "react-native-reanimated";
+import { useFavoriteContent } from "@/hooks/useFavoriteContent";
 
 const ACCENT = "#af8f69";
 
@@ -12,6 +13,7 @@ export default function NamesScreen() {
   const [nameData, setNameData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showWisdom, setShowWisdom] = useState(false);
+  const { isSaved, toggle } = useFavoriteContent("names");
 
   useEffect(() => { fetchDailyName(); }, []);
 
@@ -236,6 +238,23 @@ export default function NamesScreen() {
                   }}
                 >
                   <Share2 size={14} color="rgba(255,255,255,0.35)" strokeWidth={2} />
+                </Pressable>
+                <Pressable
+                  onPress={() => toggle(nameData)}
+                  style={{
+                    width: 32, height: 32, borderRadius: 16,
+                    backgroundColor: isSaved(nameData) ? `${ACCENT}22` : "rgba(255,255,255,0.05)",
+                    alignItems: "center", justifyContent: "center",
+                    borderWidth: isSaved(nameData) ? 0.5 : 0,
+                    borderColor: `${ACCENT}50`,
+                  }}
+                >
+                  <Heart
+                    size={14}
+                    color={isSaved(nameData) ? ACCENT : "rgba(255,255,255,0.35)"}
+                    fill={isSaved(nameData) ? ACCENT : "none"}
+                    strokeWidth={2}
+                  />
                 </Pressable>
               </View>
             </View>
