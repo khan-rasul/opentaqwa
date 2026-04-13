@@ -24,11 +24,12 @@ export const HeroView = ({
     emptyStateMessage,
     emptyStateDetail,
     onPlayAudio,
-    onShare
+    onShare,
+    isFavorited,
+    onToggleFavorite,
 }) => {
     const insets = useSafeAreaInsets();
     const [selectedCategory, setSelectedCategory] = useState("all");
-    const [favorites, setFavorites] = useState([]);
     const scrollX = useSharedValue(0);
 
     const scrollHandler = useAnimatedScrollHandler({
@@ -37,22 +38,14 @@ export const HeroView = ({
         },
     });
 
-    // Filter items by category
     const filteredItems = collection.filter((item) => {
         if (selectedCategory === "all") return true;
-        if (selectedCategory === "favorites") return favorites.includes(item.id);
+        if (selectedCategory === "favorites") return isFavorited?.(item.id);
         return item.category === selectedCategory;
     });
 
-    const toggleFavorite = (id) => {
-        setFavorites((prev) =>
-            prev.includes(id) ? prev.filter((fav) => fav !== id) : [...prev, id]
-        );
-    };
-
     return (
         <View className="flex-1">
-            {/* Header Section as a Floating Card */}
             <View
                 className="mx-3 my-2 p-4 rounded-2xl bg-[rgba(26,22,20,0.5)] border-[0.5px] border-white/10 shadow-black"
                 style={{
@@ -67,7 +60,6 @@ export const HeroView = ({
                     subtitle={subtitle}
                     accentColor={accentColor}
                 />
-
                 <HeroFilter
                     accentColor={accentColor}
                     categories={categories}
@@ -76,7 +68,6 @@ export const HeroView = ({
                 />
             </View>
 
-            {/* Content Section */}
             <View className="flex-1">
                 {filteredItems.length > 0 ? (
                     <>
@@ -102,8 +93,8 @@ export const HeroView = ({
                                     item={item}
                                     index={index}
                                     scrollX={scrollX}
-                                    isFavorited={favorites.includes(item.id)}
-                                    onToggleFavorite={() => toggleFavorite(item.id)}
+                                    isFavorited={isFavorited?.(item.id)}
+                                    onToggleFavorite={() => onToggleFavorite?.(item.id)}
                                     cardWidth={CARD_WIDTH}
                                     onPlayAudio={() => onPlayAudio?.(item)}
                                     onShare={() => onShare?.(item)}

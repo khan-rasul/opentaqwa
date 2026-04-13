@@ -111,9 +111,9 @@ export const HeroCard = ({
                             )}
 
                             {/* Translation */}
-                            {item.translation && (
+                            {(item.translation || item.meaning) && (
                                 <Text className="text-white/85 text-[15px] font-quicksand font-medium text-center leading-6 mb-6">
-                                    "{item.translation}"
+                                    "{item.translation || item.meaning}"
                                 </Text>
                             )}
 

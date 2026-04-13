@@ -23,7 +23,6 @@ import { GreatVibes_400Regular } from '@expo-google-fonts/great-vibes';
 
 import Header from "@/components/Header";
 import { PrayerProvider } from "@/context/PrayerContext";
-import { AuthProvider } from "@/context/AuthContext";
 
 // Keep the splash screen visible while we fetch resources
 SplashScreen.preventAutoHideAsync();
@@ -80,11 +79,9 @@ function LayoutContent() {
 export default function Layout() {
   return (
     <SafeAreaProvider>
-      <AuthProvider>
-        <PrayerProvider>
-          <LayoutContent />
-        </PrayerProvider>
-      </AuthProvider>
+      <PrayerProvider>
+        <LayoutContent />
+      </PrayerProvider>
     </SafeAreaProvider>
   );
 }

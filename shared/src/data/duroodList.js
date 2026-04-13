@@ -1,49 +1,107 @@
 /*
- * OpenTaqwā - Islamic Companion Extension
- * Copyright (c) 2025 [Rasul Khan]
- *
- * This work is licensed under the Creative Commons Attribution-NonCommercial 4.0 International License.
- * To view a copy of this license, visit http://creativecommons.org/licenses/by-nc/4.0/
- *
+ * OpenTaqwā — Durood (Salawat) Collection
+ * Sources: Sahih al-Bukhari, Sahih Muslim, Hisnul Muslim
  * SPDX-License-Identifier: CC-BY-NC-4.0
  */
 export const duroodList = [
   {
     id: 1,
-    arabic: "اللَّهُمَّ صَلِّ عَلَى مُحَمَّدٍ",
-    transliteration: "Allahumma salli ala Muhammad",
-    meaning: "O Allah, send blessings upon Muhammad",
-    category: "Simple",
+    arabic: "اللَّهُمَّ صَلِّ عَلَى مُحَمَّدٍ وَعَلَى آلِ مُحَمَّدٍ، كَمَا صَلَّيْتَ عَلَى إِبْرَاهِيمَ وَعَلَى آلِ إِبْرَاهِيمَ، إِنَّكَ حَمِيدٌ مَجِيدٌ",
+    transliteration: "Allahumma salli 'ala Muhammadin wa 'ala ali Muhammad, kama sallayta 'ala Ibrahima wa 'ala ali Ibrahim, innaka Hamidun Majid",
+    meaning: "O Allah, send Your grace and honour on Muhammad and on the family of Muhammad as You sent Your grace on Ibrahim and the family of Ibrahim. Surely You are Praiseworthy, Majestic.",
+    translation: "O Allah, send Your grace and honour on Muhammad and on the family of Muhammad as You sent Your grace on Ibrahim and the family of Ibrahim. Surely You are Praiseworthy, Majestic.",
+    benefit: "Durood Ibrahim — the salawat recited in the final tashahhud of every prayer.",
+    reference: "Sahih al-Bukhari 3370",
+    category: "blessings",
   },
   {
     id: 2,
-    arabic: "اللَّهُمَّ صَلِّ عَلَى مُحَمَّدٍ وَعَلَى آلِ مُحَمَّدٍ",
-    transliteration: "Allahumma salli ala Muhammad wa ala ali Muhammad",
-    meaning:
-      "O Allah, send blessings upon Muhammad and upon the family of Muhammad",
-    category: "Extended",
+    arabic: "اللَّهُمَّ صَلِّ وَسَلِّمْ وَبَارِكْ عَلَى نَبِيِّنَا مُحَمَّدٍ",
+    transliteration: "Allahumma salli wa sallim wa barik 'ala nabiyyina Muhammad",
+    meaning: "O Allah, send blessings, peace, and Your grace upon our Prophet Muhammad.",
+    translation: "O Allah, send blessings, peace, and Your grace upon our Prophet Muhammad.",
+    benefit: "Whoever sends blessings upon the Prophet ﷺ once, Allah sends blessings upon him tenfold.",
+    reference: "Sahih Muslim 408",
+    category: "short",
   },
   {
     id: 3,
-    arabic: "اللَّهُمَّ صَلِّ وَسَلِّمْ عَلَى نَبِيِّنَا مُحَمَّدٍ",
-    transliteration: "Allahumma salli wa sallim ala nabiyyina Muhammad",
-    meaning: "O Allah, send blessings and peace upon our Prophet Muhammad",
-    category: "Extended",
+    arabic: "صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ",
+    transliteration: "Sallallahu 'alayhi wa sallam",
+    meaning: "May Allah's blessings and peace be upon him.",
+    translation: "May Allah's blessings and peace be upon him.",
+    benefit: "The most frequently used salawat — a constant expression of love for the Prophet ﷺ.",
+    reference: "Standard Islamic usage",
+    category: "short",
   },
   {
     id: 4,
-    arabic:
-      "اللَّهُمَّ صَلِّ عَلَى مُحَمَّدٍ كَمَا صَلَّيْتَ عَلَى إِبْرَاهِيمَ",
-    transliteration: "Allahumma salli ala Muhammad kama sallayta ala Ibrahim",
-    meaning:
-      "O Allah, send blessings upon Muhammad as You sent blessings upon Ibrahim",
-    category: "Ibrahim",
+    arabic: "اللَّهُمَّ صَلِّ عَلَى مُحَمَّدٍ وَأَزْوَاجِهِ وَذُرِّيَّتِهِ، كَمَا صَلَّيْتَ عَلَى آلِ إِبْرَاهِيمَ",
+    transliteration: "Allahumma salli 'ala Muhammadin wa azwajihi wa dhurriyyatihi kama sallayta 'ala ali Ibrahim",
+    meaning: "O Allah, send blessings upon Muhammad, his wives and his descendants, as You sent blessings upon the family of Ibrahim.",
+    translation: "O Allah, send blessings upon Muhammad, his wives and his descendants, as You sent blessings upon the family of Ibrahim.",
+    benefit: "The Prophet ﷺ taught this durood to Abu Humayd as-Sa'idi when asked about the best way to send salawat.",
+    reference: "Sahih al-Bukhari 3369",
+    category: "blessings",
   },
   {
     id: 5,
-    arabic: "اللَّهُمَّ بَارِكْ عَلَى مُحَمَّدٍ وَعَلَى آلِ مُحَمَّدٍ",
-    transliteration: "Allahumma barik ala Muhammad wa ala ali Muhammad",
-    meaning: "O Allah, bless Muhammad and the family of Muhammad",
-    category: "Blessing",
+    arabic: "اللَّهُمَّ صَلِّ عَلَى مُحَمَّدٍ عَبْدِكَ وَرَسُولِكَ، كَمَا صَلَّيْتَ عَلَى آلِ إِبْرَاهِيمَ",
+    transliteration: "Allahumma salli 'ala Muhammadin 'abdika wa rasulika kama sallayta 'ala ali Ibrahim",
+    meaning: "O Allah, send blessings upon Muhammad, Your servant and Your messenger, as You sent blessings upon the family of Ibrahim.",
+    translation: "O Allah, send blessings upon Muhammad, Your servant and Your messenger, as You sent blessings upon the family of Ibrahim.",
+    benefit: "One of the salawat forms reported directly in the hadith.",
+    reference: "Sahih al-Bukhari 3368",
+    category: "blessings",
+  },
+  {
+    id: 6,
+    arabic: "اللَّهُمَّ رَبَّ هَذِهِ الدَّعْوَةِ التَّامَّةِ، وَالصَّلَاةِ الْقَائِمَةِ، آتِ مُحَمَّدًا الْوَسِيلَةَ وَالْفَضِيلَةَ",
+    transliteration: "Allahumma rabba hadhihid-da'watit-tammah, was-salatil-qa'imah, ati Muhammadan al-wasilata wal-fadilah",
+    meaning: "O Allah, Lord of this perfect call and the prayer to be offered, grant Muhammad the intercession and the superiority.",
+    translation: "O Allah, Lord of this perfect call and the prayer to be offered, grant Muhammad the intercession and the superiority.",
+    benefit: "Recited after the adhan — whoever says this, the Prophet's ﷺ intercession becomes lawful for them.",
+    reference: "Sahih al-Bukhari 614",
+    category: "blessings",
+  },
+  {
+    id: 7,
+    arabic: "اللَّهُمَّ صَلِّ عَلَى مُحَمَّدٍ صَلَاةً تُنَجِّينَا بِهَا مِنْ جَمِيعِ الْأَهْوَالِ وَالْآفَاتِ",
+    transliteration: "Allahumma salli 'ala Muhammadin salatan tunajjina biha min jami'il-ahwali wal-afat",
+    meaning: "O Allah, send blessings upon Muhammad that will save us from all fears and afflictions.",
+    translation: "O Allah, send blessings upon Muhammad that will save us from all fears and afflictions.",
+    benefit: "Known as Durood al-Nariyah — a comprehensive salawat seeking salvation and blessing.",
+    reference: "Commonly narrated",
+    category: "blessings",
+  },
+  {
+    id: 8,
+    arabic: "سُبْحَانَ اللَّهِ وَبِحَمْدِهِ عَدَدَ خَلْقِهِ وَرِضَا نَفْسِهِ",
+    transliteration: "Subhan Allahi wa bihamdihi 'adada khalqihi wa rida nafsihi",
+    meaning: "Glory be to Allah and praise to Him, by the number of His creation and His pleasure.",
+    translation: "Glory be to Allah and praise to Him, by the number of His creation and His pleasure.",
+    benefit: "These words are beloved to Allah and weigh heavily in the scales. A single saying surpasses entire nights of dhikr in reward.",
+    reference: "Sahih Muslim 2726",
+    category: "short",
+  },
+  {
+    id: 9,
+    arabic: "اللَّهُمَّ صَلِّ عَلَى مُحَمَّدٍ وَعَلَى آلِهِ وَصَحْبِهِ وَسَلِّمْ",
+    transliteration: "Allahumma salli 'ala Muhammadin wa 'ala alihi wa sahbihi wa sallim",
+    meaning: "O Allah, send blessings and peace upon Muhammad, his family, and his companions.",
+    translation: "O Allah, send blessings and peace upon Muhammad, his family, and his companions.",
+    benefit: "A widely used salawat that includes the Prophet's ﷺ family and companions in the blessing.",
+    reference: "Commonly narrated",
+    category: "short",
+  },
+  {
+    id: 10,
+    arabic: "اللَّهُمَّ بَارِكْ عَلَى مُحَمَّدٍ وَعَلَى آلِ مُحَمَّدٍ، كَمَا بَارَكْتَ عَلَى إِبْرَاهِيمَ وَعَلَى آلِ إِبْرَاهِيمَ، إِنَّكَ حَمِيدٌ مَجِيدٌ",
+    transliteration: "Allahumma barik 'ala Muhammadin wa 'ala ali Muhammad, kama barakta 'ala Ibrahima wa 'ala ali Ibrahim, innaka Hamidun Majid",
+    meaning: "O Allah, bless Muhammad and the family of Muhammad as You blessed Ibrahim and the family of Ibrahim. Surely You are Praiseworthy, Majestic.",
+    translation: "O Allah, bless Muhammad and the family of Muhammad as You blessed Ibrahim and the family of Ibrahim. Surely You are Praiseworthy, Majestic.",
+    benefit: "The second half of Durood Ibrahim — the Barakah portion recited in the tashahhud.",
+    reference: "Sahih al-Bukhari 3370",
+    category: "blessings",
   },
 ];

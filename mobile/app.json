@@ -1,38 +1,50 @@
 {
-  "scheme": "acme",
-  "userInterfaceStyle": "automatic",
-  "orientation": "default",
-  "web": {
-    "output": "static"
-  },
-  "plugins": [
-    [
-      "expo-router",
-      {
-        "origin": "https://n"
-      }
+  "expo": {
+    "name": "OpenTaqwā",
+    "slug": "opentaqwa",
+    "version": "1.0.0",
+    "scheme": "opentaqwa",
+    "userInterfaceStyle": "dark",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "splash": {
+      "image": "./assets/icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#0f0d0c"
+    },
+    "web": {
+      "output": "static"
+    },
+    "plugins": [
+      [
+        "expo-router",
+        {
+          "origin": "https://opentaqwa.app"
+        }
+      ],
+      [
+        "expo-location",
+        {
+          "locationAlwaysPermission": "Allow OpenTaqwā to use your location to calculate accurate prayer times.",
+          "locationWhenInUsePermission": "Allow OpenTaqwā to use your location to calculate accurate prayer times and Qibla direction."
+        }
+      ],
+      "expo-font"
     ],
-    [
-      "expo-location",
-      {
-        "locationAlwaysPermission": "Allow OpenTaqwā to use your location to calculate accurate prayer times.",
-        "locationWhenInUsePermission": "Allow OpenTaqwā to use your location to calculate accurate prayer times."
+    "ios": {
+      "bundleIdentifier": "com.opentaqwa.app",
+      "buildNumber": "1",
+      "supportsTablet": false,
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "OpenTaqwā uses your location to calculate accurate prayer times and Qibla direction."
       }
-    ],
-    "expo-font"
-  ],
-  "name": "mobile",
-  "slug": "mobile",
-  "ios": {
-    "supportsTablet": true,
-    "infoPlist": {
-      "NSLocationWhenInUseUsageDescription": "Allow OpenTaqwā to use your location to calculate accurate prayer times."
+    },
+    "android": {
+      "package": "com.opentaqwa.app",
+      "permissions": [
+        "ACCESS_COARSE_LOCATION",
+        "ACCESS_FINE_LOCATION"
+      ]
     }
-  },
-  "android": {
-    "permissions": [
-      "ACCESS_COARSE_LOCATION",
-      "ACCESS_FINE_LOCATION"
-    ]
   }
 }
