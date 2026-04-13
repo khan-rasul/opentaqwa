@@ -18,11 +18,16 @@ function CustomTabBar({ state, descriptors, navigation }) {
   return (
     <View
       style={{
-        backgroundColor: "#0f0d0c",
+        backgroundColor: "#100e0d",
         borderTopWidth: 0.5,
-        borderTopColor: "rgba(255,255,255,0.08)",
-        paddingBottom: insets.bottom,
+        borderTopColor: "rgba(255,255,255,0.07)",
+        paddingBottom: insets.bottom || 8,
         flexDirection: "row",
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: -4 },
+        shadowOpacity: 0.3,
+        shadowRadius: 12,
+        elevation: 20,
       }}
     >
       {state.routes.map((route, index) => {
@@ -45,21 +50,35 @@ function CustomTabBar({ state, descriptors, navigation }) {
           <Pressable
             key={route.key}
             onPress={onPress}
-            style={{ flex: 1, alignItems: "center", paddingTop: 10, paddingBottom: 4 }}
+            style={{ flex: 1, alignItems: "center", paddingTop: 12, paddingBottom: 4 }}
           >
-            <Icon
-              size={22}
-              color={isFocused ? "#af8f69" : "rgba(255,255,255,0.3)"}
-              strokeWidth={isFocused ? 2.5 : 1.5}
-            />
+            <View style={{ alignItems: "center", position: "relative" }}>
+              <Icon
+                size={21}
+                color={isFocused ? "#af8f69" : "rgba(255,255,255,0.25)"}
+                strokeWidth={isFocused ? 2 : 1.5}
+              />
+              {isFocused && (
+                <View
+                  style={{
+                    position: "absolute",
+                    bottom: -6,
+                    width: 3,
+                    height: 3,
+                    borderRadius: 2,
+                    backgroundColor: "#af8f69",
+                  }}
+                />
+              )}
+            </View>
             <Text
               style={{
-                color: isFocused ? "#af8f69" : "rgba(255,255,255,0.3)",
+                color: isFocused ? "#af8f69" : "rgba(255,255,255,0.22)",
                 fontSize: 9,
                 fontFamily: "Quicksand-SemiBold",
-                marginTop: 3,
+                marginTop: 8,
                 textTransform: "uppercase",
-                letterSpacing: 0.8,
+                letterSpacing: 0.6,
               }}
             >
               {tab.label}

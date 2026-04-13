@@ -1,17 +1,31 @@
 import { useState, useEffect, useCallback } from "react";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as SecureStore from "expo-secure-store";
+
+const PREFIX = "opentaqwa_fav_";
+
+async function loadFavorites(key) {
+  try {
+    const value = await SecureStore.getItemAsync(PREFIX + key);
+    return value ? new Set(JSON.parse(value)) : new Set();
+  } catch {
+    return new Set();
+  }
+}
+
+async function saveFavorites(key, set) {
+  try {
+    await SecureStore.setItemAsync(PREFIX + key, JSON.stringify([...set]));
+  } catch {
+    // fail silently — favorites are non-critical
+  }
+}
 
 export function useFavorites(key) {
-  const storageKey = `opentaqwa:favorites:${key}`;
   const [favoriteIds, setFavoriteIds] = useState(new Set());
 
   useEffect(() => {
-    AsyncStorage.getItem(storageKey).then((value) => {
-      if (value) {
-        setFavoriteIds(new Set(JSON.parse(value)));
-      }
-    });
-  }, [storageKey]);
+    loadFavorites(key).then(setFavoriteIds);
+  }, [key]);
 
   const toggle = useCallback(
     (id) => {
@@ -22,11 +36,11 @@ export function useFavorites(key) {
         } else {
           next.add(id);
         }
-        AsyncStorage.setItem(storageKey, JSON.stringify([...next]));
+        saveFavorites(key, next);
         return next;
       });
     },
-    [storageKey]
+    [key]
   );
 
   const isFavorite = useCallback((id) => favoriteIds.has(id), [favoriteIds]);

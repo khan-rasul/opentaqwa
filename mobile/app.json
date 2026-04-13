@@ -29,7 +29,8 @@
           "locationWhenInUsePermission": "Allow OpenTaqwā to use your location to calculate accurate prayer times and Qibla direction."
         }
       ],
-      "expo-font"
+      "expo-font",
+      "expo-secure-store"
     ],
     "ios": {
       "bundleIdentifier": "com.opentaqwa.app",

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, ScrollView, Pressable, ActivityIndicator } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { LinearGradient } from "expo-linear-gradient";
 import { MapPin, RefreshCw, Clock } from "lucide-react-native";
 import { usePrayer } from "@/context/PrayerContext";
 
@@ -9,7 +10,6 @@ function useCountdown(targetDate) {
 
   useEffect(() => {
     if (!targetDate) return;
-
     const update = () => {
       const diff = targetDate - new Date();
       if (diff <= 0) { setCountdown("Now"); return; }
@@ -22,7 +22,6 @@ function useCountdown(targetDate) {
           : `${m}m ${String(s).padStart(2, "0")}s`
       );
     };
-
     update();
     const timer = setInterval(update, 1000);
     return () => clearInterval(timer);
@@ -38,121 +37,140 @@ export default function PrayerScreen() {
 
   return (
     <ScrollView
-      className="flex-1"
       showsVerticalScrollIndicator={false}
       contentContainerStyle={{
-        padding: 12,
+        paddingHorizontal: 16,
         paddingTop: 8,
-        paddingBottom: insets.bottom + 24,
+        paddingBottom: insets.bottom + 32,
       }}
     >
-      {/* Location Header */}
-      <View className="flex-row items-center justify-between mb-4 px-1">
-        <View className="flex-row items-center gap-2">
-          <MapPin size={14} color="#af8f69" />
+      {/* Location row */}
+      <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginBottom: 20 }}>
+        <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
+          <MapPin size={13} color="#af8f69" />
           <View>
-            <Text className="text-white font-montserrat font-black text-base tracking-tight">
+            <Text style={{ color: "white", fontFamily: "Montserrat-Black", fontSize: 15, letterSpacing: -0.3 }}>
               {loading ? "Detecting..." : locationName.city}
             </Text>
-            {locationName.country ? (
-              <Text className="text-white/40 font-quicksand font-bold text-[10px] uppercase tracking-widest">
+            {!!locationName.country && (
+              <Text style={{ color: "rgba(255,255,255,0.35)", fontFamily: "Quicksand-Bold", fontSize: 10, textTransform: "uppercase", letterSpacing: 1.5 }}>
                 {locationName.country}
               </Text>
-            ) : null}
+            )}
           </View>
         </View>
         <Pressable
           onPress={refresh}
           disabled={loading}
-          className="w-9 h-9 rounded-full bg-white/5 border border-white/10 items-center justify-center active:opacity-60"
+          style={{
+            width: 36, height: 36, borderRadius: 18,
+            backgroundColor: "rgba(255,255,255,0.04)",
+            borderWidth: 0.5, borderColor: "rgba(255,255,255,0.1)",
+            alignItems: "center", justifyContent: "center",
+          }}
         >
-          <RefreshCw size={14} color={loading ? "rgba(255,255,255,0.2)" : "#af8f69"} />
+          <RefreshCw size={13} color={loading ? "rgba(255,255,255,0.15)" : "#af8f69"} />
         </Pressable>
       </View>
 
-      {/* Next Prayer Highlight */}
-      {nextPrayer && !loading && (
-        <View className="bg-[rgba(175,143,105,0.12)] border border-[#af8f69]/20 rounded-2xl p-5 mb-4">
-          <Text className="text-white/40 font-quicksand font-bold text-[10px] uppercase tracking-[2px] mb-1">
+      {/* Loading */}
+      {loading && (
+        <View style={{ alignItems: "center", paddingVertical: 48 }}>
+          <ActivityIndicator color="#af8f69" />
+          <Text style={{ color: "rgba(255,255,255,0.25)", fontFamily: "Quicksand-Bold", fontSize: 10, marginTop: 12, textTransform: "uppercase", letterSpacing: 2 }}>
+            Calculating times...
+          </Text>
+        </View>
+      )}
+
+      {/* Error */}
+      {!!error && !loading && (
+        <View style={{ backgroundColor: "rgba(220,38,38,0.08)", borderWidth: 0.5, borderColor: "rgba(220,38,38,0.2)", borderRadius: 12, padding: 16, marginBottom: 16 }}>
+          <Text style={{ color: "#f87171", fontFamily: "Quicksand-Bold", fontSize: 13, textAlign: "center" }}>{error}</Text>
+        </View>
+      )}
+
+      {/* Next prayer card */}
+      {!!nextPrayer && !loading && (
+        <LinearGradient
+          colors={["rgba(175,143,105,0.18)", "rgba(175,143,105,0.06)"]}
+          start={[0, 0]} end={[1, 1]}
+          style={{ borderRadius: 20, borderWidth: 0.5, borderColor: "rgba(175,143,105,0.25)", padding: 20, marginBottom: 16, overflow: "hidden" }}
+        >
+          {/* Decorative circle */}
+          <View style={{ position: "absolute", top: -30, right: -30, width: 100, height: 100, borderRadius: 50, backgroundColor: "rgba(175,143,105,0.06)" }} />
+
+          <Text style={{ color: "rgba(255,255,255,0.35)", fontFamily: "Quicksand-Bold", fontSize: 9, textTransform: "uppercase", letterSpacing: 2, marginBottom: 10 }}>
             Next Prayer
           </Text>
-          <View className="flex-row items-center justify-between">
+          <View style={{ flexDirection: "row", alignItems: "flex-end", justifyContent: "space-between" }}>
             <View>
-              <Text className="text-white font-montserrat font-black text-2xl tracking-tight">
+              <Text style={{ color: "white", fontFamily: "Montserrat-Black", fontSize: 28, letterSpacing: -0.5 }}>
                 {nextPrayer.name}
               </Text>
-              <Text className="text-white/50 font-quicksand font-bold text-[11px] mt-0.5">
+              <Text style={{ color: "rgba(255,255,255,0.35)", fontFamily: "Quicksand-SemiBold", fontSize: 13, marginTop: 2 }}>
                 {nextPrayer.arabic}
               </Text>
             </View>
-            <View className="items-end">
-              <Text className="text-[#af8f69] font-montserrat font-black text-xl">
+            <View style={{ alignItems: "flex-end" }}>
+              <Text style={{ color: "#af8f69", fontFamily: "Montserrat-Black", fontSize: 22, letterSpacing: -0.3 }}>
                 {nextPrayer.time}
               </Text>
-              <View className="flex-row items-center gap-1 mt-1">
-                <Clock size={10} color="rgba(255,255,255,0.3)" />
-                <Text className="text-white/30 font-quicksand font-bold text-[10px]">
+              <View style={{ flexDirection: "row", alignItems: "center", gap: 4, marginTop: 4 }}>
+                <Clock size={9} color="rgba(255,255,255,0.25)" />
+                <Text style={{ color: "rgba(255,255,255,0.25)", fontFamily: "Quicksand-Bold", fontSize: 10 }}>
                   {countdown}
                 </Text>
               </View>
             </View>
           </View>
-        </View>
+        </LinearGradient>
       )}
 
-      {/* Loading / Error */}
-      {loading && (
-        <View className="items-center py-10">
-          <ActivityIndicator color="#af8f69" />
-          <Text className="text-white/30 font-quicksand font-bold text-xs mt-3 uppercase tracking-widest">
-            Calculating prayer times...
-          </Text>
-        </View>
-      )}
-
-      {error && !loading && (
-        <View className="bg-red-500/10 border border-red-500/20 rounded-xl p-4 mb-4">
-          <Text className="text-red-400 font-quicksand font-bold text-sm text-center">{error}</Text>
-        </View>
-      )}
-
-      {/* All Prayer Times */}
+      {/* Prayer times list */}
       {!loading && prayerTimes.length > 0 && (
-        <View className="bg-[rgba(26,22,20,0.5)] border-[0.5px] border-white/10 rounded-2xl overflow-hidden">
+        <View style={{ borderRadius: 20, overflow: "hidden", borderWidth: 0.5, borderColor: "rgba(255,255,255,0.08)", backgroundColor: "rgba(26,22,20,0.5)" }}>
           {prayerTimes.map((prayer, index) => {
             const isNext = nextPrayer?.id === prayer.id;
             const isLast = index === prayerTimes.length - 1;
             return (
               <View
                 key={prayer.id}
-                className={`flex-row items-center justify-between px-5 py-4 ${
-                  !isLast ? "border-b border-white/5" : ""
-                } ${isNext ? "bg-[#af8f69]/8" : ""}`}
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  paddingHorizontal: 20,
+                  paddingVertical: 16,
+                  borderBottomWidth: isLast ? 0 : 0.5,
+                  borderBottomColor: "rgba(255,255,255,0.05)",
+                  backgroundColor: isNext ? "rgba(175,143,105,0.07)" : "transparent",
+                }}
               >
-                <View className="flex-row items-center gap-3">
-                  <View
-                    className={`w-1.5 h-1.5 rounded-full ${
-                      isNext ? "bg-[#af8f69]" : "bg-white/10"
-                    }`}
-                  />
+                <View style={{ flexDirection: "row", alignItems: "center", gap: 14 }}>
+                  <View style={{
+                    width: 5, height: 5, borderRadius: 3,
+                    backgroundColor: isNext ? "#af8f69" : "rgba(255,255,255,0.1)",
+                  }} />
                   <View>
-                    <Text
-                      className={`font-montserrat font-black text-[15px] tracking-tight ${
-                        isNext ? "text-white" : "text-white/70"
-                      }`}
-                    >
+                    <Text style={{
+                      fontFamily: "Montserrat-Black",
+                      fontSize: 15,
+                      letterSpacing: -0.2,
+                      color: isNext ? "white" : "rgba(255,255,255,0.6)",
+                    }}>
                       {prayer.name}
                     </Text>
-                    <Text className="text-white/30 font-quicksand font-bold text-[10px] mt-0.5">
+                    <Text style={{ fontFamily: "Quicksand-SemiBold", fontSize: 10, color: "rgba(255,255,255,0.25)", marginTop: 1 }}>
                       {prayer.arabic}
                     </Text>
                   </View>
                 </View>
-                <Text
-                  className={`font-montserrat font-black text-base ${
-                    isNext ? "text-[#af8f69]" : "text-white/50"
-                  }`}
-                >
+                <Text style={{
+                  fontFamily: "Montserrat-Black",
+                  fontSize: 15,
+                  color: isNext ? "#af8f69" : "rgba(255,255,255,0.4)",
+                }}>
                   {prayer.time}
                 </Text>
               </View>
@@ -161,10 +179,17 @@ export default function PrayerScreen() {
         </View>
       )}
 
-      {/* Footer note */}
-      <Text className="text-white/20 text-[9px] font-quicksand font-bold text-center mt-6 uppercase tracking-widest">
-        Times calculated via Al-Adhan API · Hanafi method
-      </Text>
+      {/* Footer */}
+      {!loading && (
+        <Text style={{
+          color: "rgba(255,255,255,0.15)",
+          fontSize: 9, fontFamily: "Quicksand-Bold",
+          textAlign: "center", marginTop: 20,
+          textTransform: "uppercase", letterSpacing: 1.5,
+        }}>
+          Al-Adhan API · Hanafi method
+        </Text>
+      )}
     </ScrollView>
   );
 }
