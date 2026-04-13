@@ -1,245 +1,294 @@
 import React, { useState, useEffect } from "react";
-import {
-    View,
-    Text,
-    ActivityIndicator,
-    Pressable,
-    ImageBackground,
-    ScrollView,
-} from "react-native";
+import { View, Text, ActivityIndicator, Pressable, ScrollView, Share } from "react-native";
 import { useRouter } from "expo-router";
-import { ChevronLeft, Sparkles, BookOpen, Quote, Share2, RefreshCw } from "lucide-react-native";
+import { ChevronLeft, RefreshCw, Share2, BookOpen, ChevronDown, ChevronUp } from "lucide-react-native";
 import { asmaUlHusnaApi } from "@opentaqwa/shared";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { LinearGradient } from "expo-linear-gradient";
-import Animated, {
-    FadeIn,
-    FadeInDown,
-    Layout,
-    useAnimatedStyle,
-    useSharedValue,
-    withSpring,
-    withSequence,
-    withTiming
-} from "react-native-reanimated";
+import Animated, { FadeInDown } from "react-native-reanimated";
+
+const ACCENT = "#af8f69";
 
 export default function NamesScreen() {
-    const router = useRouter();
-    const insets = useSafeAreaInsets();
-    const [nameData, setNameData] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [showSummary, setShowSummary] = useState(false);
+  const router = useRouter();
+  const insets = useSafeAreaInsets();
+  const [nameData, setNameData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [showWisdom, setShowWisdom] = useState(false);
 
-    const scale = useSharedValue(1);
+  useEffect(() => { fetchDailyName(); }, []);
 
-    useEffect(() => {
-        fetchDailyName();
-    }, []);
-
-    const fetchDailyName = async () => {
-        try {
-            setLoading(true);
-            const data = await asmaUlHusnaApi.getDailyName();
-            setNameData(data);
-        } catch (error) {
-            console.error("Failed to fetch daily name:", error);
-        } finally {
-            setLoading(false);
-            setShowSummary(false);
-        }
-    };
-
-    const fetchRandomName = async () => {
-        scale.value = withSequence(withTiming(0.95), withSpring(1));
-        try {
-            setLoading(true);
-            const randomId = Math.floor(Math.random() * 99) + 1;
-            const data = await asmaUlHusnaApi.getNameById(randomId);
-            setNameData(data);
-        } catch (error) {
-            console.error("Failed to fetch random name:", error);
-        } finally {
-            setLoading(false);
-            setShowSummary(false);
-        }
-    };
-
-    const animatedStyle = useAnimatedStyle(() => ({
-        transform: [{ scale: scale.value }]
-    }));
-
-    if (loading && !nameData) {
-        return (
-            <View className="flex-1 justify-center items-center bg-[#0f0d0c]">
-                <ActivityIndicator size="large" color="#af8f69" />
-                <Text className="text-white/40 mt-4 font-quicksand font-bold italic">Revealing the Divine Name...</Text>
-            </View>
-        );
+  const fetchDailyName = async () => {
+    try {
+      setLoading(true);
+      setShowWisdom(false);
+      const data = await asmaUlHusnaApi.getDailyName();
+      setNameData(data);
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setLoading(false);
     }
+  };
 
+  const fetchRandomName = async () => {
+    try {
+      setLoading(true);
+      setShowWisdom(false);
+      const randomId = Math.floor(Math.random() * 99) + 1;
+      const data = await asmaUlHusnaApi.getNameById(randomId);
+      setNameData(data);
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const onShare = async () => {
+    if (!nameData) return;
+    try {
+      await Share.share({
+        message: `${nameData.arabic}\n${nameData.english} — ${nameData.meaning}\n\n${nameData.description}`,
+      });
+    } catch {}
+  };
+
+  if (loading && !nameData) {
     return (
-        <View className="flex-1">
-            {/* Header Space */}
-            <View className="pt-3" />
-
-            <ScrollView
-                className="flex-1 px-4"
-                showsVerticalScrollIndicator={false}
-                contentContainerStyle={{ paddingBottom: insets.bottom + 40 }}
-            >
-                {/* Screen Header */}
-                <View className="flex-row items-center justify-between mb-6 px-1">
-                    <View>
-                        <View className="flex-row items-center gap-2">
-                            <Sparkles size={18} color="#af8f69" />
-                            <Text className="text-white text-2xl font-montserrat font-black tracking-tight">
-                                al-Asmā’
-                            </Text>
-                        </View>
-                        <Text className="text-white/40 text-[10px] font-quicksand font-bold uppercase tracking-[2px] mt-1">
-                            Divine Reflection of the Day
-                        </Text>
-                    </View>
-
-                    <Pressable
-                        onPress={() => router.back()}
-                        className="w-10 h-10 items-center justify-center rounded-full active:opacity-60"
-                    >
-                        <ChevronLeft size={24} color="#af8f69" strokeWidth={2.5} />
-                    </Pressable>
-                </View>
-
-                {nameData && (
-                    <Animated.View
-                        entering={FadeInDown.duration(800)}
-                        style={animatedStyle}
-                    >
-                        {/* Main Name Card */}
-                        <View
-                            className="rounded-2xl overflow-hidden bg-black shadow-black shadow-offset-[0,10px] shadow-opacity-30 shadow-radius-20"
-                            style={{ elevation: 10 }}
-                        >
-                            <LinearGradient
-                                colors={["#625443", "#62544399"]}
-                                style={{ padding: 16, paddingBottom: 20 }}
-                            >
-                                {/* Decorative Elements */}
-                                <View className="absolute top-[-20] right-[-20] w-40 h-40 rounded-full bg-white/5 opacity-20" />
-                                <View className="absolute bottom-[-10] left-[-10] w-20 h-20 rounded-full bg-[#af8f69]/10 opacity-30" />
-
-                                {/* Number */}
-                                <View className="items-center mb-6">
-                                    <View className="bg-white/5 px-3 py-1 rounded-full border border-white/10">
-                                        <Text className="text-white/40 text-[11px] font-montserrat font-black uppercase tracking-[1.5px]">
-                                            Name {nameData.number} of 99
-                                        </Text>
-                                    </View>
-                                </View>
-
-                                {/* Arabic Name */}
-                                <View className="items-center mb-6">
-                                    <Text className="text-[#af8f69] text-[72px] font-bold text-center leading-[90px]">
-                                        {nameData.arabic}
-                                    </Text>
-                                </View>
-
-                                {/* Transliteration & Meaning */}
-                                <View className="items-center mb-8">
-                                    <Text className="text-white text-2xl font-montserrat font-black tracking-tight text-center mb-2">
-                                        {nameData.english}
-                                    </Text>
-                                    <View className="flex-row items-center gap-2 bg-[#af8f69]/10 px-4 py-1.5 rounded-full">
-                                        <Text className="text-[#af8f69] text-sm font-quicksand font-bold italic">
-                                            {nameData.meaning}
-                                        </Text>
-                                    </View>
-                                </View>
-
-                                {/* Separator */}
-                                <View className="h-[1px] w-full bg-white/5 mb-8" />
-
-                                {/* Description */}
-                                <View className="flex-row gap-3">
-                                    <Quote size={20} color="#af8f69" opacity={0.5} />
-                                    <Text className="flex-1 text-white/70 text-[15px] leading-[22px] font-quicksand font-medium italic">
-                                        {nameData.description}
-                                    </Text>
-                                </View>
-                            </LinearGradient>
-                        </View>
-
-                        {/* Deep Reflection Section */}
-                        <Animated.View
-                            layout={Layout.springify()}
-                            entering={FadeIn.delay(200)}
-                            className="mt-6 bg-[rgba(26,22,20,0.5)] border-[0.5px] border-white/10 rounded-2xl overflow-hidden"
-                        >
-                            <Pressable
-                                onPress={() => setShowSummary(!showSummary)}
-                                className="flex-row items-center justify-between p-5"
-                            >
-                                <View className="flex-row items-center gap-2">
-                                    <Sparkles size={14} color="#af8f69" />
-                                    <Text className="text-white/60 text-[11px] font-quicksand font-bold uppercase tracking-[1.5px]">
-                                        Summary & Wisdom
-                                    </Text>
-                                </View>
-                                <Text className="text-[#af8f69] text-[10px] font-montserrat font-black uppercase tracking-[1px]">
-                                    {showSummary ? "Hide" : "Discover"}
-                                </Text>
-                            </Pressable>
-
-                            {showSummary && (
-                                <Animated.View
-                                    entering={FadeInDown.duration(400)}
-                                    className="px-5 pb-6 border-t border-white/5 pt-4"
-                                >
-                                    <Text className="text-white/80 text-[14px] leading-[21px] font-quicksand font-normal mb-6">
-                                        {nameData.summary}
-                                    </Text>
-
-                                    {/* Quran References */}
-                                    {nameData.location && nameData.location.filter(l => l).length > 0 && (
-                                        <View>
-                                            <View className="flex-row items-center gap-2 mb-3">
-                                                <BookOpen size={14} color="#af8f69" />
-                                                <Text className="text-white/60 text-[11px] font-quicksand font-bold uppercase tracking-[1px]">
-                                                    Referenced in Qur’ān
-                                                </Text>
-                                            </View>
-                                            <View className="flex-row flex-wrap gap-2">
-                                                {nameData.location.filter(l => l).map((loc, idx) => (
-                                                    <View key={idx} className="bg-white/5 px-3 py-1.5 rounded-lg border border-white/10">
-                                                        <Text className="text-white/50 text-[12px] font-quicksand font-bold">Surah {loc}</Text>
-                                                    </View>
-                                                ))}
-                                            </View>
-                                        </View>
-                                    )}
-                                </Animated.View>
-                            )}
-                        </Animated.View>
-
-                        {/* Actions */}
-                        <View className="flex-row gap-3 mt-6">
-                            <Pressable
-                                onPress={fetchRandomName}
-                                className="flex-1 flex-row items-center justify-center gap-2 bg-white/5 border border-white/10 rounded-xl py-3 active:bg-white/10"
-                            >
-                                <RefreshCw size={14} color="#af8f69" />
-                                <Text className="text-[#af8f69] font-montserrat font-black text-xs uppercase tracking-widest">Shuffle</Text>
-                            </Pressable>
-
-                            <Pressable
-                                className="flex-1 flex-row items-center justify-center gap-2 bg-[#af8f69] rounded-xl py-3 active:opacity-80"
-                            >
-                                <Share2 size={14} color="white" />
-                                <Text className="text-white font-montserrat font-black text-xs uppercase tracking-widest">Share</Text>
-                            </Pressable>
-                        </View>
-                    </Animated.View>
-                )}
-            </ScrollView>
-        </View>
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <ActivityIndicator size="large" color={ACCENT} />
+        <Text style={{ color: "rgba(255,255,255,0.3)", fontFamily: "Quicksand-Bold", fontSize: 11, marginTop: 12, fontStyle: "italic" }}>
+          Revealing the Divine Name...
+        </Text>
+      </View>
     );
+  }
+
+  return (
+    <ScrollView
+      showsVerticalScrollIndicator={false}
+      contentContainerStyle={{
+        paddingHorizontal: 16,
+        paddingTop: 4,
+        paddingBottom: insets.bottom + 32,
+        gap: 10,
+      }}
+    >
+      {/* Header row */}
+      <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginBottom: 6 }}>
+        <View>
+          <Text style={{ color: "white", fontFamily: "Montserrat-Black", fontSize: 22, letterSpacing: -0.4 }}>
+            al-Asmā'
+          </Text>
+          <Text style={{ color: "rgba(255,255,255,0.3)", fontFamily: "Quicksand-Bold", fontSize: 9, textTransform: "uppercase", letterSpacing: 2, marginTop: 2 }}>
+            99 Divine Names
+          </Text>
+        </View>
+        <Pressable
+          onPress={() => router.back()}
+          style={{ width: 32, height: 32, alignItems: "center", justifyContent: "center", opacity: 0.7 }}
+        >
+          <ChevronLeft size={22} color={ACCENT} strokeWidth={2.5} />
+        </Pressable>
+      </View>
+
+      {nameData && (
+        <Animated.View entering={FadeInDown.duration(500).springify()}>
+          {/* Main name card */}
+          <View style={{
+            backgroundColor: "rgba(255,255,255,0.035)",
+            borderRadius: 16,
+            borderWidth: 0.5,
+            borderColor: "rgba(255,255,255,0.07)",
+            overflow: "hidden",
+            marginBottom: 10,
+          }}>
+            {/* Accent bar */}
+            <View style={{
+              position: "absolute", left: 0, top: 0, bottom: 0,
+              width: 2.5, backgroundColor: ACCENT, opacity: 0.5,
+            }} />
+
+            <View style={{ padding: 20, paddingLeft: 22 }}>
+              {/* Number badge */}
+              <View style={{ alignSelf: "center", marginBottom: 16 }}>
+                <Text style={{
+                  color: "rgba(255,255,255,0.2)",
+                  fontFamily: "Quicksand-Bold",
+                  fontSize: 9,
+                  textTransform: "uppercase",
+                  letterSpacing: 2,
+                }}>
+                  Name {nameData.number} of 99
+                </Text>
+              </View>
+
+              {/* Arabic */}
+              <Text style={{
+                color: ACCENT,
+                fontSize: 56,
+                fontWeight: "400",
+                textAlign: "center",
+                lineHeight: 72,
+                marginBottom: 12,
+                writingDirection: "rtl",
+              }}>
+                {nameData.arabic}
+              </Text>
+
+              {/* English name */}
+              <Text style={{
+                color: "white",
+                fontFamily: "Montserrat-Black",
+                fontSize: 20,
+                textAlign: "center",
+                letterSpacing: -0.3,
+                marginBottom: 6,
+              }}>
+                {nameData.english}
+              </Text>
+
+              {/* Meaning */}
+              <Text style={{
+                color: ACCENT,
+                opacity: 0.7,
+                fontFamily: "Quicksand-SemiBold",
+                fontSize: 12,
+                fontStyle: "italic",
+                textAlign: "center",
+                marginBottom: 16,
+              }}>
+                {nameData.meaning}
+              </Text>
+
+              {/* Divider */}
+              <View style={{ height: 0.5, backgroundColor: "rgba(255,255,255,0.06)", marginBottom: 16 }} />
+
+              {/* Description */}
+              <Text style={{
+                color: "rgba(255,255,255,0.5)",
+                fontFamily: "Quicksand-Medium",
+                fontSize: 13,
+                lineHeight: 20,
+                textAlign: "center",
+                marginBottom: 18,
+              }}>
+                {nameData.description}
+              </Text>
+
+              {/* Wisdom toggle */}
+              {(nameData.summary || (nameData.location?.filter(Boolean).length > 0)) && (
+                <>
+                  <Pressable
+                    onPress={() => setShowWisdom((v) => !v)}
+                    style={{ flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 5 }}
+                  >
+                    {showWisdom ? (
+                      <ChevronUp size={12} color="rgba(255,255,255,0.2)" />
+                    ) : (
+                      <ChevronDown size={12} color="rgba(255,255,255,0.2)" />
+                    )}
+                    <Text style={{
+                      color: "rgba(255,255,255,0.2)",
+                      fontFamily: "Quicksand-Bold",
+                      fontSize: 9,
+                      textTransform: "uppercase",
+                      letterSpacing: 1.5,
+                    }}>
+                      Summary & Wisdom
+                    </Text>
+                  </Pressable>
+
+                  {showWisdom && (
+                    <View style={{ marginTop: 14, paddingTop: 14, borderTopWidth: 0.5, borderTopColor: "rgba(255,255,255,0.06)" }}>
+                      {!!nameData.summary && (
+                        <Text style={{
+                          color: "rgba(255,255,255,0.5)",
+                          fontFamily: "Quicksand-Medium",
+                          fontSize: 12,
+                          lineHeight: 19,
+                          marginBottom: 12,
+                        }}>
+                          {nameData.summary}
+                        </Text>
+                      )}
+
+                      {nameData.location?.filter(Boolean).length > 0 && (
+                        <View>
+                          <View style={{ flexDirection: "row", alignItems: "center", gap: 5, marginBottom: 8 }}>
+                            <BookOpen size={10} color="rgba(255,255,255,0.2)" />
+                            <Text style={{ color: "rgba(255,255,255,0.2)", fontFamily: "Quicksand-Bold", fontSize: 9, textTransform: "uppercase", letterSpacing: 1.5 }}>
+                              Referenced in Qur'ān
+                            </Text>
+                          </View>
+                          <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 6 }}>
+                            {nameData.location.filter(Boolean).map((loc, idx) => (
+                              <View key={idx} style={{
+                                backgroundColor: "rgba(255,255,255,0.04)",
+                                borderWidth: 0.5,
+                                borderColor: "rgba(255,255,255,0.08)",
+                                borderRadius: 8,
+                                paddingHorizontal: 10,
+                                paddingVertical: 5,
+                              }}>
+                                <Text style={{ color: "rgba(255,255,255,0.35)", fontFamily: "Quicksand-Bold", fontSize: 11 }}>
+                                  Surah {loc}
+                                </Text>
+                              </View>
+                            ))}
+                          </View>
+                        </View>
+                      )}
+                    </View>
+                  )}
+                </>
+              )}
+
+              {/* Actions */}
+              <View style={{ flexDirection: "row", justifyContent: "flex-end", gap: 6, marginTop: 18 }}>
+                <Pressable
+                  onPress={onShare}
+                  style={{
+                    width: 32, height: 32, borderRadius: 16,
+                    backgroundColor: "rgba(255,255,255,0.05)",
+                    alignItems: "center", justifyContent: "center",
+                  }}
+                >
+                  <Share2 size={14} color="rgba(255,255,255,0.35)" strokeWidth={2} />
+                </Pressable>
+              </View>
+            </View>
+          </View>
+
+          {/* Shuffle button */}
+          <Pressable
+            onPress={fetchRandomName}
+            disabled={loading}
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: 8,
+              paddingVertical: 14,
+              borderRadius: 14,
+              borderWidth: 0.5,
+              borderColor: loading ? "rgba(255,255,255,0.04)" : "rgba(175,143,105,0.25)",
+              backgroundColor: loading ? "rgba(255,255,255,0.02)" : "rgba(175,143,105,0.06)",
+            }}
+          >
+            <RefreshCw size={14} color={loading ? "rgba(255,255,255,0.2)" : ACCENT} />
+            <Text style={{
+              color: loading ? "rgba(255,255,255,0.2)" : ACCENT,
+              fontFamily: "Quicksand-Bold",
+              fontSize: 12,
+              textTransform: "uppercase",
+              letterSpacing: 1.5,
+            }}>
+              {loading ? "Loading..." : "Discover Another Name"}
+            </Text>
+          </Pressable>
+        </Animated.View>
+      )}
+    </ScrollView>
+  );
 }

@@ -4,9 +4,9 @@ import * as Location from "expo-location";
 import { ChevronLeft, Crosshair } from "lucide-react-native";
 import { useRouter } from "expo-router";
 import Animated, {
-    useAnimatedStyle,
-    useSharedValue,
-    withSpring,
+  useAnimatedStyle,
+  useSharedValue,
+  withSpring,
 } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -14,251 +14,242 @@ const { width: SCREEN_WIDTH } = Dimensions.get("window");
 
 const MECCA_LAT = 21.4225;
 const MECCA_LON = 39.8262;
-
-// Layout Constants
 const COMPASS_SIZE = 280;
-const CENTER = COMPASS_SIZE / 2;
+const ACCENT = "#af8f69";
 
 export default function QiblaScreen() {
-    const router = useRouter();
-    const insets = useSafeAreaInsets();
-    const [heading, setHeading] = useState(0);
-    const [qiblaDir, setQiblaDir] = useState(0);
-    const [location, setLocation] = useState(null);
-    const [errorMsg, setErrorMsg] = useState(null);
+  const router = useRouter();
+  const insets = useSafeAreaInsets();
+  const [heading, setHeading] = useState(0);
+  const [qiblaDir, setQiblaDir] = useState(0);
+  const [location, setLocation] = useState(null);
+  const [errorMsg, setErrorMsg] = useState(null);
 
-    const rotateAnim = useSharedValue(0);
-    const targetHeading = useSharedValue(0);
-    const lastHeading = useSharedValue(-1);
+  const rotateAnim = useSharedValue(0);
+  const targetHeading = useSharedValue(0);
+  const lastHeading = useSharedValue(-1);
 
-    useEffect(() => {
-        let headingSubscription;
+  useEffect(() => {
+    let headingSubscription;
 
-        (async () => {
-            let { status } = await Location.requestForegroundPermissionsAsync();
-            if (status !== "granted") {
-                setErrorMsg("Permission to access location was denied");
-                return;
-            }
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        setErrorMsg("Permission to access location was denied");
+        return;
+      }
 
-            let loc = await Location.getCurrentPositionAsync({});
-            setLocation(loc);
+      let loc = await Location.getCurrentPositionAsync({});
+      setLocation(loc);
 
-            const qiblaAngle = calculateQibla(loc.coords.latitude, loc.coords.longitude);
-            setQiblaDir(qiblaAngle);
+      const qiblaAngle = calculateQibla(loc.coords.latitude, loc.coords.longitude);
+      setQiblaDir(qiblaAngle);
 
-            headingSubscription = await Location.watchHeadingAsync((data) => {
-                const h = data.trueHeading >= 0 ? data.trueHeading : data.magHeading;
-                setHeading(h);
+      headingSubscription = await Location.watchHeadingAsync((data) => {
+        const h = data.trueHeading >= 0 ? data.trueHeading : data.magHeading;
+        setHeading(h);
 
-                if (lastHeading.value === -1) {
-                    targetHeading.value = h;
-                    rotateAnim.value = h;
-                    lastHeading.value = h;
-                } else {
-                    let delta = h - lastHeading.value;
-                    if (delta > 180) delta -= 360;
-                    else if (delta < -180) delta += 360;
+        if (lastHeading.value === -1) {
+          targetHeading.value = h;
+          rotateAnim.value = h;
+          lastHeading.value = h;
+        } else {
+          let delta = h - lastHeading.value;
+          if (delta > 180) delta -= 360;
+          else if (delta < -180) delta += 360;
 
-                    targetHeading.value = targetHeading.value + delta;
-                    rotateAnim.value = withSpring(targetHeading.value, {
-                        damping: 20,
-                        stiffness: 90
-                    });
-                    lastHeading.value = h;
-                }
-            });
-        })();
+          targetHeading.value = targetHeading.value + delta;
+          rotateAnim.value = withSpring(targetHeading.value, {
+            damping: 20,
+            stiffness: 90,
+          });
+          lastHeading.value = h;
+        }
+      });
+    })();
 
-        return () => {
-            if (headingSubscription) {
-                headingSubscription.remove();
-            }
-        };
-    }, []);
-
-    const calculateQibla = (lat, lon) => {
-        const phiK = (MECCA_LAT * Math.PI) / 180.0;
-        const lambdaK = (MECCA_LON * Math.PI) / 180.0;
-        const phi = (lat * Math.PI) / 180.0;
-        const lambda = (lon * Math.PI) / 180.0;
-
-        const psi = Math.atan2(
-            Math.sin(lambdaK - lambda),
-            Math.cos(phi) * Math.tan(phiK) - Math.sin(phi) * Math.cos(lambdaK - lambda)
-        );
-
-        return ((psi * 180.0) / Math.PI + 360) % 360;
+    return () => {
+      if (headingSubscription) headingSubscription.remove();
     };
+  }, []);
 
-    const compassStyle = useAnimatedStyle(() => {
-        return {
-            transform: [{ rotate: `${-rotateAnim.value}deg` }],
-        };
-    });
+  const calculateQibla = (lat, lon) => {
+    const phiK = (MECCA_LAT * Math.PI) / 180.0;
+    const lambdaK = (MECCA_LON * Math.PI) / 180.0;
+    const phi = (lat * Math.PI) / 180.0;
+    const lambda = (lon * Math.PI) / 180.0;
 
-    const qiblaNeedleStyle = useAnimatedStyle(() => {
-        return {
-            transform: [{ rotate: `${qiblaDir - rotateAnim.value}deg` }],
-        };
-    });
-
-    const isAligned = Math.abs((heading - qiblaDir + 360) % 360) < 3 || Math.abs((heading - qiblaDir + 360) % 360) > 357;
-
-    return (
-        <View className="flex-1">
-            <View className="pt-3" />
-
-            <View className="flex-1 px-3">
-                <View
-                    className="bg-[rgba(26,22,20,0.5)] border-[0.5px] border-white/10 rounded-2xl p-6 shadow-black flex-1 mb-6 overflow-hidden"
-                    style={{
-                        shadowOffset: { width: 0, height: 10 },
-                        shadowOpacity: 0.3,
-                        shadowRadius: 20,
-                        elevation: 10,
-                    }}
-                >
-                    {/* Header */}
-                    <View className="flex-row items-center justify-between mb-8 z-10">
-                        <View>
-                            <Text className="text-white text-2xl font-montserrat font-black tracking-tight">Qiblah</Text>
-                            <Text className="text-white/40 text-[10px] font-quicksand font-bold tracking-[1.5px] uppercase mt-1">Holy Kaaba Direction</Text>
-                        </View>
-                        <Pressable
-                            onPress={() => router.back()}
-                            className="w-10 h-10 items-center justify-center rounded-full active:opacity-60"
-                        >
-                            <ChevronLeft size={24} color="#af8f69" strokeWidth={2.5} />
-                        </Pressable>
-                    </View>
-
-                    {/* Compass Area */}
-                    <View className="flex-1 justify-center items-center">
-                        <View style={{ width: COMPASS_SIZE, height: COMPASS_SIZE }} className="justify-center items-center">
-
-                            {/* Main Concentric Rings with Increased Depth */}
-                            <View className="absolute w-full h-full rounded-full border-[1.5px] border-white/20" />
-                            <View className="absolute w-[92%] h-[92%] rounded-full border-[1px] border-white/10" />
-                            <View className="absolute w-[85%] h-[85%] rounded-full border-[1px] border-white/5" />
-
-                            {/* Static Background Alignment Glow - Subtler but present */}
-                            {isAligned && (
-                                <View className="absolute w-[105%] h-[105%] bg-[#af8f69]/10 rounded-full" />
-                            )}
-
-                            {/* North Pointer (Fixed Top Indicator) */}
-                            <View className="absolute top-[-10] items-center z-10">
-                                <View className="w-1 h-5 bg-[#af8f69] rounded-full shadow-lg shadow-[#af8f69]" />
-                            </View>
-
-                            {/* Rotating Compass Dial */}
-                            <Animated.View style={[compassStyle]} className="absolute w-full h-full">
-                                {/* North - Exactly Centered At Top */}
-                                <View className="absolute top-4 left-0 right-0 items-center">
-                                    <View className="w-[1.5px] h-3 bg-[#af8f69] mb-1.5" />
-                                    <Text className="text-[#af8f69] text-[12px] font-montserrat font-black tracking-widest">N</Text>
-                                </View>
-
-                                {/* South - Exactly Symmetric to North */}
-                                <View className="absolute bottom-4 left-0 right-0 items-center opacity-40">
-                                    <Text className="text-white text-[10px] font-montserrat font-bold">S</Text>
-                                    <View className="w-[1.5px] h-2 bg-white/40 mt-1.5" />
-                                </View>
-
-                                {/* West */}
-                                <View className="absolute left-4 top-0 bottom-0 justify-center items-center opacity-40">
-                                    <View className="flex-row items-center">
-                                        <Text className="text-white text-[10px] font-montserrat font-bold mr-1.5">W</Text>
-                                        <View className="w-2 h-[1.5px] bg-white/40" />
-                                    </View>
-                                </View>
-
-                                {/* East */}
-                                <View className="absolute right-4 top-0 bottom-0 justify-center items-center opacity-40">
-                                    <View className="flex-row items-center">
-                                        <View className="w-2 h-[1.5px] bg-white/40" />
-                                        <Text className="text-white text-[10px] font-montserrat font-bold ml-1.5">E</Text>
-                                    </View>
-                                </View>
-                            </Animated.View>
-
-                            {/* Qibla Indicator - Logo On Circumference */}
-                            <Animated.View
-                                style={[qiblaNeedleStyle]}
-                                className="absolute w-full h-full items-center justify-start z-30"
-                            >
-                                <View className="absolute top-[-15] items-center">
-                                    {/* Logo Container precisely on the ring */}
-                                    <View
-                                        className={`w-12 h-12 rounded-full items-center justify-center p-1 border-[1.5px]
-                                            ${isAligned ? 'border-[#af8f69] bg-[#1c1816] shadow-xl shadow-[#af8f69]/40' : 'border-white/10 bg-[#1c1816]'}`}
-                                    >
-                                        <Image
-                                            source={require("../../../assets/icon.png")}
-                                            className="w-full h-full"
-                                            resizeMode="contain"
-                                            style={{ opacity: isAligned ? 1 : 0.4 }}
-                                        />
-                                    </View>
-
-                                    {/* Small Pointer beneath logo */}
-                                    <View className={`w-[2px] h-8 mt-1 ${isAligned ? 'bg-[#af8f69]' : 'bg-white/20'}`} />
-                                </View>
-                            </Animated.View>
-
-                            {/* Minimal Center Pin */}
-                            <View className="absolute w-2 h-2 rounded-full bg-[#af8f69] z-50 border border-[#131110]" />
-                        </View>
-
-                        {/* Alignment Feedback */}
-                        <View className="mt-14 items-center justify-center h-6">
-                            {isAligned && (
-                                <View className="flex-row items-center gap-3">
-                                    <View className="w-4 h-[1px] bg-[#af8f69]/30" />
-                                    <Text className="text-[#af8f69] text-[11px] font-montserrat font-black tracking-[4px] uppercase">
-                                        Aligned to Kaaba
-                                    </Text>
-                                    <View className="w-4 h-[1px] bg-[#af8f69]/30" />
-                                </View>
-                            )}
-                        </View>
-
-                        {/* Detailed Bearing Info */}
-                        <View className="mt-8 items-center">
-                            <View className="flex-row items-center gap-2 mb-3 bg-white/5 py-1.5 px-4 rounded-full border border-white/5">
-                                <Crosshair size={12} color="#af8f69" strokeWidth={3} />
-                                <Text className="text-white/40 text-[9px] font-quicksand font-bold uppercase tracking-[2.5px]">
-                                    Bearing <Text className="text-white font-montserrat font-black">{Math.round(qiblaDir)}°</Text>
-                                </Text>
-                            </View>
-
-                            <View className="flex-row gap-8 mt-1">
-                                <View className="items-center">
-                                    <Text className="text-white/20 text-[8px] font-quicksand font-bold uppercase tracking-widest mb-1">Heading</Text>
-                                    <View className="flex-row items-baseline">
-                                        <Text className="text-white/90 text-2xl font-montserrat font-black">{Math.round(heading)}°</Text>
-                                    </View>
-                                </View>
-                                <View className="w-[1px] h-10 bg-white/10" />
-                                <View className="items-center">
-                                    <Text className="text-white/20 text-[8px] font-quicksand font-bold uppercase tracking-widest mb-1">Target</Text>
-                                    <View className="flex-row items-baseline">
-                                        <Text className="text-[#af8f69] text-2xl font-montserrat font-black">{Math.round(qiblaDir)}°</Text>
-                                    </View>
-                                </View>
-                            </View>
-                        </View>
-                    </View>
-
-                    {/* Footer Guide */}
-                    <View className="mt-auto items-center pb-2">
-                        <Text className="text-white/20 text-[9px] text-center font-bold tracking-[0.5px] uppercase">
-                            Keep phone horizontal for precision
-                        </Text>
-                    </View>
-                </View>
-            </View>
-        </View>
+    const psi = Math.atan2(
+      Math.sin(lambdaK - lambda),
+      Math.cos(phi) * Math.tan(phiK) - Math.sin(phi) * Math.cos(lambdaK - lambda)
     );
+
+    return ((psi * 180.0) / Math.PI + 360) % 360;
+  };
+
+  const compassStyle = useAnimatedStyle(() => ({
+    transform: [{ rotate: `${-rotateAnim.value}deg` }],
+  }));
+
+  const qiblaNeedleStyle = useAnimatedStyle(() => ({
+    transform: [{ rotate: `${qiblaDir - rotateAnim.value}deg` }],
+  }));
+
+  const isAligned =
+    Math.abs((heading - qiblaDir + 360) % 360) < 3 ||
+    Math.abs((heading - qiblaDir + 360) % 360) > 357;
+
+  return (
+    <View style={{ flex: 1, paddingHorizontal: 16, paddingTop: 4, paddingBottom: insets.bottom + 16 }}>
+      {/* Outer card */}
+      <View style={{
+        flex: 1,
+        backgroundColor: "rgba(26,22,20,0.5)",
+        borderWidth: 0.5,
+        borderColor: "rgba(255,255,255,0.1)",
+        borderRadius: 20,
+        padding: 20,
+        overflow: "hidden",
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: 10 },
+        shadowOpacity: 0.3,
+        shadowRadius: 20,
+        elevation: 10,
+      }}>
+        {/* Header */}
+        <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginBottom: 24, zIndex: 10 }}>
+          <View>
+            <Text style={{ color: "white", fontFamily: "Montserrat-Black", fontSize: 22, letterSpacing: -0.4 }}>
+              Qiblah
+            </Text>
+            <Text style={{ color: "rgba(255,255,255,0.3)", fontFamily: "Quicksand-Bold", fontSize: 9, textTransform: "uppercase", letterSpacing: 2, marginTop: 2 }}>
+              Holy Kaaba Direction
+            </Text>
+          </View>
+          <Pressable
+            onPress={() => router.back()}
+            style={{ width: 32, height: 32, alignItems: "center", justifyContent: "center", opacity: 0.7 }}
+          >
+            <ChevronLeft size={22} color={ACCENT} strokeWidth={2.5} />
+          </Pressable>
+        </View>
+
+        {/* Compass area */}
+        <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+          <View style={{ width: COMPASS_SIZE, height: COMPASS_SIZE, justifyContent: "center", alignItems: "center" }}>
+
+            {/* Rings */}
+            <View style={{ position: "absolute", width: COMPASS_SIZE, height: COMPASS_SIZE, borderRadius: COMPASS_SIZE / 2, borderWidth: 1.5, borderColor: "rgba(255,255,255,0.2)" }} />
+            <View style={{ position: "absolute", width: COMPASS_SIZE * 0.92, height: COMPASS_SIZE * 0.92, borderRadius: COMPASS_SIZE, borderWidth: 1, borderColor: "rgba(255,255,255,0.1)" }} />
+            <View style={{ position: "absolute", width: COMPASS_SIZE * 0.85, height: COMPASS_SIZE * 0.85, borderRadius: COMPASS_SIZE, borderWidth: 1, borderColor: "rgba(255,255,255,0.05)" }} />
+
+            {/* Alignment glow */}
+            {isAligned && (
+              <View style={{ position: "absolute", width: COMPASS_SIZE * 1.05, height: COMPASS_SIZE * 1.05, borderRadius: COMPASS_SIZE, backgroundColor: "rgba(175,143,105,0.1)" }} />
+            )}
+
+            {/* North pointer (fixed) */}
+            <View style={{ position: "absolute", top: -10, alignItems: "center", zIndex: 10 }}>
+              <View style={{ width: 4, height: 20, backgroundColor: ACCENT, borderRadius: 2 }} />
+            </View>
+
+            {/* Rotating dial */}
+            <Animated.View style={[compassStyle, { position: "absolute", width: COMPASS_SIZE, height: COMPASS_SIZE }]}>
+              {/* N */}
+              <View style={{ position: "absolute", top: 16, left: 0, right: 0, alignItems: "center" }}>
+                <View style={{ width: 1.5, height: 12, backgroundColor: ACCENT, marginBottom: 6 }} />
+                <Text style={{ color: ACCENT, fontFamily: "Montserrat-Black", fontSize: 12, letterSpacing: 4 }}>N</Text>
+              </View>
+              {/* S */}
+              <View style={{ position: "absolute", bottom: 16, left: 0, right: 0, alignItems: "center", opacity: 0.4 }}>
+                <Text style={{ color: "white", fontFamily: "Montserrat-Black", fontSize: 10 }}>S</Text>
+                <View style={{ width: 1.5, height: 8, backgroundColor: "rgba(255,255,255,0.4)", marginTop: 6 }} />
+              </View>
+              {/* W */}
+              <View style={{ position: "absolute", left: 16, top: 0, bottom: 0, justifyContent: "center", alignItems: "center", opacity: 0.4 }}>
+                <View style={{ flexDirection: "row", alignItems: "center" }}>
+                  <Text style={{ color: "white", fontFamily: "Montserrat-Black", fontSize: 10, marginRight: 6 }}>W</Text>
+                  <View style={{ width: 8, height: 1.5, backgroundColor: "rgba(255,255,255,0.4)" }} />
+                </View>
+              </View>
+              {/* E */}
+              <View style={{ position: "absolute", right: 16, top: 0, bottom: 0, justifyContent: "center", alignItems: "center", opacity: 0.4 }}>
+                <View style={{ flexDirection: "row", alignItems: "center" }}>
+                  <View style={{ width: 8, height: 1.5, backgroundColor: "rgba(255,255,255,0.4)" }} />
+                  <Text style={{ color: "white", fontFamily: "Montserrat-Black", fontSize: 10, marginLeft: 6 }}>E</Text>
+                </View>
+              </View>
+            </Animated.View>
+
+            {/* Qibla needle */}
+            <Animated.View style={[qiblaNeedleStyle, { position: "absolute", width: COMPASS_SIZE, height: COMPASS_SIZE, alignItems: "center", justifyContent: "flex-start", zIndex: 30 }]}>
+              <View style={{ position: "absolute", top: -15, alignItems: "center" }}>
+                <View style={{
+                  width: 48, height: 48, borderRadius: 24,
+                  alignItems: "center", justifyContent: "center",
+                  padding: 4,
+                  backgroundColor: "#1c1816",
+                  borderWidth: 1.5,
+                  borderColor: isAligned ? ACCENT : "rgba(255,255,255,0.1)",
+                }}>
+                  <Image
+                    source={require("../../../assets/icon.png")}
+                    style={{ width: "100%", height: "100%", opacity: isAligned ? 1 : 0.4 }}
+                    resizeMode="contain"
+                  />
+                </View>
+                <View style={{ width: 2, height: 32, marginTop: 4, backgroundColor: isAligned ? ACCENT : "rgba(255,255,255,0.2)" }} />
+              </View>
+            </Animated.View>
+
+            {/* Center pin */}
+            <View style={{ position: "absolute", width: 8, height: 8, borderRadius: 4, backgroundColor: ACCENT, zIndex: 50, borderWidth: 1, borderColor: "#131110" }} />
+          </View>
+
+          {/* Alignment text */}
+          <View style={{ marginTop: 48, height: 24, alignItems: "center", justifyContent: "center" }}>
+            {isAligned && (
+              <View style={{ flexDirection: "row", alignItems: "center", gap: 12 }}>
+                <View style={{ width: 16, height: 1, backgroundColor: "rgba(175,143,105,0.3)" }} />
+                <Text style={{ color: ACCENT, fontFamily: "Montserrat-Black", fontSize: 11, letterSpacing: 4, textTransform: "uppercase" }}>
+                  Aligned to Kaaba
+                </Text>
+                <View style={{ width: 16, height: 1, backgroundColor: "rgba(175,143,105,0.3)" }} />
+              </View>
+            )}
+          </View>
+
+          {/* Bearing info */}
+          <View style={{ marginTop: 28, alignItems: "center" }}>
+            <View style={{ flexDirection: "row", alignItems: "center", gap: 8, marginBottom: 12, backgroundColor: "rgba(255,255,255,0.05)", paddingVertical: 6, paddingHorizontal: 16, borderRadius: 20, borderWidth: 0.5, borderColor: "rgba(255,255,255,0.05)" }}>
+              <Crosshair size={12} color={ACCENT} strokeWidth={3} />
+              <Text style={{ color: "rgba(255,255,255,0.4)", fontFamily: "Quicksand-Bold", fontSize: 9, textTransform: "uppercase", letterSpacing: 2.5 }}>
+                Bearing{" "}
+                <Text style={{ color: "white", fontFamily: "Montserrat-Black" }}>{Math.round(qiblaDir)}°</Text>
+              </Text>
+            </View>
+
+            <View style={{ flexDirection: "row", gap: 32, alignItems: "center" }}>
+              <View style={{ alignItems: "center" }}>
+                <Text style={{ color: "rgba(255,255,255,0.2)", fontFamily: "Quicksand-Bold", fontSize: 8, textTransform: "uppercase", letterSpacing: 2, marginBottom: 4 }}>Heading</Text>
+                <Text style={{ color: "rgba(255,255,255,0.9)", fontFamily: "Montserrat-Black", fontSize: 24 }}>{Math.round(heading)}°</Text>
+              </View>
+              <View style={{ width: 1, height: 40, backgroundColor: "rgba(255,255,255,0.1)" }} />
+              <View style={{ alignItems: "center" }}>
+                <Text style={{ color: "rgba(255,255,255,0.2)", fontFamily: "Quicksand-Bold", fontSize: 8, textTransform: "uppercase", letterSpacing: 2, marginBottom: 4 }}>Target</Text>
+                <Text style={{ color: ACCENT, fontFamily: "Montserrat-Black", fontSize: 24 }}>{Math.round(qiblaDir)}°</Text>
+              </View>
+            </View>
+          </View>
+        </View>
+
+        {/* Footer */}
+        <View style={{ alignItems: "center", paddingBottom: 4 }}>
+          <Text style={{ color: "rgba(255,255,255,0.2)", fontFamily: "Quicksand-Bold", fontSize: 9, textTransform: "uppercase", letterSpacing: 0.5, textAlign: "center" }}>
+            Keep phone horizontal for precision
+          </Text>
+        </View>
+      </View>
+    </View>
+  );
 }
