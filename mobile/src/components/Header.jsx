@@ -40,7 +40,7 @@ export default function Header() {
   const pageTitle = PAGE_TITLES[pathname];
   const pageSubtitle = PAGE_SUBTITLES[pathname];
   const showBack = BACK_PATHS.has(pathname);
-  const handleBack = () => router.back();
+  const handleBack = () => router.push("/");
 
   return (
     <View
@@ -133,39 +133,50 @@ export default function Header() {
       >
         <Pressable
           onPress={() => router.push("/favourites")}
+          disabled={pathname === "/favourites"}
           style={{
             width: 34,
             height: 34,
             borderRadius: 17,
             alignItems: "center",
             justifyContent: "center",
-            backgroundColor: "rgba(255,255,255,0.05)",
+            backgroundColor: pathname === "/favourites" ? `${ACCENT}22` : "rgba(255,255,255,0.05)",
             borderWidth: 0.5,
-            borderColor: "rgba(255,255,255,0.1)",
+            borderColor: pathname === "/favourites" ? `${ACCENT}50` : "rgba(255,255,255,0.1)",
           }}
         >
-          <Bookmark size={14} color="rgba(255,255,255,0.5)" strokeWidth={2} />
+          <Bookmark
+            size={14}
+            color={pathname === "/favourites" ? ACCENT : "rgba(255,255,255,0.5)"}
+            fill={pathname === "/favourites" ? ACCENT : "none"}
+            strokeWidth={2}
+          />
         </Pressable>
 
         {!loading && nextPrayer && (
           <Pressable
             onPress={() => router.push("/prayer")}
-            style={({ pressed }) => ({ opacity: pressed ? 0.7 : 1 })}
+            disabled={pathname === "/prayer"}
           >
             <View
               style={{
                 flexDirection: "row",
                 alignItems: "center",
                 gap: 6,
-                backgroundColor: "rgba(175,143,105,0.08)",
+                backgroundColor: pathname === "/prayer" ? `${ACCENT}20` : "rgba(175,143,105,0.08)",
                 borderWidth: 0.5,
-                borderColor: "rgba(175,143,105,0.25)",
+                borderColor: pathname === "/prayer" ? `${ACCENT}60` : "rgba(175,143,105,0.25)",
                 borderRadius: 20,
                 paddingHorizontal: 12,
                 paddingVertical: 6,
               }}
             >
-              <Moon size={10} color={ACCENT} strokeWidth={2} />
+              <Moon
+                size={10}
+                color={ACCENT}
+                fill={pathname === "/prayer" ? ACCENT : "none"}
+                strokeWidth={2}
+              />
               <View>
                 <Text
                   style={{
