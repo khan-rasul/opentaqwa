@@ -3,7 +3,7 @@ import { View, Text, Pressable, ScrollView, Dimensions } from "react-native";
 import { useRouter } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { LinearGradient } from "expo-linear-gradient";
-import { BookOpen, Compass, Sparkles, HeartHandshake } from "lucide-react-native";
+import { BookOpen, Compass, Sparkles, HeartHandshake, HandHeart } from "lucide-react-native";
 
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
 const CARD_WIDTH = (SCREEN_WIDTH - 16 * 2 - 10) / 2;
@@ -16,6 +16,14 @@ const FEATURES = [
     gradient: ["#4a3c2e", "#2e2419"],
     Icon: BookOpen,
     accentColor: "#af8f69",
+  },
+  {
+    title: "Du'ā",
+    subtitle: "Supplication",
+    route: "/dua",
+    gradient: ["#3a2e38", "#221b21"],
+    Icon: HandHeart,
+    accentColor: "#B8A4B0",
   },
   {
     title: "Durōōd",
@@ -37,7 +45,7 @@ const FEATURES = [
     title: "al-Asmā'",
     subtitle: "99 Divine Names",
     route: "/names",
-    gradient: ["#3a2e38", "#221b21"],
+    gradient: ["#2e2838", "#1b1c22"],
     Icon: Sparkles,
     accentColor: "#B8A4B0",
   },
@@ -83,7 +91,6 @@ export default function MoreScreen() {
                   borderColor: "rgba(255,255,255,0.07)",
                 }}
               >
-                {/* Decorative glow */}
                 <View style={{
                   position: "absolute", top: -20, right: -20,
                   width: 70, height: 70, borderRadius: 35,

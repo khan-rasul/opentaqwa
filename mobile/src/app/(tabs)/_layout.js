@@ -2,13 +2,13 @@ import React from "react";
 import { View, Text, Pressable } from "react-native";
 import { Tabs } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { Home, Moon, BookOpen, Heart, LayoutGrid } from "lucide-react-native";
+import { Home, Moon, BookOpen, Bookmark, LayoutGrid } from "lucide-react-native";
 
 const TAB_CONFIG = [
   { name: "index", label: "Home", Icon: Home },
   { name: "prayer", label: "Prayer", Icon: Moon },
   { name: "quran", label: "Qur'ān", Icon: BookOpen },
-  { name: "dua", label: "Du'ā", Icon: Heart },
+  { name: "favourites", label: "Saved", Icon: Bookmark },
   { name: "more", label: "More", Icon: LayoutGrid },
 ];
 
@@ -102,7 +102,7 @@ export default function TabLayout() {
       <Tabs.Screen name="index" />
       <Tabs.Screen name="prayer" />
       <Tabs.Screen name="quran" />
-      <Tabs.Screen name="dua" />
+      <Tabs.Screen name="favourites" />
       <Tabs.Screen name="more" />
     </Tabs>
   );

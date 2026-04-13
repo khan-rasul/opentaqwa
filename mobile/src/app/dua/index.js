@@ -31,7 +31,6 @@ export default function DuaPage() {
       onToggleFavorite={toggle}
       onPlayAudio={() => {}}
       onShare={() => {}}
-      showBack={false}
     />
   );
 }
