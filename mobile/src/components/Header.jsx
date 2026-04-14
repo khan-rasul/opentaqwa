@@ -8,9 +8,9 @@ import MenuDrawer from "@/components/MenuDrawer";
 const ACCENT = "#af8f69";
 
 const PAGE_TITLES = {
-  "/dhikr": "Adhkār",
+  "/dhikr": "Dhikr",
   "/dua": "Du'ā",
-  "/durood": "Durōōd",
+  "/durood": "Durūd",
   "/quran": "al-Qur'ān",
   "/names": "al-Asmā'",
   "/qibla": "Qiblah",
@@ -29,7 +29,16 @@ const PAGE_SUBTITLES = {
   "/favourites": "Your Collection",
 };
 
-const BACK_PATHS = new Set(["/dhikr", "/dua", "/durood", "/names", "/qibla", "/quran", "/prayer", "/favourites"]);
+const BACK_PATHS = new Set([
+  "/dhikr",
+  "/dua",
+  "/durood",
+  "/names",
+  "/qibla",
+  "/quran",
+  "/prayer",
+  "/favourites",
+]);
 
 export default function Header() {
   const router = useRouter();
@@ -70,7 +79,12 @@ export default function Header() {
             flexShrink: 0,
           }}
         >
-          <Menu size={16} color="rgba(255,255,255,0.6)" strokeWidth={2} pointerEvents="none" />
+          <Menu
+            size={16}
+            color="rgba(255,255,255,0.6)"
+            strokeWidth={2}
+            pointerEvents="none"
+          />
         </Pressable>
       ) : showBack ? (
         <Pressable
@@ -87,7 +101,12 @@ export default function Header() {
             flexShrink: 0,
           }}
         >
-          <ChevronLeft size={18} color="rgba(255,255,255,0.6)" strokeWidth={2.5} pointerEvents="none" />
+          <ChevronLeft
+            size={18}
+            color="rgba(255,255,255,0.6)"
+            strokeWidth={2.5}
+            pointerEvents="none"
+          />
         </Pressable>
       ) : null}
 
@@ -104,15 +123,23 @@ export default function Header() {
                 flexDirection: "row",
                 alignItems: "center",
                 gap: 6,
-                backgroundColor: error ? "rgba(220,38,38,0.08)" : "rgba(255,255,255,0.05)",
+                backgroundColor: error
+                  ? "rgba(220,38,38,0.08)"
+                  : "rgba(255,255,255,0.05)",
                 borderWidth: 0.5,
-                borderColor: error ? "rgba(220,38,38,0.2)" : "rgba(255,255,255,0.1)",
+                borderColor: error
+                  ? "rgba(220,38,38,0.2)"
+                  : "rgba(255,255,255,0.1)",
                 borderRadius: 20,
                 paddingHorizontal: 12,
                 paddingVertical: 6,
               }}
             >
-              <MapPin size={10} color={error ? "#f87171" : "rgba(255,255,255,0.35)"} pointerEvents="none" />
+              <MapPin
+                size={10}
+                color={error ? "#f87171" : "rgba(255,255,255,0.35)"}
+                pointerEvents="none"
+              />
               {loading || error ? (
                 <Text
                   style={{
@@ -205,14 +232,22 @@ export default function Header() {
             borderRadius: 17,
             alignItems: "center",
             justifyContent: "center",
-            backgroundColor: pathname === "/favourites" ? `${ACCENT}22` : "rgba(255,255,255,0.05)",
+            backgroundColor:
+              pathname === "/favourites"
+                ? `${ACCENT}22`
+                : "rgba(255,255,255,0.05)",
             borderWidth: 0.5,
-            borderColor: pathname === "/favourites" ? `${ACCENT}50` : "rgba(255,255,255,0.1)",
+            borderColor:
+              pathname === "/favourites"
+                ? `${ACCENT}50`
+                : "rgba(255,255,255,0.1)",
           }}
         >
           <Bookmark
             size={14}
-            color={pathname === "/favourites" ? ACCENT : "rgba(255,255,255,0.5)"}
+            color={
+              pathname === "/favourites" ? ACCENT : "rgba(255,255,255,0.5)"
+            }
             fill={pathname === "/favourites" ? ACCENT : "none"}
             strokeWidth={2}
             pointerEvents="none"
@@ -229,9 +264,15 @@ export default function Header() {
                 flexDirection: "row",
                 alignItems: "center",
                 gap: 6,
-                backgroundColor: pathname === "/prayer" ? `${ACCENT}20` : "rgba(175,143,105,0.08)",
+                backgroundColor:
+                  pathname === "/prayer"
+                    ? `${ACCENT}20`
+                    : "rgba(175,143,105,0.08)",
                 borderWidth: 0.5,
-                borderColor: pathname === "/prayer" ? `${ACCENT}60` : "rgba(175,143,105,0.25)",
+                borderColor:
+                  pathname === "/prayer"
+                    ? `${ACCENT}60`
+                    : "rgba(175,143,105,0.25)",
                 borderRadius: 20,
                 paddingHorizontal: 12,
                 paddingVertical: 6,

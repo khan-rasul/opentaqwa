@@ -5,7 +5,7 @@ import { BookOpen, Compass, Sparkles } from "lucide-react-native";
 
 const FEATURE_CARDS = [
   {
-    title: "Qur'ān",
+    title: "al-Qur'ān",
     subtitle: "Read",
     route: "/quran",
     Icon: BookOpen,
@@ -13,14 +13,14 @@ const FEATURE_CARDS = [
   },
   {
     title: "Qiblah",
-    subtitle: "Direction",
+    subtitle: "Find",
     route: "/qibla",
     Icon: Compass,
     color: "#8B9D98",
   },
   {
-    title: "Names",
-    subtitle: "99 Divine",
+    title: "al-Asmā'",
+    subtitle: "Read",
     route: "/names",
     Icon: Sparkles,
     color: "#B8A4B0",
@@ -102,7 +102,12 @@ function FeatureCard({ title, subtitle, route, Icon, color }) {
               borderColor: `${color}40`,
             }}
           >
-            <Icon size={22} color={color} strokeWidth={2} pointerEvents="none" />
+            <Icon
+              size={22}
+              color={color}
+              strokeWidth={2}
+              pointerEvents="none"
+            />
           </View>
           <View style={{ alignItems: "center", zIndex: 1 }}>
             <Text
