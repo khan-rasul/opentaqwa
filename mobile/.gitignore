@@ -46,3 +46,6 @@ fastlane/screenshots
 fastlane/test_output
 
 ios
+
+*.zip
+*.ipa
