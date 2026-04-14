@@ -102,7 +102,7 @@ function FeatureCard({ title, subtitle, route, Icon, color }) {
               borderColor: `${color}40`,
             }}
           >
-            <Icon size={22} color={color} strokeWidth={2} />
+            <Icon size={22} color={color} strokeWidth={2} pointerEvents="none" />
           </View>
           <View style={{ alignItems: "center", zIndex: 1 }}>
             <Text
