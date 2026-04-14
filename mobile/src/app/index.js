@@ -1,5 +1,5 @@
 import React from "react";
-import { ScrollView, View, Pressable } from "react-native";
+import { ScrollView, View, Pressable, useWindowDimensions } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
 
@@ -8,9 +8,16 @@ import PrayerTime from "@/components/Home/PrayerTime";
 import Card from "@/components/Home/Card";
 import FeatureCards from "@/components/Home/FeatureCards";
 
+// 6" iPhone (~844pt) is our design baseline; taller screens scale up.
+const BASELINE_HEIGHT = 844;
+
 export default function Page() {
   const insets = useSafeAreaInsets();
   const router = useRouter();
+  const { height } = useWindowDimensions();
+  const scale = Math.max(1, height / BASELINE_HEIGHT);
+  const rowHeight = Math.round(110 * scale);
+  const featureHeight = Math.round(130 * scale);
 
   return (
     <ScrollView
@@ -23,7 +30,7 @@ export default function Page() {
       }}
     >
       {/* Row 1: Dhikr + Durood */}
-      <View style={{ flexDirection: "row", gap: 8, height: 100 }}>
+      <View style={{ flexDirection: "row", gap: 8, height: rowHeight }}>
         <View style={{ flex: 8 }}>
           <Card
             title="Dhikr"
@@ -43,7 +50,7 @@ export default function Page() {
       </View>
 
       {/* Row 2: Dua + Tagline */}
-      <View style={{ flexDirection: "row", gap: 8, height: 100 }}>
+      <View style={{ flexDirection: "row", gap: 8, height: rowHeight }}>
         <View style={{ flex: 2 }}>
           <Card
             title="Du'ā"
@@ -64,7 +71,9 @@ export default function Page() {
         <PrayerTime />
       </Pressable>
 
-      <FeatureCards />
+      <View style={{ minHeight: featureHeight }}>
+        <FeatureCards />
+      </View>
     </ScrollView>
   );
 }
