@@ -1,27 +1,26 @@
 default_platform(:ios)
 
+PROJECT_ROOT = File.expand_path("..", __dir__)
+XCODEPROJ    = File.join(PROJECT_ROOT, "ios", "opentaqwa.xcodeproj")
+XCWORKSPACE  = File.join(PROJECT_ROOT, "ios", "opentaqwa.xcworkspace")
+
 platform :ios do
   desc "Build and upload to TestFlight"
   lane :beta do
     # Generate native iOS project from Expo config
-    sh("cd .. && npx expo prebuild --platform ios --clean")
+    sh("cd #{PROJECT_ROOT} && npx expo prebuild --platform ios --clean")
 
     # Increment build number automatically
     increment_build_number(
-      xcodeproj: "ios/opentaqwa.xcodeproj"
+      xcodeproj: XCODEPROJ
     )
 
     # Build the archive
     build_app(
-      workspace: "ios/opentaqwa.xcworkspace",
+      workspace: XCWORKSPACE,
       scheme: "opentaqwa",
       configuration: "Release",
-      export_method: "app-store",
-      export_options: {
-        provisioningProfiles: {
-          "com.opentaqwa.app" => "match AppStore com.opentaqwa.app"
-        }
-      }
+      export_method: "app-store"
     )
 
     # Upload to TestFlight
