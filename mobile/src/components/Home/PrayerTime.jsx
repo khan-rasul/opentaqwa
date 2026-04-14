@@ -18,7 +18,7 @@ const PRAYER_ICONS = {
   Maghrib: Sunset,
   Isha: Moon,
 };
-const KAABAH_IMAGE = require("../../../assets/kaabah.jpeg");
+const KAABAH_IMAGE = require("../../../assets/kaabah.jpg");
 
 export default function PrayerTime() {
   const { prayerTimes, nextPrayer, locationName, loading } = usePrayer();
