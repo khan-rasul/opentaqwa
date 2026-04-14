@@ -11,7 +11,9 @@ const ITEMS = [
     label: "Report a Bug",
     sublabel: "Something not working?",
     onPress: () =>
-      Linking.openURL("mailto:hello@opentaqwa.com?subject=Bug%20Report"),
+      Linking.openURL(
+        "https://github.com/khan-rasul/opentaqwa/issues/new?labels=bug",
+      ),
   },
   {
     icon: Lightbulb,
@@ -19,14 +21,14 @@ const ITEMS = [
     sublabel: "Share your ideas",
     onPress: () =>
       Linking.openURL(
-        "mailto:hello@opentaqwa.com?subject=Feature%20Suggestion",
+        "https://github.com/khan-rasul/opentaqwa/issues/new?labels=enhancement",
       ),
   },
   {
     icon: Info,
     label: "About",
     sublabel: "OpenTaqwā · v0.0.1",
-    onPress: null,
+    onPress: () => Linking.openURL("https://opentaqwa.com"),
   },
 ];
 
@@ -103,7 +105,12 @@ export default function MenuDrawer({ visible, onClose }) {
                         borderColor: "rgba(175,143,105,0.2)",
                       }}
                     >
-                      <Icon size={16} color={ACCENT} strokeWidth={1.8} pointerEvents="none" />
+                      <Icon
+                        size={16}
+                        color={ACCENT}
+                        strokeWidth={1.8}
+                        pointerEvents="none"
+                      />
                     </View>
                     <View style={{ flex: 1 }}>
                       <Text
