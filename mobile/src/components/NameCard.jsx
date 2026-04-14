@@ -77,6 +77,7 @@ export function NameCard({ item, index = 0, isSaved, onToggleSave }) {
                 color={isSaved ? ACCENT : "rgba(255,255,255,0.35)"}
                 fill={isSaved ? ACCENT : "none"}
                 strokeWidth={2}
+                pointerEvents="none"
               />
             </Pressable>
           </View>

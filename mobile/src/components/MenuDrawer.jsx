@@ -103,7 +103,7 @@ export default function MenuDrawer({ visible, onClose }) {
                         borderColor: "rgba(175,143,105,0.2)",
                       }}
                     >
-                      <Icon size={16} color={ACCENT} strokeWidth={1.8} />
+                      <Icon size={16} color={ACCENT} strokeWidth={1.8} pointerEvents="none" />
                     </View>
                     <View style={{ flex: 1 }}>
                       <Text

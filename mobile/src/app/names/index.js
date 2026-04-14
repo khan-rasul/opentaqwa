@@ -267,7 +267,7 @@ export default function NamesScreen() {
                     alignItems: "center", justifyContent: "center",
                   }}
                 >
-                  <Share2 size={14} color="rgba(255,255,255,0.35)" strokeWidth={2} />
+                  <Share2 size={14} color="rgba(255,255,255,0.35)" strokeWidth={2} pointerEvents="none" />
                 </Pressable>
                 <Pressable
                   onPress={() => toggle(nameData)}
@@ -284,6 +284,7 @@ export default function NamesScreen() {
                     color={isSaved(nameData) ? ACCENT : "rgba(255,255,255,0.35)"}
                     fill={isSaved(nameData) ? ACCENT : "none"}
                     strokeWidth={2}
+                    pointerEvents="none"
                   />
                 </Pressable>
               </View>

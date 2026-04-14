@@ -70,7 +70,7 @@ export default function Header() {
             flexShrink: 0,
           }}
         >
-          <Menu size={16} color="rgba(255,255,255,0.6)" strokeWidth={2} />
+          <Menu size={16} color="rgba(255,255,255,0.6)" strokeWidth={2} pointerEvents="none" />
         </Pressable>
       ) : showBack ? (
         <Pressable
@@ -87,7 +87,7 @@ export default function Header() {
             flexShrink: 0,
           }}
         >
-          <ChevronLeft size={18} color="rgba(255,255,255,0.6)" strokeWidth={2.5} />
+          <ChevronLeft size={18} color="rgba(255,255,255,0.6)" strokeWidth={2.5} pointerEvents="none" />
         </Pressable>
       ) : null}
 
@@ -150,6 +150,7 @@ export default function Header() {
             color={pathname === "/favourites" ? ACCENT : "rgba(255,255,255,0.5)"}
             fill={pathname === "/favourites" ? ACCENT : "none"}
             strokeWidth={2}
+            pointerEvents="none"
           />
         </Pressable>
 
@@ -176,6 +177,7 @@ export default function Header() {
                 color={ACCENT}
                 fill={pathname === "/prayer" ? ACCENT : "none"}
                 strokeWidth={2}
+                pointerEvents="none"
               />
               <View>
                 <Text

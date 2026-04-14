@@ -113,9 +113,9 @@ export const HeroCard = ({
                             style={{ flexDirection: "row", alignItems: "center", gap: 5 }}
                         >
                             {showBenefit ? (
-                                <ChevronUp size={12} color="rgba(255,255,255,0.2)" />
+                                <ChevronUp size={12} color="rgba(255,255,255,0.2)" pointerEvents="none" />
                             ) : (
-                                <ChevronDown size={12} color="rgba(255,255,255,0.2)" />
+                                <ChevronDown size={12} color="rgba(255,255,255,0.2)" pointerEvents="none" />
                             )}
                             <Text
                                 style={{
@@ -146,7 +146,7 @@ export const HeroCard = ({
                                 justifyContent: "center",
                             }}
                         >
-                            <Share2 size={14} color="rgba(255,255,255,0.35)" strokeWidth={2} />
+                            <Share2 size={14} color="rgba(255,255,255,0.35)" strokeWidth={2} pointerEvents="none" />
                         </Pressable>
                         <Pressable
                             onPress={onToggleFavorite}
@@ -168,6 +168,7 @@ export const HeroCard = ({
                                 color={isFavorited ? accentColor : "rgba(255,255,255,0.35)"}
                                 fill={isFavorited ? accentColor : "none"}
                                 strokeWidth={2}
+                                pointerEvents="none"
                             />
                         </Pressable>
                     </View>
