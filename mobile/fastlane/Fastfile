@@ -1,0 +1,42 @@
+default_platform(:ios)
+
+platform :ios do
+  desc "Build and upload to TestFlight"
+  lane :beta do
+    # Generate native iOS project from Expo config
+    sh("cd .. && npx expo prebuild --platform ios --clean")
+
+    # Increment build number automatically
+    increment_build_number(
+      xcodeproj: "ios/opentaqwa.xcodeproj"
+    )
+
+    # Build the archive
+    build_app(
+      workspace: "ios/opentaqwa.xcworkspace",
+      scheme: "opentaqwa",
+      configuration: "Release",
+      export_method: "app-store",
+      export_options: {
+        provisioningProfiles: {
+          "com.opentaqwa.app" => "match AppStore com.opentaqwa.app"
+        }
+      }
+    )
+
+    # Upload to TestFlight
+    upload_to_testflight(
+      skip_waiting_for_build_processing: true,
+      changelog: "Latest build from fastlane"
+    )
+  end
+
+  desc "Sync code signing certificates (first-time setup)"
+  lane :certs do
+    match(
+      type: "appstore",
+      app_identifier: "com.opentaqwa.app",
+      readonly: false
+    )
+  end
+end
