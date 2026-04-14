@@ -1,8 +1,8 @@
 default_platform(:ios)
 
 PROJECT_ROOT = File.expand_path("..", __dir__)
-XCODEPROJ    = File.join(PROJECT_ROOT, "ios", "opentaqwa.xcodeproj")
-XCWORKSPACE  = File.join(PROJECT_ROOT, "ios", "opentaqwa.xcworkspace")
+XCODEPROJ    = File.join(PROJECT_ROOT, "ios", "OpenTaqwa.xcodeproj")
+XCWORKSPACE  = File.join(PROJECT_ROOT, "ios", "OpenTaqwa.xcworkspace")
 
 platform :ios do
   desc "Build and upload to TestFlight"
@@ -18,7 +18,7 @@ platform :ios do
     # Build the archive
     build_app(
       workspace: XCWORKSPACE,
-      scheme: "opentaqwa",
+      scheme: "OpenTaqwa",
       configuration: "Release",
       export_method: "app-store"
     )
