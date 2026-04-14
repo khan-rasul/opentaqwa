@@ -36,6 +36,7 @@
       "bundleIdentifier": "com.opentaqwa.app",
       "buildNumber": "1",
       "supportsTablet": false,
+      "icon": "./assets/apple-icon.png",
       "infoPlist": {
         "NSLocationWhenInUseUsageDescription": "OpenTaqwā uses your location to calculate accurate prayer times and Qibla direction.",
         "ITSAppUsesNonExemptEncryption": false
