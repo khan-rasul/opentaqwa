@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { View, Text, Pressable } from "react-native";
-import { Moon, Bookmark, ChevronLeft, Menu } from "lucide-react-native";
+import { Moon, Bookmark, ChevronLeft, Menu, MapPin } from "lucide-react-native";
 import { useRouter, usePathname } from "expo-router";
 import { usePrayer } from "@/context/PrayerContext";
 import MenuDrawer from "@/components/MenuDrawer";
@@ -34,7 +34,7 @@ const BACK_PATHS = new Set(["/dhikr", "/dua", "/durood", "/names", "/qibla", "/q
 export default function Header() {
   const router = useRouter();
   const pathname = usePathname();
-  const { nextPrayer, loading } = usePrayer();
+  const { nextPrayer, loading, locationName, error, refresh } = usePrayer();
 
   const [menuOpen, setMenuOpen] = useState(false);
   const pageTitle = PAGE_TITLES[pathname];
@@ -91,34 +91,99 @@ export default function Header() {
         </Pressable>
       ) : null}
 
-      {/* Title + subtitle */}
+      {/* Title + subtitle / location pill */}
       <View style={{ flex: 1 }}>
-        {pageTitle && (
-          <Text
-            style={{
-              color: "white",
-              fontFamily: "Montserrat-Black",
-              fontSize: 15,
-              letterSpacing: -0.3,
-              lineHeight: 18,
-            }}
+        {pathname === "/" ? (
+          <Pressable
+            onPress={error ? refresh : undefined}
+            disabled={!error}
+            style={{ alignSelf: "flex-start" }}
           >
-            {pageTitle}
-          </Text>
-        )}
-        {pageSubtitle && (
-          <Text
-            style={{
-              color: "rgba(255,255,255,0.25)",
-              fontFamily: "Quicksand-Bold",
-              fontSize: 8,
-              textTransform: "uppercase",
-              letterSpacing: 1.5,
-              marginTop: 1,
-            }}
-          >
-            {pageSubtitle}
-          </Text>
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                gap: 6,
+                backgroundColor: error ? "rgba(220,38,38,0.08)" : "rgba(255,255,255,0.05)",
+                borderWidth: 0.5,
+                borderColor: error ? "rgba(220,38,38,0.2)" : "rgba(255,255,255,0.1)",
+                borderRadius: 20,
+                paddingHorizontal: 12,
+                paddingVertical: 6,
+              }}
+            >
+              <MapPin size={10} color={error ? "#f87171" : "rgba(255,255,255,0.35)"} pointerEvents="none" />
+              {loading || error ? (
+                <Text
+                  style={{
+                    color: error ? "#f87171" : "rgba(255,255,255,0.4)",
+                    fontFamily: "Quicksand-Bold",
+                    fontSize: 10,
+                    letterSpacing: 0.3,
+                  }}
+                >
+                  {loading ? "Locating..." : "Retry location"}
+                </Text>
+              ) : (
+                <View>
+                  <Text
+                    style={{
+                      color: "rgba(255,255,255,0.5)",
+                      fontFamily: "Quicksand-Bold",
+                      fontSize: 10,
+                      letterSpacing: 0.3,
+                      lineHeight: 13,
+                    }}
+                  >
+                    {locationName.city}
+                  </Text>
+                  {!!locationName.country && (
+                    <Text
+                      style={{
+                        color: "rgba(255,255,255,0.25)",
+                        fontFamily: "Quicksand-Bold",
+                        fontSize: 9,
+                        letterSpacing: 0.3,
+                        lineHeight: 12,
+                      }}
+                    >
+                      {locationName.country}
+                    </Text>
+                  )}
+                </View>
+              )}
+            </View>
+          </Pressable>
+        ) : (
+          <>
+            {pageTitle && (
+              <Text
+                style={{
+                  color: "white",
+                  fontFamily: "Montserrat-Black",
+                  fontSize: 15,
+                  letterSpacing: -0.3,
+                  lineHeight: 18,
+                }}
+              >
+                {pageTitle}
+              </Text>
+            )}
+            {pageSubtitle && (
+              <Text
+                style={{
+                  color: "rgba(255,255,255,0.25)",
+                  fontFamily: "Quicksand-Bold",
+                  fontSize: 8,
+                  textTransform: "uppercase",
+                  letterSpacing: 1.5,
+                  marginTop: 1,
+                }}
+              >
+                {pageSubtitle}
+              </Text>
+            )}
+          </>
         )}
       </View>
 
