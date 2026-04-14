@@ -4,7 +4,7 @@ PROJECT_ROOT = File.expand_path("..", __dir__)
 XCODEPROJ    = File.join(PROJECT_ROOT, "ios", "OpenTaqwa.xcodeproj")
 XCWORKSPACE  = File.join(PROJECT_ROOT, "ios", "OpenTaqwa.xcworkspace")
 
-# Load .env.fastlane from the mobile/ dir so env vars are always available
+# Load .env.fastlane from mobile/ so env vars are always available
 env_file = File.join(PROJECT_ROOT, ".env.fastlane")
 if File.exist?(env_file)
   File.readlines(env_file).each do |line|
@@ -19,8 +19,10 @@ ASC_KEY_FILE = File.join(PROJECT_ROOT, "fastlane", "AuthKey_#{ENV['ASC_KEY_ID']}
 platform :ios do
   desc "Build and upload to TestFlight"
   lane :beta do
-    # Authenticate via App Store Connect API key (no 2FA prompts)
-    api_key = app_store_connect_api_key(
+    # Authenticate via App Store Connect API key.
+    # fastlane stores this in Actions.lane_context and picks it up
+    # automatically in upload_to_testflight, pilot, deliver, etc.
+    app_store_connect_api_key(
       key_id: ENV["ASC_KEY_ID"],
       issuer_id: ENV["ASC_ISSUER_ID"],
       key_filepath: ASC_KEY_FILE,
@@ -32,24 +34,27 @@ platform :ios do
     sh("cd #{PROJECT_ROOT} && npx expo prebuild --platform ios --clean")
 
     # Increment build number automatically
-    increment_build_number(
-      xcodeproj: XCODEPROJ
-    )
+    increment_build_number(xcodeproj: XCODEPROJ)
 
-    # Build the archive — -allowProvisioningUpdates lets xcodebuild
-    # create/download the distribution profile on the fly via the API key.
+    # Build + archive. xcodebuild reads the API key via -authenticationKey*
+    # flags and -allowProvisioningUpdates lets it create/download the
+    # Distribution profile on the fly (no devices, no match repo).
     build_app(
       workspace: XCWORKSPACE,
       scheme: "OpenTaqwa",
       configuration: "Release",
       export_method: "app-store",
-      xcargs: "-allowProvisioningUpdates DEVELOPMENT_TEAM=#{ENV['TEAM_ID']}",
-      api_key: api_key
+      xcargs: [
+        "-allowProvisioningUpdates",
+        "-authenticationKeyPath #{ASC_KEY_FILE}",
+        "-authenticationKeyID #{ENV['ASC_KEY_ID']}",
+        "-authenticationKeyIssuerID #{ENV['ASC_ISSUER_ID']}",
+        "DEVELOPMENT_TEAM=#{ENV['TEAM_ID']}"
+      ].join(" ")
     )
 
-    # Upload to TestFlight
+    # Upload to TestFlight (uses API key from lane_context)
     upload_to_testflight(
-      api_key: api_key,
       skip_waiting_for_build_processing: true,
       changelog: "Latest build from fastlane"
     )
