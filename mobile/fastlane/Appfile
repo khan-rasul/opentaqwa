@@ -1,3 +1,7 @@
 app_identifier("com.opentaqwa.app")
 apple_id(ENV["APPLE_ID"])
 team_id(ENV["TEAM_ID"])
+
+# Android
+json_key_file(ENV["PLAY_STORE_JSON_KEY"])
+package_name("com.opentaqwa.app")

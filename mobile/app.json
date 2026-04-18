@@ -44,6 +44,10 @@
     },
     "android": {
       "package": "com.opentaqwa.app",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#0f0d0c"
+      },
       "permissions": [
         "ACCESS_COARSE_LOCATION",
         "ACCESS_FINE_LOCATION",
@@ -54,9 +58,6 @@
     "extra": {
       "router": {
         "origin": "https://opentaqwa.app"
-      },
-      "eas": {
-        "projectId": "d448a33e-cf83-46dc-a7b5-422f06a050e9"
       }
     },
     "owner": "rasulkhan"
