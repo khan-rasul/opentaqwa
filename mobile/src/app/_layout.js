@@ -62,7 +62,7 @@ function LayoutContent() {
           <Header />
         </View>
         <View style={{ flex: 1 }}>
-          <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: "transparent" } }} />
+          <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: "transparent" }, animation: "slide_from_right" }} />
         </View>
       </LinearGradient>
     </View>
