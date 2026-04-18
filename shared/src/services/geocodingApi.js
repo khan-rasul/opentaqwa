@@ -24,6 +24,9 @@ export const geocodingApi = {
           format: "json",
           addressdetails: 1,
         },
+        headers: {
+          "User-Agent": "OpenTaqwa/1.0 (com.opentaqwa.app)",
+        },
         timeout: 5000,
         signal: controller.signal,
       });
@@ -73,6 +76,9 @@ export const geocodingApi = {
           addressdetails: 1,
           limit: 5,
           featuretype: "city",
+        },
+        headers: {
+          "User-Agent": "OpenTaqwa/1.0 (com.opentaqwa.app)",
         },
         timeout: 5000,
         signal: controller.signal,
