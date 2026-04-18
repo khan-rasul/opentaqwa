@@ -15,9 +15,10 @@ export default function Tagline() {
             style={{ width: 20, height: 20 }}
             resizeMode="contain"
           />
-          <Text style={{ fontSize: 14, fontFamily: "Montserrat-Black", color: "white" }}>
-            Open<Text style={{ color: "#af8f69", fontFamily: "GreatVibes", fontSize: 18, lineHeight: 16 }}> Taqwā</Text>
-          </Text>
+          <View style={{ flexDirection: "row", alignItems: "center" }}>
+            <Text style={{ fontSize: 14, fontFamily: "Montserrat-Black", color: "white" }}>Open</Text>
+            <Text style={{ color: "#af8f69", fontFamily: "GreatVibes", fontSize: 18, lineHeight: 22 }}> Taqwā</Text>
+          </View>
         </View>
       </View>
     </View>
